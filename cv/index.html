@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es" data-page="cv">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CV — Ignacio Travaglino</title>
+    <meta
+      name="description"
+      content="Currículum de Ignacio Travaglino: desarrollador general y físico, IA aplicada y sistemas autónomos. Córdoba, Argentina."
+    />
+    <meta name="author" content="Ignacio Travaglino" />
+    <meta name="theme-color" content="#13110f" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body class="page-cv">
+    <a class="skip-link" href="#cv" data-i18n="skip">Saltar al contenido</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="mark" href="../">
+          <span class="mark-it">IT</span>
+          <span class="mark-name">Travaglino</span>
+        </a>
+        <div class="nav-cluster">
+          <nav aria-label="Principal">
+            <ul class="nav-links">
+              <li><a href="../#trabajo" data-i18n="nav.work">Trabajo</a></li>
+              <li><a href="../#experiencia" data-i18n="nav.experience">Experiencia</a></li>
+              <li><a href="./" aria-current="page">CV</a></li>
+              <li><a href="../#contacto" data-i18n="nav.contact">Contacto</a></li>
+            </ul>
+          </nav>
+          <div class="lang-switch" role="group" data-i18n-aria="nav.langGroup" aria-label="Idioma">
+            <button type="button" data-lang-switch="es" aria-pressed="true" data-i18n-aria="nav.langEs">ES</button>
+            <button type="button" data-lang-switch="en" aria-pressed="false" data-i18n-aria="nav.langEn">EN</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="cv-toolbar">
+      <div class="wrap">
+        <p>
+          <a class="btn btn-ghost" href="../" data-i18n="cv.back">Volver al sitio</a>
+          <span data-i18n="cv.printHint"> El diálogo del sistema permite guardar como PDF (A4 o carta).</span>
+        </p>
+        <button class="btn" type="button" data-print data-i18n="cv.print">Descargar / imprimir PDF</button>
+      </div>
+    </div>
+
+    <main id="cv" class="cv-stage">
+      <article class="cv-sheet">
+        <header class="cv-head">
+          <p class="given" data-i18n="hero.given">Ignacio</p>
+          <h1 data-i18n="hero.name">Travaglino</h1>
+          <p class="role">
+            <span data-i18n="hero.title">Desarrollador general y físico</span>
+            ·
+            <span data-i18n="hero.subtitle">IA aplicada y sistemas autónomos</span>
+          </p>
+          <p class="cv-meta">
+            <span data-i18n="hero.location">Córdoba, Argentina</span>
+            <a href="mailto:ignaciotravaglino@gmail.com">ignaciotravaglino@gmail.com</a>
+            <a href="tel:+5493513353308">+54 9 351 335 3308</a>
+            <a href="https://github.com/itravaglino" rel="noopener noreferrer">github.com/itravaglino</a>
+            <a href="https://www.linkedin.com/in/ignacio-travaglino-711824352" rel="noopener noreferrer">LinkedIn</a>
+          </p>
+        </header>
+
+        <section class="cv-block">
+          <h2 data-i18n="cv.summaryLabel">Perfil</h2>
+          <p data-i18n="hero.summary">
+            Desarrollador general versátil y matemáticamente riguroso, estudiante de Física de 4.º año, con experiencia
+            en sistemas autónomos, IA aplicada y pronóstico avanzado de series temporales. Altamente adaptable y de
+            aprendizaje notoriamente rápido, impulsado por una pasión profunda por explorar nuevas tecnologías y
+            comprender sistemas complejos. Experiencia traduciendo física teórica y ecuaciones diferenciales a
+            arquitecturas de IA de grado productivo, desplegadas en el borde. Trayectoria construyendo pipelines de
+            navegación autónoma (LiDAR + visión por computadora), agentes de datos a gran escala (RAG con modelos de
+            pesos abiertos) y backends robustos frente a variables altamente inestables.
+          </p>
+        </section>
+
+        <section class="cv-block">
+          <h2 data-i18n="experience.heading">Experiencia</h2>
+          <div>
+            <div class="cv-job-head">
+              <h3>
+                <span data-i18n="experience.job1Role">Desarrollador y arquitecto de pipelines de IA</span>
+                —
+                <span data-i18n="experience.job1Org">DTA FIO (DTA Logística)</span>
+              </h3>
+              <p class="cv-when" data-i18n="experience.job1Dates">Agosto 2023 – actualidad</p>
+            </div>
+            <p data-i18n="experience.job1Place">Córdoba, Argentina</p>
+            <ul>
+              <li data-i18n="experience.job1b1">
+                Arquitectura de pipelines de pronóstico en producción con ARIMA, Prophet y AutoGluon TimeSeries, con
+                mitigación matemática y tratamiento de valores atípicos extremos frente a comportamientos explosivos de
+                los datos.
+              </li>
+              <li data-i18n="experience.job1b2">
+                Integración de modelos fundacionales de series temporales (Amazon Chronos) y optimización de inferencia
+                paralela con Joblib.
+              </li>
+              <li data-i18n="experience.job1b3">
+                Impulso de la plataforma Pedido Inteligente para Panificadora Veneziana S.A., procesando un volumen
+                masivo de ventas históricas. Rediseño de la lógica de automatización semanal (cálculos a partir del
+                domingo) y corrección de mapeos de inventario (Stock on Order → órdenes de compra).
+              </li>
+              <li data-i18n="experience.job1b4">
+                Clasificador de patrones de demanda (estacional, intermitente, estable) para elegir de forma dinámica el
+                modelo óptimo.
+              </li>
+            </ul>
+          </div>
+          <div style="margin-top: 0.9rem">
+            <div class="cv-job-head">
+              <h3>
+                <span data-i18n="experience.job2Role">Personal de temporada</span>
+                —
+                <span data-i18n="experience.job2Org">Stowe Mountain Resort</span>
+              </h3>
+              <p class="cv-when" data-i18n="experience.job2Dates">Diciembre 2022 – marzo 2023</p>
+            </div>
+            <p data-i18n="experience.job2Place">Stowe, Vermont, EE. UU.</p>
+            <p data-i18n="experience.job2Body">
+              Programa Work &amp; Travel. Intercambio internacional de alta exigencia. 294 km esquiados o en snowboard
+              durante la temporada.
+            </p>
+          </div>
+        </section>
+
+        <section class="cv-block">
+          <h2 data-i18n="cv.workLabel">Trabajo seleccionado</h2>
+          <div>
+            <h3 data-i18n="work.p1Title">Sistema de navegación autónoma y robótica en el borde</h3>
+            <p data-i18n="work.p1Body">
+              Diseño de un sistema completo de navegación autónoma y toma de decisiones con LiDAR y visión por
+              computadora. Pipeline optimizado para hardware de borde con recursos limitados (Jetson Orin NX, Raspberry
+              Pi 5). Validado en simulación robótica virtual (pioneer3at).
+            </p>
+          </div>
+          <div style="margin-top: 0.7rem">
+            <h3 data-i18n="work.p2Title">Agente RAG local y despliegue de LLM</h3>
+            <p data-i18n="work.p2Body">
+              Asistente de preguntas y respuestas centrado en privacidad, con RAG, embeddings locales y bases de datos
+              vectoriales. Orquestación de modelos de pesos abiertos (Gemma, Qwen, LiteRT-LM) para consultar
+              documentación interna sin dependencia de APIs externas.
+            </p>
+          </div>
+          <div style="margin-top: 0.7rem">
+            <h3 data-i18n="work.p3Title">Motores de trading algorítmico cuantitativo</h3>
+            <p data-i18n="work.p3Body">
+              Automatización en Python para sincronizar parámetros en tiempo real con APIs de datos de mercado. Modelos
+              predictivos y algoritmos de trading para IMC Prosperity 4, con física estadística y manejo de datos
+              estocásticos.
+            </p>
+          </div>
+          <div style="margin-top: 0.7rem">
+            <h3 data-i18n="work.p4Title">Laboratorio doméstico y administración de servidores</h3>
+            <p data-i18n="work.p4Body">
+              Servidor Linux 24/7 en Raspberry Pi 5. Optimizaciones a nivel de sistema operativo (asignación dinámica de
+              RAM), seguridad y gestión remota de archivos vía SFTP/WinSCP.
+            </p>
+          </div>
+        </section>
+
+        <section class="cv-block">
+          <h2 data-i18n="education.eduLabel">Estudios</h2>
+          <div class="cv-edu-head">
+            <h3 data-i18n="education.eduDegree">Licenciatura en Física</h3>
+            <p class="cv-when" data-i18n="education.eduStatus">En curso, 4.º año. Graduación prevista: 2028.</p>
+          </div>
+          <p data-i18n="education.eduSchool">FAMAF, Universidad Nacional de Córdoba (UNC), Córdoba, Argentina.</p>
+          <p>
+            <strong data-i18n="education.eduFocusLabel">Eje</strong>
+            —
+            <span data-i18n="education.eduFocus">Modelado matemático, ecuaciones diferenciales, análisis de sistemas complejos, métodos computacionales avanzados.</span>
+          </p>
+          <p>
+            <strong data-i18n="education.eduCoursesLabel">Cursos relevantes</strong>
+            —
+            <span data-i18n="education.eduCourses">Física computacional (simulaciones numéricas de sistemas cuánticos y clásicos), Electrostática, Mecánica analítica.</span>
+          </p>
+        </section>
+
+        <section class="cv-block">
+          <h2 data-i18n="education.honorsLabel">Certificaciones, honores y competencias</h2>
+          <p>
+            <strong data-i18n="education.cqfTitle">Certificate in Quantitative Finance (CQF)</strong>
+            —
+            <span data-i18n="education.cqfBody">Candidato aceptado, cursando Level 1 (Fitch Learning, abril 2026). Cálculo estocástico, derivados, ML cuantitativo, gestión de riesgo financiero.</span>
+          </p>
+          <p>
+            <strong data-i18n="education.iqcTitle">International Quant Championship 2026</strong>
+            —
+            <span data-i18n="education.iqcBody">Participante seleccionado; alfas cuantitativos sobre datos financieros masivos.</span>
+          </p>
+          <p>
+            <strong data-i18n="education.imcTitle">IMC Prosperity 4</strong>
+            —
+            <span data-i18n="education.imcBody">Competencia internacional de trading algorítmico; estrategias automatizadas de arbitraje y market-making.</span>
+          </p>
+        </section>
+
+        <section class="cv-block">
+          <h2 data-i18n="skills.heading">Capacidades</h2>
+          <div class="cv-skills">
+            <div>
+              <h3 data-i18n="skills.g1">Lenguajes y núcleo</h3>
+              <p data-i18n="skills.g1Body">Python (Pandas, NumPy, SciKit-Learn, Joblib), SQL, Bash, C/C++ conceptual.</p>
+            </div>
+            <div>
+              <h3 data-i18n="skills.g2">Modelado e IA</h3>
+              <p data-i18n="skills.g2Body">
+                Modelos fundacionales (Amazon Chronos, Gemma, Qwen, LiteRT-LM), RAG, ARIMA/SARIMA, Prophet,
+                NeuralProphet, AutoGluon.
+              </p>
+            </div>
+            <div>
+              <h3 data-i18n="skills.g3">Robótica y borde</h3>
+              <p data-i18n="skills.g3Body">
+                Navegación autónoma, LiDAR, visión por computadora (YOLO), Jetson Orin NX, Raspberry Pi 5, simulación
+                robótica.
+              </p>
+            </div>
+            <div>
+              <h3 data-i18n="skills.g4">Metodologías</h3>
+              <p data-i18n="skills.g4Body">
+                Modelado de sistemas complejos, EDOs numéricas, modelos estocásticos, detección de valores atípicos,
+                clasificación dinámica de patrones.
+              </p>
+            </div>
+            <div>
+              <h3 data-i18n="skills.g5">Herramientas e infraestructura</h3>
+              <p data-i18n="skills.g5Body">
+                Git, Docker (nociones), administración de servidores Linux/Unix, WinSCP, SFTP, automatización de
+                pipelines de datos.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="cv-block">
+          <h2 data-i18n="cv.reposLabel">Repositorios</h2>
+          <ul class="cv-repos">
+            <li><a href="https://github.com/itravaglino/Chatbot" rel="noopener noreferrer">Chatbot</a></li>
+            <li>
+              <a href="https://github.com/itravaglino/Financial-Tracker-for-compound-intrest" rel="noopener noreferrer">Financial-Tracker-for-compound-intrest</a>
+            </li>
+            <li><a href="https://github.com/itravaglino/ELECTRO1" rel="noopener noreferrer">ELECTRO1</a></li>
+            <li><a href="https://github.com/itravaglino/Pagweb" rel="noopener noreferrer">Pagweb</a></li>
+            <li><a href="https://github.com/itravaglino/scraper" rel="noopener noreferrer">scraper</a></li>
+          </ul>
+        </section>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <p data-i18n="footer.copy">© Ignacio Travaglino</p>
+        <p data-i18n="footer.colophon">
+          Sitio estático, sin cookies ni analítica. Tipografía: Fraunces e IBM Plex. Pensado para GitHub Pages y
+          Cloudflare Pages.
+        </p>
+      </div>
+    </footer>
+    <script type="module" src="/src/cv.js"></script>
+  </body>
+</html>
