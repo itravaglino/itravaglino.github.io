@@ -1,0 +1,10 @@
+# Custom domain for GitHub Pages
+#
+# 1. Copy this file to CNAME (no extension) at the repo root or in /public
+#    so it is emitted into dist/.
+# 2. Put your domain on a single line, for example:
+#    www.example.com
+# 3. In GitHub: Settings → Pages → Custom domain, then add the same host
+#    and follow the DNS instructions (A/ALIAS/CNAME records).
+#
+# Do not commit a live CNAME until the domain is yours.

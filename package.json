@@ -1,0 +1,20 @@
+{
+  "name": "ignacio-travaglino",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Sitio personal de Ignacio Travaglino — físico y desarrollador general.",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 43147",
+    "build": "python3 scripts/generate-icons.py && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 43147"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "@fontsource-variable/fraunces": "^5.2.8",
+    "@fontsource/ibm-plex-mono": "^5.2.6",
+    "@fontsource/ibm-plex-sans": "^5.2.6"
+  }
+}
