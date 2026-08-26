@@ -6,7 +6,7 @@
   "description": "Sitio personal de Ignacio Travaglino — físico y desarrollador general.",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 43147",
-    "build": "python3 scripts/generate-icons.py && vite build",
+    "build": "python3 scripts/generate-icons.py && python3 scripts/vendor-static-assets.py && vite build",
     "preview": "vite preview --host 127.0.0.1 --port 43147"
   },
   "devDependencies": {

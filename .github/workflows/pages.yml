@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -27,6 +27,21 @@ jobs:
           cache: npm
       - name: Install
         run: npm ci
+      - name: Vendor fonts and icons
+        run: |
+          python3 scripts/generate-icons.py
+          python3 scripts/vendor-static-assets.py
+      - name: Commit vendored assets for user-site Pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add fonts public/fonts og.png og.svg apple-touch-icon.png favicon.svg 404.html robots.txt site.webmanifest .nojekyll
+          if git diff --staged --quiet; then
+            echo "Vendored assets already current"
+          else
+            git commit -m "Vendor webfonts and icons for GitHub Pages"
+            git push
+          fi
       - name: Build
         run: npm run build
       - name: Upload Pages artifact
