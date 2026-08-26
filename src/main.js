@@ -1,5 +1,3 @@
-import "./fonts.css";
-import "./styles.css";
 import { initI18n } from "./i18n.js";
 
 document.documentElement.classList.add("js");
