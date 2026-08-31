@@ -571,9 +571,8 @@ a:hover {
 .honor-status {
   margin: 0.2rem 0 0;
   font-family: var(--mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
   color: var(--accent);
 }
 

@@ -88,7 +88,7 @@ export const translations = {
     },
     education: {
       kicker: "04  ·  Formación",
-      heading: "Formación, honores y competencias",
+      heading: "Formación, eventos y competencias",
       eduLabel: "Estudios",
       eduDegree: "Licenciatura en Física",
       eduStatus: "En curso, 4.º año. Graduación prevista: 2028.",
@@ -99,18 +99,9 @@ export const translations = {
       eduCoursesLabel: "Cursos relevantes",
       eduCourses:
         "Física computacional (simulaciones numéricas de sistemas cuánticos y clásicos), Electrostática, Mecánica analítica.",
-      honorsLabel: "Certificaciones, honores, competencias y eventos",
-      cqfTitle: "Certificate in Quantitative Finance (CQF)",
-      cqfStatus: "Candidato aceptado",
-      cqfMeta: "Level 1 · Fitch Learning · abril 2026",
-      cqfBody:
-        "Cursando Level 1. Cálculo estocástico, derivados, ML cuantitativo, gestión de riesgo financiero.",
-      iqcTitle: "International Quant Championship 2026",
-      iqcStatus: "Participante seleccionado",
-      iqcMeta: "2026",
-      iqcBody: "Alfas cuantitativos sobre datos financieros masivos.",
+      honorsLabel: "Eventos y competencias",
       aiTitle: "U.S. AI Week Córdoba",
-      aiStatus: "Asistente",
+      aiStatus: "Asistió",
       aiMeta: "10–11 de agosto de 2026 · Centro Cultural Córdoba, Córdoba, Argentina",
       aiOrg: "Gobierno de los Estados Unidos · Carnegie Mellon University · Gobierno de la Provincia de Córdoba",
       aiBody:
@@ -255,7 +246,7 @@ export const translations = {
     },
     education: {
       kicker: "04  ·  Education",
-      heading: "Education, honors & competitions",
+      heading: "Education, events & competitions",
       eduLabel: "Studies",
       eduDegree: "B.Sc. in Physics (Licenciatura en Física)",
       eduStatus: "Ongoing, 4th year. Expected graduation: 2028.",
@@ -266,18 +257,9 @@ export const translations = {
       eduCoursesLabel: "Relevant coursework",
       eduCourses:
         "Computational Physics (numerical simulations of quantum/classical systems), Electrostatics, Analytical Mechanics.",
-      honorsLabel: "Certifications, honors, competitions, and events",
-      cqfTitle: "Certificate in Quantitative Finance (CQF)",
-      cqfStatus: "Accepted candidate",
-      cqfMeta: "Level 1 · Fitch Learning · April 2026",
-      cqfBody:
-        "Currently enrolled in Level 1. Stochastic calculus, derivatives, quantitative ML, financial risk management.",
-      iqcTitle: "International Quant Championship 2026",
-      iqcStatus: "Selected participant",
-      iqcMeta: "2026",
-      iqcBody: "Quantitative alphas on massive financial data.",
+      honorsLabel: "Events and competitions",
       aiTitle: "U.S. AI Week Córdoba",
-      aiStatus: "Attendee",
+      aiStatus: "Attended",
       aiMeta: "10–11 August 2026 · Centro Cultural Córdoba, Córdoba, Argentina",
       aiOrg: "U.S. Government · Carnegie Mellon University · Government of the Province of Córdoba",
       aiBody:
