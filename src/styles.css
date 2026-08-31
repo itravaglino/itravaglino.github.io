@@ -178,10 +178,12 @@ a:hover {
 
 .nav-links {
   display: flex;
-  gap: 1.1rem;
+  gap: 0.95rem;
   list-style: none;
   margin: 0;
   padding: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .nav-links a {
@@ -509,13 +511,15 @@ a:hover {
   margin-top: 0.55rem;
 }
 
-.split {
+.edu-study {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: minmax(11rem, 0.32fr) minmax(0, 1fr);
+  gap: 1rem 2rem;
+  padding-bottom: clamp(2rem, 5vw, 3rem);
 }
 
-.panel h3,
+.edu-study h3,
+.honors h3,
 .skill-group h3 {
   margin: 0 0 0.85rem;
   font-family: var(--mono);
@@ -526,21 +530,37 @@ a:hover {
   color: var(--accent);
 }
 
-.panel h4 {
+.edu-study h4 {
   margin: 0;
   font-family: var(--serif);
-  font-size: 1.45rem;
+  font-size: clamp(1.45rem, 2.4vw, 1.85rem);
   font-weight: 400;
   letter-spacing: -0.03em;
 }
 
-.panel p {
+.edu-status {
+  margin: 0.45rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+.edu-study p {
   margin: 0.45rem 0 0;
   color: var(--ink-dim);
 }
 
+.honors-list {
+  display: grid;
+  gap: 0;
+}
+
 .honor {
-  padding: 1.1rem 0;
+  display: grid;
+  grid-template-columns: minmax(11rem, 0.32fr) minmax(0, 1fr);
+  gap: 0.75rem 2rem;
+  padding: 1.45rem 0;
   border-top: 1px solid var(--line);
 }
 
@@ -548,8 +568,45 @@ a:hover {
   border-bottom: 1px solid var(--line);
 }
 
+.honor-status {
+  margin: 0.2rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
 .honor h4 {
-  font-size: 1.15rem;
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.28rem, 2.1vw, 1.65rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.honor-meta,
+.honor-org,
+.honor-note {
+  margin: 0.35rem 0 0;
+  color: var(--ink-mute);
+  font-size: 0.95rem;
+}
+
+.honor p:not(.honor-status):not(.honor-meta):not(.honor-org):not(.honor-note):not(.honor-link) {
+  margin: 0.55rem 0 0;
+  color: var(--ink-dim);
+}
+
+.honor-link {
+  margin: 0.7rem 0 0;
+}
+
+.honor-link a {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .skills-grid {
@@ -749,6 +806,11 @@ a:hover {
   break-inside: avoid;
 }
 
+.cv-block--flow {
+  break-inside: auto;
+}
+}
+
 .cv-block h2 {
   margin: 0 0 0.55rem;
   font-family: var(--mono);
@@ -820,6 +882,16 @@ a:hover {
   color: var(--paper-mute);
 }
 
+.cv-honor {
+  padding: 0.7rem 0 0.15rem;
+}
+
+.cv-honor + .cv-honor {
+  margin-top: 0.55rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--paper-line);
+}
+
 /* Motion */
 
 html.js [data-reveal] {
@@ -865,7 +937,8 @@ html.js [data-reveal].is-in {
 @media (max-width: 860px) {
   .hero-lede,
   .job,
-  .split,
+  .edu-study,
+  .honor,
   .contact-grid,
   .cv-skills {
     grid-template-columns: 1fr;
@@ -959,6 +1032,14 @@ html.js [data-reveal].is-in {
   }
 
   .cv-block {
+    break-inside: avoid;
+  }
+
+  .cv-block--flow {
+    break-inside: auto;
+  }
+
+  .cv-honor {
     break-inside: avoid;
   }
 

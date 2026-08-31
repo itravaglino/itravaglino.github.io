@@ -11,6 +11,7 @@ export const translations = {
     nav: {
       work: "Trabajo",
       experience: "Experiencia",
+      education: "Formación",
       cv: "CV",
       contact: "Contacto",
       langEs: "Español",
@@ -87,7 +88,7 @@ export const translations = {
     },
     education: {
       kicker: "04  ·  Formación",
-      heading: "Formación y competencias",
+      heading: "Formación, honores y competencias",
       eduLabel: "Estudios",
       eduDegree: "Licenciatura en Física",
       eduStatus: "En curso, 4.º año. Graduación prevista: 2028.",
@@ -98,14 +99,27 @@ export const translations = {
       eduCoursesLabel: "Cursos relevantes",
       eduCourses:
         "Física computacional (simulaciones numéricas de sistemas cuánticos y clásicos), Electrostática, Mecánica analítica.",
-      honorsLabel: "Certificaciones, honores y competencias",
+      honorsLabel: "Certificaciones, honores, competencias y eventos",
       cqfTitle: "Certificate in Quantitative Finance (CQF)",
+      cqfStatus: "Candidato aceptado",
+      cqfMeta: "Level 1 · Fitch Learning · abril 2026",
       cqfBody:
-        "Candidato aceptado, cursando Level 1 (Fitch Learning, abril 2026). Cálculo estocástico, derivados, ML cuantitativo, gestión de riesgo financiero.",
+        "Cursando Level 1. Cálculo estocástico, derivados, ML cuantitativo, gestión de riesgo financiero.",
       iqcTitle: "International Quant Championship 2026",
-      iqcBody:
-        "Participante seleccionado; alfas cuantitativos sobre datos financieros masivos.",
+      iqcStatus: "Participante seleccionado",
+      iqcMeta: "2026",
+      iqcBody: "Alfas cuantitativos sobre datos financieros masivos.",
+      aiTitle: "U.S. AI Week Córdoba",
+      aiStatus: "Asistente",
+      aiMeta: "10–11 de agosto de 2026 · Centro Cultural Córdoba, Córdoba, Argentina",
+      aiOrg: "Gobierno de los Estados Unidos · Carnegie Mellon University · Gobierno de la Provincia de Córdoba",
+      aiBody:
+        "Participante de la edición Córdoba (segunda edición; la anterior fue en Buenos Aires). Encuentro internacional de dos días sobre adopción de IA, formación y transferencia tecnológica entre sector público, universidades y empresas. El programa incluyó formación técnica a cargo de especialistas de Carnegie Mellon, feria tecnológica con empresas de EE. UU. y un taller para llevar proyectos de IA de la idea a la implementación.",
+      aiPartners: "Acompañaron AmCham Argentina, UVITEC, CACEC y Córdoba Cluster.",
+      aiLink: "Nota sobre el encuentro",
       imcTitle: "IMC Prosperity 4",
+      imcStatus: "Participación",
+      imcMeta: "Trading algorítmico",
       imcBody:
         "Competencia internacional de trading algorítmico; estrategias automatizadas de arbitraje y market-making.",
     },
@@ -163,6 +177,7 @@ export const translations = {
     nav: {
       work: "Work",
       experience: "Experience",
+      education: "Education",
       cv: "CV",
       contact: "Contact",
       langEs: "Español",
@@ -240,7 +255,7 @@ export const translations = {
     },
     education: {
       kicker: "04  ·  Education",
-      heading: "Education & competitions",
+      heading: "Education, honors & competitions",
       eduLabel: "Studies",
       eduDegree: "B.Sc. in Physics (Licenciatura en Física)",
       eduStatus: "Ongoing, 4th year. Expected graduation: 2028.",
@@ -251,13 +266,27 @@ export const translations = {
       eduCoursesLabel: "Relevant coursework",
       eduCourses:
         "Computational Physics (numerical simulations of quantum/classical systems), Electrostatics, Analytical Mechanics.",
-      honorsLabel: "Certifications, honors, competitions",
+      honorsLabel: "Certifications, honors, competitions, and events",
       cqfTitle: "Certificate in Quantitative Finance (CQF)",
+      cqfStatus: "Accepted candidate",
+      cqfMeta: "Level 1 · Fitch Learning · April 2026",
       cqfBody:
-        "Accepted candidate, currently enrolled in Level 1 (Fitch Learning, April 2026). Stochastic calculus, derivatives, quantitative ML, financial risk management.",
+        "Currently enrolled in Level 1. Stochastic calculus, derivatives, quantitative ML, financial risk management.",
       iqcTitle: "International Quant Championship 2026",
-      iqcBody: "Selected participant, quantitative alphas on massive financial data.",
+      iqcStatus: "Selected participant",
+      iqcMeta: "2026",
+      iqcBody: "Quantitative alphas on massive financial data.",
+      aiTitle: "U.S. AI Week Córdoba",
+      aiStatus: "Attendee",
+      aiMeta: "10–11 August 2026 · Centro Cultural Córdoba, Córdoba, Argentina",
+      aiOrg: "U.S. Government · Carnegie Mellon University · Government of the Province of Córdoba",
+      aiBody:
+        "Attended the Córdoba edition (second edition; the previous was in Buenos Aires). Two-day international meeting on AI adoption, training, and tech transfer among the public sector, universities, and companies. The program included technical training by Carnegie Mellon specialists, a tech fair with U.S. firms, and a workshop on taking AI projects from idea to implementation.",
+      aiPartners: "With AmCham Argentina, UVITEC, CACEC, and Córdoba Cluster as local partners.",
+      aiLink: "Event recap",
       imcTitle: "IMC Prosperity 4",
+      imcStatus: "Participation",
+      imcMeta: "Algorithmic trading",
       imcBody:
         "International algorithmic trading competition; automated arbitrage and market-making strategies.",
     },
