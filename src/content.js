@@ -99,6 +99,10 @@ export const translations = {
       eduCoursesLabel: "Cursos relevantes",
       eduCourses:
         "Física computacional (simulaciones numéricas de sistemas cuánticos y clásicos), Electrostática, Mecánica analítica.",
+      dipDegree: "Diplomatura Universitaria en Ciencia de Datos, Inteligencia Artificial y sus Aplicaciones en Economía y Negocios",
+      dipStatus: "En curso · ago. 2026 – jul. 2027",
+      dipSchool: "FAMAF y Facultad de Ciencias Económicas (FCE), Universidad Nacional de Córdoba (UNC). Modalidad virtual.",
+      dipFocus: "Gestión estratégica de datos, estadística y econometría, análisis multivariado, aprendizaje automático y redes neuronales profundas aplicados a economía y negocios.",
       honorsLabel: "Eventos y competencias",
       aiTitle: "U.S. AI Week Córdoba",
       aiStatus: "Asistió",
@@ -257,6 +261,10 @@ export const translations = {
       eduCoursesLabel: "Relevant coursework",
       eduCourses:
         "Computational Physics (numerical simulations of quantum/classical systems), Electrostatics, Analytical Mechanics.",
+      dipDegree: "University Diploma in Data Science, Artificial Intelligence and its Applications in Economics and Business",
+      dipStatus: "In progress · Aug 2026 – Jul 2027",
+      dipSchool: "FAMAF and Faculty of Economic Sciences (FCE), National University of Córdoba (UNC). Online.",
+      dipFocus: "Strategic data management, statistics and econometrics, multivariate analysis, machine learning and deep neural networks applied to economics and business.",
       honorsLabel: "Events and competitions",
       aiTitle: "U.S. AI Week Córdoba",
       aiStatus: "Attended",
