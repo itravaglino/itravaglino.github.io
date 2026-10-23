@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" data-page="github">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Taller de Git y GitHub — Ignacio Travaglino</title>
+    <meta
+      name="description"
+      content="Juego para aprender Git y GitHub: terminal simulada, commits, ramas, merge y pull requests. En español, con versión en inglés."
+    />
+    <meta name="author" content="Ignacio Travaglino" />
+    <meta name="theme-color" content="#13110f" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:title" content="Taller de Git y GitHub — Ignacio Travaglino" />
+    <meta
+      property="og:description"
+      content="Juego para aprender Git y GitHub: terminal simulada, commits, ramas, merge y pull requests."
+    />
+    <meta property="og:image" content="/og.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="stylesheet" href="../src/fonts.css" />
+    <link rel="stylesheet" href="../src/styles.css" />
+    <link rel="stylesheet" href="../src/github-game.css" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido" data-i18n="skip">Saltar al contenido</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="mark" href="../">
+          <span class="mark-it">IT</span>
+          <span class="mark-name">Travaglino</span>
+        </a>
+        <div class="nav-cluster">
+          <nav aria-label="Principal">
+            <ul class="nav-links">
+              <li><a href="../#trabajo" data-i18n="nav.work">Trabajo</a></li>
+              <li><a href="../#experiencia" data-i18n="nav.experience">Experiencia</a></li>
+              <li><a href="../#formacion" data-i18n="nav.education">Formación</a></li>
+              <li><a href="../cv/">CV</a></li>
+              <li><a href="./" aria-current="page" data-i18n="nav.game">Git</a></li>
+              <li><a href="../#contacto" data-i18n="nav.contact">Contacto</a></li>
+            </ul>
+          </nav>
+          <div class="lang-switch" role="group" data-i18n-aria="nav.langGroup" aria-label="Idioma">
+            <button type="button" data-lang-switch="es" aria-pressed="true" data-i18n-aria="nav.langEs">ES</button>
+            <button type="button" data-lang-switch="en" aria-pressed="false" data-i18n-aria="nav.langEn">EN</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="contenido">
+      <div class="wrap game-page">
+        <header class="game-head">
+          <p class="kicker" data-i18n="game.kicker">Juego  ·  Git</p>
+          <h1 data-i18n="game.title">Taller de Git y GitHub</h1>
+          <p class="game-lede" data-i18n="game.lede">
+            Siete misiones, una terminal y un grafo. Los comandos son de verdad dentro de un Git pequeño que corre en el
+            navegador.
+          </p>
+        </header>
+        <div id="game-root"></div>
+        <noscript>
+          <p>Este taller necesita JavaScript. No carga nada desde otros sitios.</p>
+        </noscript>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <p data-i18n="footer.copy">© Ignacio Travaglino</p>
+        <p data-i18n="footer.colophon">
+          Sitio estático, sin cookies ni analítica. Tipografía: Fraunces e IBM Plex. Pensado para GitHub Pages y
+          Cloudflare Pages.
+        </p>
+      </div>
+    </footer>
+    <script type="module" src="/src/github-game.js"></script>
+  </body>
+</html>

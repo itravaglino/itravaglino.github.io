@@ -13,6 +13,7 @@ export const translations = {
       experience: "Experiencia",
       education: "Formación",
       cv: "CV",
+      game: "Git",
       contact: "Contacto",
       langEs: "Español",
       langEn: "English",
@@ -54,6 +55,8 @@ export const translations = {
       p4Meta: "Linux · Raspberry Pi 5 · SFTP / WinSCP",
       p4Body:
         "Servidor Linux 24/7 en Raspberry Pi 5. Optimizaciones a nivel de sistema operativo (asignación dinámica de RAM), seguridad y gestión remota de archivos vía SFTP/WinSCP.",
+      gameTitle: "Taller de Git y GitHub",
+      gameMeta: "Juego en el navegador · terminal, ramas y pull requests",
       github: "También en GitHub",
       repoChatbot: "Chatbot",
       repoChatbotMeta: "Python",
@@ -152,6 +155,14 @@ export const translations = {
       colophon:
         "Sitio estático, sin cookies ni analítica. Tipografía: Fraunces e IBM Plex. Pensado para GitHub Pages y Cloudflare Pages.",
     },
+    game: {
+      docTitle: "Taller de Git y GitHub — Ignacio Travaglino",
+      docDescription:
+        "Juego para aprender Git y GitHub: terminal simulada, commits, ramas, merge y pull requests. En español, con versión en inglés.",
+      kicker: "Juego  ·  Git",
+      title: "Taller de Git y GitHub",
+      lede: "Siete misiones, una terminal y un grafo. Los comandos son de verdad dentro de un Git pequeño que corre en el navegador.",
+    },
     cv: {
       docTitle: "CV — Ignacio Travaglino",
       print: "Descargar / imprimir PDF",
@@ -174,6 +185,7 @@ export const translations = {
       experience: "Experience",
       education: "Education",
       cv: "CV",
+      game: "Git",
       contact: "Contact",
       langEs: "Español",
       langEn: "English",
@@ -215,6 +227,8 @@ export const translations = {
       p4Meta: "Linux · Raspberry Pi 5 · SFTP / WinSCP",
       p4Body:
         "24/7 Linux server on Raspberry Pi 5. OS-level optimizations (dynamic RAM allocation), security, remote file management via SFTP/WinSCP.",
+      gameTitle: "Git & GitHub workshop",
+      gameMeta: "Browser game · terminal, branches, and pull requests",
       github: "Also on GitHub",
       repoChatbot: "Chatbot",
       repoChatbotMeta: "Python",
@@ -313,6 +327,14 @@ export const translations = {
       copy: "© Ignacio Travaglino",
       colophon:
         "Static site, no cookies, no analytics. Type: Fraunces and IBM Plex. Built for GitHub Pages and Cloudflare Pages.",
+    },
+    game: {
+      docTitle: "Git & GitHub workshop — Ignacio Travaglino",
+      docDescription:
+        "A game for learning Git and GitHub: simulated terminal, commits, branches, merge, and pull requests. Spanish by default, with an English version.",
+      kicker: "Game  ·  Git",
+      title: "Git & GitHub workshop",
+      lede: "Seven missions, one terminal, and a graph. The commands are real inside a small Git that runs in the browser.",
     },
     cv: {
       docTitle: "CV — Ignacio Travaglino",

@@ -1,0 +1,509 @@
+/* Workshop at /github/ — same palette as the rest of the site. */
+
+.game-page {
+  padding: clamp(1.4rem, 4vw, 2.6rem) 0 4rem;
+}
+
+.game-head h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(2.3rem, 6vw, 4.2rem);
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+.game-lede {
+  margin: 0.8rem 0 0;
+  max-width: 40rem;
+  color: var(--ink-dim);
+}
+
+.level-map {
+  display: flex;
+  gap: 0.4rem;
+  list-style: none;
+  margin: 1.25rem 0;
+  padding: 0 0 0.2rem;
+  overflow-x: auto;
+}
+
+.level-map button {
+  appearance: none;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-dim);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.level-map button[aria-current="true"] {
+  border-color: var(--accent);
+  color: var(--ink);
+  background: var(--accent-dim);
+}
+
+.level-map button.is-done {
+  color: var(--accent-hot);
+}
+
+.level-map button:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.game-shell {
+  display: grid;
+  grid-template-columns: minmax(16rem, 22rem) minmax(0, 1.15fr) minmax(16rem, 0.95fr);
+  gap: 0.85rem;
+  align-items: start;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  background: rgba(27, 24, 21, 0.78);
+  padding: 0.85rem 0.9rem 1rem;
+  min-width: 0;
+}
+
+.panel h2,
+.zone h3,
+.graph-card figcaption {
+  margin: 0 0 0.55rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.mission h3 {
+  margin: 0.55rem 0 0.35rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.mission p,
+.pr-panel p,
+.finale-copy {
+  margin: 0 0 0.7rem;
+  color: var(--ink-dim);
+  font-size: 0.98rem;
+}
+
+.mission {
+  display: grid;
+  gap: 0.35rem;
+}
+
+@media (min-width: 1100px) {
+  .mission {
+    position: sticky;
+    top: 5.2rem;
+    max-height: calc(100svh - 6.4rem);
+    overflow: auto;
+  }
+}
+
+.objectives {
+  list-style: none;
+  margin: 0 0 0.8rem;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.objectives li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.45rem;
+  align-items: start;
+  color: var(--ink-dim);
+  font-size: 0.92rem;
+}
+
+.objectives li.is-done {
+  color: var(--ink);
+}
+
+.tick {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-mute);
+  padding-top: 0.2rem;
+}
+
+.objectives li.is-done .tick {
+  color: var(--accent-hot);
+}
+
+.hints {
+  margin: 0.2rem 0 0.8rem;
+  color: var(--ink-dim);
+}
+
+.hints summary {
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.hints ol {
+  margin: 0.55rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.success-banner {
+  border: 1px solid var(--accent);
+  background: var(--accent-dim);
+  color: var(--ink);
+  padding: 0.7rem 0.75rem;
+  margin: 0.2rem 0 0.7rem;
+}
+
+.mission-actions,
+.pr-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.35rem;
+}
+
+.stack {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.file-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.45rem;
+}
+
+.file-tabs button {
+  appearance: none;
+  min-height: 36px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-dim);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+}
+
+.file-tabs button[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.editor {
+  width: 100%;
+  min-height: 9rem;
+  resize: vertical;
+  border: 1px solid var(--line-strong);
+  background: #100e0c;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 16px;
+  line-height: 1.45;
+  padding: 0.7rem;
+  border-radius: 0;
+}
+
+.editor.is-conflict {
+  border-color: var(--accent);
+}
+
+.conflict-note {
+  margin: 0.45rem 0 0;
+  color: var(--accent-hot);
+  font-size: 0.88rem;
+}
+
+.path-note {
+  margin: 0 0 0.45rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--ink-mute);
+}
+
+.term-out {
+  min-height: 11rem;
+  max-height: 18rem;
+  overflow: auto;
+  background: #100e0c;
+  padding: 0.7rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.term-line {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 0;
+  color: var(--ink-dim);
+}
+
+.term-line.cmd {
+  color: var(--accent-hot);
+  margin-top: 0.35rem;
+}
+
+.term-line.err {
+  color: #f0c2a4;
+}
+
+.term-line.ok {
+  color: var(--ink);
+}
+
+.term-line.info {
+  color: var(--ink-mute);
+  font-style: italic;
+}
+
+.term-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.6rem;
+  align-items: center;
+  margin-top: 0.45rem;
+}
+
+.prompt {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+  overflow-wrap: anywhere;
+}
+
+.term-form input {
+  flex: 1 1 12rem;
+  min-width: 0;
+  min-height: 44px;
+  border: 0;
+  border-bottom: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 16px;
+  padding: 0.35rem 0.1rem;
+  border-radius: 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.55rem;
+}
+
+.chips button {
+  appearance: none;
+  max-width: 100%;
+  min-height: 36px;
+  text-align: left;
+  white-space: normal;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-dim);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  padding: 0.3rem 0.45rem;
+  cursor: pointer;
+}
+
+.chips button:hover,
+.file-tabs button:hover,
+.level-map button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.graph-split {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.graph-scroll {
+  overflow-x: auto;
+  background: #100e0c;
+  border: 1px solid var(--line);
+}
+
+.graph-scroll svg {
+  width: 100%;
+  height: auto;
+  min-height: 7rem;
+}
+
+.graph-empty {
+  margin: 0;
+  padding: 0.8rem;
+  color: var(--ink-mute);
+  font-size: 0.88rem;
+}
+
+.history-list {
+  margin: 0.45rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--ink-dim);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.zones {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.zone {
+  border: 1px solid var(--line);
+  padding: 0.45rem 0.5rem 0.55rem;
+  min-width: 0;
+}
+
+.zone-help {
+  margin: 0 0 0.55rem;
+  color: var(--ink-mute);
+  font-size: 0.85rem;
+}
+
+.file-pill {
+  margin: 0.3rem 0;
+  min-width: 0;
+}
+
+.file-pill strong {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.file-pill span,
+.muted {
+  color: var(--ink-mute);
+  font-size: 0.75rem;
+}
+
+.file-pill code {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--ink-dim);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.pr-panel {
+  margin: 0 0 0.85rem;
+}
+
+.pr-meta {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--ink-mute);
+}
+
+.review {
+  border-left: 1px solid var(--accent);
+  padding-left: 0.75rem;
+  margin: 0.6rem 0;
+}
+
+.reset-all {
+  margin-top: 0.8rem;
+  color: var(--ink-mute);
+  font-size: 0.85rem;
+}
+
+.reset-all summary {
+  cursor: pointer;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+#finale {
+  border: 1px solid var(--line-strong);
+  background: var(--bg-raised);
+  color: var(--ink);
+  max-width: min(36rem, calc(100vw - 2rem));
+  padding: 1.2rem 1.2rem 1.3rem;
+}
+
+#finale::backdrop {
+  background: rgba(0, 0, 0, 0.62);
+}
+
+#finale h2 {
+  margin: 0 0 0.6rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 2rem;
+  letter-spacing: -0.03em;
+}
+
+#finale ol {
+  margin: 0 0 0.8rem;
+  padding-left: 1.2rem;
+  color: var(--ink-dim);
+}
+
+@media (max-width: 1100px) {
+  .game-shell {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .mission {
+    grid-column: 1 / -1;
+    position: static;
+    max-height: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .game-shell,
+  .zones {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-page,
+  .game-page * {
+    scroll-behavior: auto;
+  }
+}

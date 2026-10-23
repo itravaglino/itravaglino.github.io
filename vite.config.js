@@ -12,6 +12,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, "index.html"),
         cv: resolve(__dirname, "cv/index.html"),
+        github: resolve(__dirname, "github/index.html"),
       },
     },
   },

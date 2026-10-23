@@ -418,6 +418,38 @@ a:hover {
   margin-top: 2.75rem;
 }
 
+.game-promo {
+  margin: 0 0 1.15rem;
+}
+
+.game-promo a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  text-decoration: none;
+  border: 1px solid var(--line);
+  padding: 0.75rem 0.85rem;
+  max-width: 36rem;
+  color: var(--ink-dim);
+}
+
+.game-promo a:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.game-promo strong {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.game-promo span {
+  color: var(--ink-mute);
+  font-size: 0.85rem;
+}
+
 .github-row h3 {
   margin: 0 0 1rem;
   font-family: var(--mono);
@@ -807,7 +839,6 @@ a:hover {
 
 .cv-block--flow {
   break-inside: auto;
-}
 }
 
 .cv-block h2 {

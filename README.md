@@ -78,6 +78,12 @@ Copy it to `public/CNAME` with a single line — your domain — then point DNS 
 
 `/cv/` is a designed résumé. **Download / Print PDF** calls `window.print()`. Print CSS targets A4 and Letter. There is no attached scan; use the browser’s Save as PDF.
 
+## Taller de Git / Git workshop
+
+`/github/` es un juego para aprender Git y GitHub: terminal simulada, grafo de commits y siete misiones (repositorio, commit, historia, ramas, merge con conflicto, remoto y pull request). El progreso queda en `localStorage` (`it-git-game`), aparte del idioma (`it-lang`).
+
+`/github/` is a game for learning Git and GitHub: a simulated terminal, a commit graph, and seven missions (repository, commit, history, branches, merge with a conflict, remotes, and a pull request). Progress is stored in `localStorage` (`it-git-game`), separate from the language (`it-lang`).
+
 ## Contenido
 
 Solo hechos aportados por Ignacio. Sin retrato, métricas inventadas ni menciones a empleadores a los que pudiera estar postulando.
@@ -89,7 +95,8 @@ Copy is limited to facts Ignacio provided. No portrait, no invented metrics, no 
 ```
 index.html          página principal
 cv/index.html       currículum
-src/                estilos, i18n, entradas JS
+github/index.html   taller de Git y GitHub
+src/                estilos, i18n, entradas JS, simulador git
 public/             favicon, OG, robots.txt, 404, CNAME.example
 .github/workflows   despliegue a GitHub Pages
 ```

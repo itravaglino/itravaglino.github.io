@@ -32,11 +32,12 @@ export function applyLang(lang) {
   document.documentElement.lang = lang;
   document.documentElement.dataset.lang = lang;
 
-  const titleKey = document.documentElement.dataset.page === "cv" ? "cv.docTitle" : "meta.title";
+  const page = document.documentElement.dataset.page;
+  const titleKey = page === "cv" ? "cv.docTitle" : page === "github" ? "game.docTitle" : "meta.title";
   const title = lookup(dict, titleKey);
   if (title) document.title = title;
 
-  const description = lookup(dict, "meta.description");
+  const description = lookup(dict, page === "github" ? "game.docDescription" : "meta.description");
   const descEl = document.querySelector('meta[name="description"]');
   if (descEl && description) descEl.setAttribute("content", description);
 
@@ -68,6 +69,8 @@ export function applyLang(lang) {
     const isCurrent = btn.getAttribute("data-lang-switch") === lang;
     btn.setAttribute("aria-pressed", isCurrent ? "true" : "false");
   });
+
+  document.dispatchEvent(new CustomEvent("it-lang", { detail: { lang } }));
 }
 
 export function initI18n() {
