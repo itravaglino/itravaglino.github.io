@@ -545,10 +545,55 @@ export function levelById(id) {
 export function uiText(lang) {
   const en = lang === "en";
   return {
-    objective: en ? "Objective" : "Objetivo",
+    objective: en ? "Do these steps, in order" : "Hacé estos pasos, en orden",
     hints: en ? "Hints" : "Pistas",
     reset: en ? "Restart mission" : "Reiniciar misión",
     next: en ? "Next mission" : "Siguiente misión",
+    now: en ? "Now" : "Ahora",
+    nice: en ? "Mission complete!" : "¡Misión cumplida!",
+    chipLead: en ? "Tap a command to paste it into the terminal, then press Enter." : "Tocá un comando para pegarlo en la terminal y después pulsá Enter.",
+    pasted: en ? "Command pasted. Press Enter to run it." : "Comando pegado. Pulsá Enter para ejecutarlo.",
+    progressOf: en ? "Mission {current} of {total}. Step {step} of {steps}." : "Misión {current} de {total}. Paso {step} de {steps}.",
+    legendMain: "main",
+    legendFeature: en ? "other branch" : "otra rama",
+    legendLocal: en ? "only on your machine" : "solo en tu máquina",
+    legendOrigin: "origin",
+    onboardKicker: en ? "First visit" : "Primera vez",
+    onboardTitle: en ? "How this workshop works" : "Cómo funciona el taller",
+    onboardSteps: en
+      ? [
+          "Each mission has a numbered checklist. The highlighted step is the one you are on.",
+          "Tap a yellow command. It is written into the terminal for you. Press Enter to run it.",
+          "Yellow is your folder, teal is the waiting area (staging), purple is saved commits, blue is the remote copy.",
+          "When the checklist is done, a big Next button opens the following mission.",
+        ]
+      : [
+          "Cada misión tiene una lista numerada. El paso resaltado es el que te toca ahora.",
+          "Tocá un comando amarillo. Se escribe solo en la terminal. Pulsá Enter para ejecutarlo.",
+          "Amarillo es tu carpeta, verde es la sala de espera (preparación), violeta son los commits guardados y celeste es la copia remota.",
+          "Cuando la lista está completa, un botón grande de Siguiente abre la misión que sigue.",
+        ],
+    onboardGo: en ? "Start mission 1" : "Empezar la misión 1",
+    tipMission: en
+      ? "Read this once. The checklist below is what you actually do."
+      : "Leé esto una vez. La lista de abajo es lo que tenés que hacer.",
+    tipSteps: en ? "Finish the highlighted step, then the next one lights up." : "Terminá el paso resaltado y se enciende el siguiente.",
+    tipEditor: en
+      ? "This is the working folder: the file on your computer before Git saves it."
+      : "Esta es la carpeta de trabajo: el archivo en tu computadora, antes de que Git lo guarde.",
+    tipTerminal: en
+      ? "Git only listens to commands. Paste one with the buttons, then press Enter. help explains any command."
+      : "Git solo escucha comandos. Pegá uno con los botones y pulsá Enter. help explica cualquier comando.",
+    tipGraph: en
+      ? "Each dot is a commit. Lines point to the previous one. Colors distinguish branches. The blue panel is origin, the copy on the network."
+      : "Cada punto es un commit. Las líneas apuntan al anterior. Los colores distinguen ramas. El panel celeste es origin, la copia en la red.",
+    tipZones: en
+      ? "The same files live in three places. A commit photographs the teal column, not every unsaved keystroke."
+      : "Los mismos archivos viven en tres lugares. Un commit fotografía la columna verde, no cada tecla sin guardar.",
+    tipWork: en ? "What you are editing right now." : "Lo que estás editando ahora.",
+    tipIndex: en ? "What git add copied, ready for the next commit." : "Lo que git add copió, listo para el próximo commit.",
+    tipRepo: en ? "Commits already saved. HEAD is the latest one on this branch." : "Commits ya guardados. HEAD es el último de esta rama.",
+    tipMap: en ? "Seven missions. Locked ones open when you finish the previous one." : "Siete misiones. Las bloqueadas se abren al terminar la anterior.",
     editor: en ? "Editor" : "Editor",
     terminal: en ? "Terminal" : "Terminal",
     command: en ? "Command" : "Comando",

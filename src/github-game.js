@@ -3,7 +3,13 @@ import { createSim } from "./git-sim.js";
 import { LEVELS, levelById, missionComplete, missionState, runCommand, uiText } from "./github-levels.js";
 
 const STORAGE_KEY = "it-git-game";
+const ONBOARD_KEY = "it-git-onboarded";
 const SVG_NS = "http://www.w3.org/2000/svg";
+const MISSION_ICONS = ["🌱", "✏️", "📜", "🌿", "🔀", "☁️", "🐙"];
+const BRANCH_MAIN = "#ff6b6b";
+const BRANCH_FEATURE = "#b6f25c";
+const BRANCH_LOCAL = "#d7b0ff";
+const BRANCH_ORIGIN = "#4cc9f0";
 
 initI18n();
 
@@ -19,6 +25,11 @@ let renderedTerm = -1;
 let focusFile = "bitacora.txt";
 let commandHistory = [];
 let histIndex = 0;
+let motionPrimed = false;
+let wasDone = false;
+let freshLocal = new Set();
+let freshRemote = false;
+let zoneMemory = { work: "", index: "", repo: "" };
 
 const ui = () => uiText(lang);
 const pick = (bag) => (lang === "en" ? bag.en : bag.es);
@@ -95,6 +106,92 @@ function boot() {
   termVersion += 1;
 }
 
+function branchColor(labels) {
+  const names = labels.filter((label) => label !== "HEAD" && !label.startsWith("origin/"));
+  if (names.some((name) => name !== "main")) return BRANCH_FEATURE;
+  if (labels.some((label) => String(label).startsWith("origin"))) return BRANCH_ORIGIN;
+  if (names.includes("main")) return BRANCH_MAIN;
+  return BRANCH_LOCAL;
+}
+
+function reducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function celebrate(big) {
+  if (reducedMotion()) return;
+  const layer = document.getElementById("confetti");
+  if (!layer) return;
+  const colors = [BRANCH_MAIN, "#ffe14a", "#3ddec8", BRANCH_ORIGIN, BRANCH_LOCAL, BRANCH_FEATURE, "#ff9f1c"];
+  const count = big ? 72 : 40;
+  for (let index = 0; index < count; index += 1) {
+    const bit = document.createElement("i");
+    bit.className = "confetti-bit";
+    bit.style.left = `${Math.random() * 100}%`;
+    bit.style.background = colors[index % colors.length];
+    bit.style.setProperty("--dx", `${(Math.random() - 0.5) * 280}px`);
+    bit.style.animationDelay = `${Math.random() * 0.18}s`;
+    bit.style.animationDuration = `${1.05 + Math.random() * 0.75}s`;
+    layer.append(bit);
+    window.setTimeout(() => bit.remove(), 2000);
+  }
+}
+
+function noteMotion(model, done) {
+  const localIds = new Set((model.localGraph?.nodes || []).map((node) => node.id));
+  const remoteIds = new Set((model.remoteGraph?.nodes || []).map((node) => node.id));
+  if (!motionPrimed) {
+    motionPrimed = true;
+    freshLocal = new Set();
+    freshRemote = false;
+    wasDone = done;
+    noteMotion.local = localIds;
+    noteMotion.remote = remoteIds;
+    return;
+  }
+  freshLocal = new Set([...localIds].filter((id) => !noteMotion.local.has(id)));
+  freshRemote = [...remoteIds].some((id) => !noteMotion.remote.has(id));
+  if (done && !wasDone) celebrate(current === 7);
+  noteMotion.local = localIds;
+  noteMotion.remote = remoteIds;
+  wasDone = done;
+}
+
+function resetMotion() {
+  motionPrimed = false;
+  wasDone = false;
+  freshLocal = new Set();
+  freshRemote = false;
+}
+
+function titleRow(titleId, tipId, tag = "h2") {
+  const row = h("div", { className: "title-row" });
+  const button = h("button", { type: "button", className: "tip-btn", id: `${tipId}-btn`, text: "ⓘ" });
+  button.setAttribute("aria-controls", tipId);
+  button.setAttribute("aria-expanded", "false");
+  const pop = h("p", { id: tipId, className: "tip-pop", role: "tooltip" });
+  pop.hidden = true;
+  button.addEventListener("click", () => {
+    const opening = pop.hidden;
+    document.querySelectorAll(".tip-pop").forEach((node) => {
+      node.hidden = true;
+    });
+    document.querySelectorAll(".tip-btn").forEach((node) => node.setAttribute("aria-expanded", "false"));
+    pop.hidden = !opening;
+    button.setAttribute("aria-expanded", opening ? "true" : "false");
+  });
+  row.append(h(tag, { id: titleId }), button, pop);
+  return row;
+}
+
+function setTip(id, label, text) {
+  const pop = document.getElementById(id);
+  const button = document.getElementById(`${id}-btn`);
+  if (!pop || !button) return;
+  pop.textContent = text;
+  button.setAttribute("aria-label", label);
+}
+
 function h(tag, props = {}) {
   const node = document.createElement(tag);
   for (const [key, value] of Object.entries(props)) {
@@ -117,12 +214,20 @@ function build() {
   const shell = h("div", { className: "game-shell" });
   shell.append(mission, tools, viz);
   const finale = h("dialog", { id: "finale", "aria-labelledby": "finale-title" });
-  root.append(map, pr, shell, finale);
+  const onboard = h("dialog", { id: "onboard", "aria-labelledby": "onboard-title" });
+  const quest = h("section", { className: "quest", "aria-labelledby": "quest-label" });
+  const bar = h("div", { id: "quest-bar", className: "quest-bar", role: "progressbar" });
+  bar.setAttribute("aria-valuemin", "0");
+  bar.setAttribute("aria-valuemax", String(LEVELS.length));
+  bar.append(h("span", { id: "quest-fill" }));
+  quest.append(titleRow("quest-label", "tip-map", "p"), bar, map);
+  const confetti = h("div", { id: "confetti", className: "confetti-layer", "aria-hidden": "true" });
+  root.append(quest, pr, shell, finale, onboard, confetti);
 
   mission.append(
-    h("h2", { id: "mission-title" }),
+    titleRow("mission-title", "tip-mission"),
     h("div", { id: "mission-copy" }),
-    h("h3", { id: "objective-label" }),
+    titleRow("objective-label", "tip-steps", "h3"),
     h("ul", { id: "objectives", className: "objectives" }),
     h("details", { className: "hints", id: "hints" }),
     h("div", { id: "success", className: "success-banner", role: "status" }),
@@ -135,7 +240,7 @@ function build() {
   const termPanel = h("section", { className: "panel", "aria-labelledby": "term-title" });
   tools.append(editorPanel, termPanel);
   editorPanel.append(
-    h("h2", { id: "editor-title" }),
+    titleRow("editor-title", "tip-editor"),
     h("p", { id: "path-note", className: "path-note" }),
     h("div", { id: "file-tabs", className: "file-tabs" }),
     h("label", { className: "sr-only", id: "editor-label", for: "file-editor" }),
@@ -149,10 +254,11 @@ function build() {
     h("p", { id: "conflict-note", className: "conflict-note" })
   );
   termPanel.append(
-    h("h2", { id: "term-title" }),
+    titleRow("term-title", "tip-terminal"),
     h("div", { id: "term-out", tabindex: "0" }),
     h("div", { id: "term-status", className: "sr-only", "aria-live": "polite" }),
     h("form", { id: "term-form", className: "term-form", autocomplete: "off" }),
+    h("p", { id: "chip-lead", className: "chip-lead" }),
     h("div", { id: "chips", className: "chips" })
   );
   const form = document.getElementById("term-form");
@@ -162,12 +268,13 @@ function build() {
   const graphPanel = h("section", { className: "panel", "aria-labelledby": "graph-title" });
   const zonePanel = h("section", { className: "panel", "aria-labelledby": "zone-title" });
   viz.append(graphPanel, zonePanel);
-  graphPanel.append(h("h2", { id: "graph-title" }), h("div", { id: "graph-split", className: "graph-split" }));
-  zonePanel.append(h("h2", { id: "zone-title" }), h("p", { id: "zone-help", className: "zone-help" }), h("div", { id: "zones", className: "zones" }));
+  graphPanel.append(titleRow("graph-title", "tip-graph"), h("ul", { id: "branch-legend", className: "branch-legend" }), h("div", { id: "graph-split", className: "graph-split" }));
+  zonePanel.append(titleRow("zone-title", "tip-zones"), h("p", { id: "zone-help", className: "zone-help" }), h("div", { id: "zones", className: "zones" }));
 
   document.getElementById("hints").append(h("summary"), h("ol"));
   document.getElementById("reset-all").append(h("summary"), h("button", { type: "button", className: "btn btn-ghost", id: "erase" }));
-  finale.append(h("h2", { id: "finale-title" }), h("p", { id: "finale-body", className: "finale-copy" }), h("ol", { id: "finale-list" }), h("p", { id: "finale-replay", className: "finale-copy" }), h("button", { type: "button", className: "btn", id: "finale-close" }));
+  finale.append(h("h2", { id: "finale-title" }), h("p", { id: "finale-body", className: "finale-copy" }), h("ol", { id: "finale-list" }), h("p", { id: "finale-replay", className: "finale-copy" }), h("button", { type: "button", className: "btn btn-next", id: "finale-close" }));
+  onboard.append(h("p", { id: "onboard-kicker", className: "onboard-kicker" }), h("h2", { id: "onboard-title" }), h("ol", { id: "onboard-steps", className: "onboard-steps" }), h("button", { type: "button", className: "btn btn-next", id: "onboard-go" }));
 
   const editor = document.getElementById("file-editor");
   editor.addEventListener("input", () => {
@@ -204,13 +311,29 @@ function build() {
     celebrated = true;
     save();
   });
-  return { map, pr, editor, finale };
+  document.getElementById("onboard-go").addEventListener("click", () => {
+    try {
+      localStorage.setItem(ONBOARD_KEY, "1");
+    } catch {
+      /* private mode */
+    }
+    onboard.close();
+  });
+  onboard.addEventListener("close", () => {
+    try {
+      localStorage.setItem(ONBOARD_KEY, "1");
+    } catch {
+      /* private mode */
+    }
+  });
+  return { map, pr, editor, finale, onboard };
 }
 
 const els = build();
 
 function startLevel(id) {
   if (!isUnlocked(id)) return;
+  resetMotion();
   current = id;
   focusFile = level().focusFile;
   level().setup(sim);
@@ -285,8 +408,8 @@ function renderTerminal() {
   renderedTerm = termVersion;
 }
 
-function renderGraph(host, graph, caption, emptyText) {
-  const figure = h("figure", { className: "graph-card" });
+function renderGraph(host, graph, caption, emptyText, freshIds, fly) {
+  const figure = h("figure", { className: `graph-card${fly ? " is-flying" : ""}` });
   figure.append(h("figcaption", { text: caption }));
   const scroll = h("div", { className: "graph-scroll" });
   const svg = document.createElementNS(SVG_NS, "svg");
@@ -304,19 +427,21 @@ function renderGraph(host, graph, caption, emptyText) {
       const d = edge.x1 === edge.x2 ? `M ${edge.x1} ${edge.y1} L ${edge.x2} ${edge.y2}` : `M ${edge.x1} ${edge.y1} C ${edge.x1} ${mid}, ${edge.x2} ${mid}, ${edge.x2} ${edge.y2}`;
       path.setAttribute("d", d);
       path.setAttribute("fill", "none");
-      path.setAttribute("stroke", "#c9865a");
-      path.setAttribute("stroke-width", "1.6");
+      path.setAttribute("stroke", "rgba(255,248,239,0.62)");
+      path.setAttribute("stroke-width", "2");
       svg.append(path);
     }
     for (const node of graph.nodes) {
+      const tone = branchColor(node.labels);
       const circle = document.createElementNS(SVG_NS, "circle");
       circle.setAttribute("cx", String(node.x));
       circle.setAttribute("cy", String(node.y));
-      circle.setAttribute("r", node.head ? "8" : "6");
-      circle.setAttribute("fill", node.head ? "#c9865a" : "#1b1815");
-      circle.setAttribute("stroke", "#e0a57a");
-      circle.setAttribute("stroke-width", "1.6");
+      circle.setAttribute("r", node.head ? "9" : "7");
+      circle.setAttribute("fill", node.head ? tone : "#24183f");
+      circle.setAttribute("stroke", tone);
+      circle.setAttribute("stroke-width", "3");
       if (!node.pushed) circle.setAttribute("stroke-dasharray", "3 2");
+      if (freshIds?.has(node.id) || (fly && freshIds?.has("*") && node.head)) circle.setAttribute("class", "pop");
       const title = document.createElementNS(SVG_NS, "title");
       title.textContent = `${node.id} ${node.message}`;
       circle.append(title);
@@ -325,7 +450,7 @@ function renderGraph(host, graph, caption, emptyText) {
         const label = document.createElementNS(SVG_NS, "text");
         label.setAttribute("x", String(node.x + 14));
         label.setAttribute("y", String(node.y - 6));
-        label.setAttribute("fill", "#e0a57a");
+        label.setAttribute("fill", tone);
         label.setAttribute("font-size", "11");
         label.setAttribute("font-family", "IBM Plex Mono, ui-monospace, monospace");
         label.textContent = node.labels.join(" · ");
@@ -334,7 +459,7 @@ function renderGraph(host, graph, caption, emptyText) {
       const msg = document.createElementNS(SVG_NS, "text");
       msg.setAttribute("x", String(node.x + 14));
       msg.setAttribute("y", String(node.y + 12));
-      msg.setAttribute("fill", "#f3eadc");
+      msg.setAttribute("fill", "#fff8ef");
       msg.setAttribute("font-size", "12");
       msg.setAttribute("font-family", "IBM Plex Mono, ui-monospace, monospace");
       msg.textContent = `${node.id}  ${node.message}`.slice(0, 46);
@@ -356,9 +481,9 @@ function renderGraph(host, graph, caption, emptyText) {
   host.append(figure);
 }
 
-function zoneFiles(title, predicate) {
-  const box = h("div", { className: "zone" });
-  box.append(h("h3", { text: title }));
+function zoneFiles(title, predicate, kind, icon, caption, flash) {
+  const box = h("div", { className: `zone zone-${kind}${flash ? " flash" : ""}` });
+  box.append(h("h3", { text: `${icon} ${title}` }), h("p", { className: "zone-caption", text: caption }));
   const model = sim.model();
   const files = model.files.filter(predicate);
   if (!files.length) box.append(h("p", { className: "muted", text: ui().emptyZone }));
@@ -379,17 +504,34 @@ function paint(options = {}) {
   const state = safeState();
   const done = state.every((entry) => entry.done);
 
+  const doneCount = state.filter((entry) => entry.done).length;
+  const stepNumber = done ? state.length : Math.min(state.length, doneCount + 1);
+  const barValue = completed.filter((id) => id !== current).length + doneCount / state.length;
+  const questLabel = copy.progressOf
+    .replace("{current}", String(item.id))
+    .replace("{total}", String(LEVELS.length))
+    .replace("{step}", String(stepNumber))
+    .replace("{steps}", String(state.length));
+  document.getElementById("quest-label").textContent = `${MISSION_ICONS[item.id - 1] || "★"} ${questLabel}`;
+  const questBar = document.getElementById("quest-bar");
+  questBar.setAttribute("aria-valuenow", String(Math.round(barValue)));
+  questBar.setAttribute("aria-valuetext", questLabel);
+  document.getElementById("quest-fill").style.width = `${Math.min(100, (barValue / LEVELS.length) * 100)}%`;
+  setTip("tip-map", copy.progress, copy.tipMap);
+
   els.map.replaceChildren();
   els.map.setAttribute("aria-label", copy.progress);
   for (const entry of LEVELS) {
     const open = isUnlocked(entry.id);
+    const icon = MISSION_ICONS[entry.id - 1] || "★";
+    const mark = completed.includes(entry.id) ? "✓ " : "";
     const button = h("button", {
       type: "button",
-      text: `${String(entry.id).padStart(2, "0")}  ${pick(entry.short)}`,
+      text: `${mark}${icon} ${entry.id} ${pick(entry.short)}`,
       title: open ? pick(entry.title) : copy.locked,
     });
     if (!open) button.disabled = true;
-    if (entry.id === current) button.setAttribute("aria-current", "true");
+    if (entry.id === current) button.setAttribute("aria-current", "step");
     if (completed.includes(entry.id)) button.classList.add("is-done");
     button.addEventListener("click", () => {
       if (entry.id !== current) startLevel(entry.id);
@@ -399,22 +541,30 @@ function paint(options = {}) {
     els.map.append(li);
   }
 
-  document.getElementById("mission-title").textContent = `${item.id}. ${pick(item.title)}`;
+  document.getElementById("mission-title").textContent = `${MISSION_ICONS[item.id - 1] || ""} ${item.id}. ${pick(item.title)}`;
+  setTip("tip-mission", copy.objective, copy.tipMission);
   const missionCopy = document.getElementById("mission-copy");
   missionCopy.replaceChildren();
   for (const paragraph of pick(item.explain)) missionCopy.append(h("p", { text: paragraph }));
   document.getElementById("objective-label").textContent = copy.objective;
+  setTip("tip-steps", copy.now, copy.tipSteps);
   const objectives = document.getElementById("objectives");
   objectives.replaceChildren();
-  for (const entry of state) {
+  const nowIndex = state.findIndex((entry) => !entry.done);
+  state.forEach((entry, index) => {
     const li = h("li");
     if (entry.done) li.classList.add("is-done");
-    li.append(h("span", { className: "tick", "aria-hidden": "true", text: entry.done ? "✓" : "·" }));
+    if (index === nowIndex) {
+      li.classList.add("is-now");
+      li.setAttribute("aria-current", "step");
+    }
+    const badge = h("span", { className: "step-num", "aria-hidden": "true", text: entry.done ? "✓" : String(index + 1) });
     const text = h("span", { text: pick(entry.label) });
-    text.prepend(h("span", { className: "sr-only", text: `${entry.done ? copy.done : copy.pending}. ` }));
-    li.append(text);
+    const status = entry.done ? copy.done : index === nowIndex ? copy.now : copy.pending;
+    text.prepend(h("span", { className: "sr-only", text: `${status}. ` }));
+    li.append(badge, text);
     objectives.append(li);
-  }
+  });
   const hints = document.getElementById("hints");
   hints.querySelector("summary").textContent = copy.hints;
   const hintList = hints.querySelector("ol");
@@ -422,18 +572,23 @@ function paint(options = {}) {
   for (const hint of pick(item.hints)) hintList.append(h("li", { text: hint }));
   const success = document.getElementById("success");
   success.hidden = !done;
-  success.textContent = done ? pick(item.success) : "";
+  success.replaceChildren();
+  if (done) {
+    success.append(h("p", { className: "success-kicker", text: `🎉 ${copy.nice}` }));
+    success.append(h("p", { text: pick(item.success) }));
+  }
 
   const actions = document.getElementById("mission-actions");
   actions.replaceChildren();
-  const reset = h("button", { type: "button", className: "btn btn-ghost", text: copy.reset });
-  reset.addEventListener("click", () => startLevel(current));
-  actions.append(reset);
   if (done && current < LEVELS.length) {
-    const next = h("button", { type: "button", className: "btn", text: copy.next });
+    const upcoming = levelById(current + 1);
+    const next = h("button", { type: "button", className: "btn btn-next", text: `${copy.next}: ${pick(upcoming.short)} →` });
     next.addEventListener("click", () => startLevel(current + 1));
     actions.append(next);
   }
+  const reset = h("button", { type: "button", className: "btn btn-ghost", text: copy.reset });
+  reset.addEventListener("click", () => startLevel(current));
+  actions.append(reset);
   if (completed.includes(7)) {
     const diploma = h("button", { type: "button", className: "btn btn-ghost", text: copy.diploma });
     diploma.addEventListener("click", () => els.finale.showModal());
@@ -443,7 +598,8 @@ function paint(options = {}) {
   resetAll.querySelector("summary").textContent = copy.resetAll;
   document.getElementById("erase").textContent = copy.resetAll;
 
-  document.getElementById("editor-title").textContent = copy.editor;
+  document.getElementById("editor-title").textContent = `✏️ ${copy.editor}`;
+  setTip("tip-editor", copy.editor, copy.tipEditor);
   document.getElementById("editor-label").textContent = copy.fileLabel;
   document.getElementById("path-note").textContent = `${model.cwd}/${focusFile}`;
   const names = [...new Set([...model.files.map((file) => file.name), focusFile])];
@@ -468,7 +624,9 @@ function paint(options = {}) {
   conflictNote.textContent = conflict ? copy.conflict : "";
   if (!options.skipEditor) syncEditor(false);
 
-  document.getElementById("term-title").textContent = copy.terminal;
+  document.getElementById("term-title").textContent = `💻 ${copy.terminal}`;
+  setTip("tip-terminal", copy.terminal, copy.tipTerminal);
+  document.getElementById("chip-lead").textContent = copy.chipLead;
   const input = document.getElementById("term-input");
   input.setAttribute("aria-label", copy.command);
   input.placeholder = "git …";
@@ -480,31 +638,56 @@ function paint(options = {}) {
   renderTerminal();
   const chips = document.getElementById("chips");
   chips.replaceChildren();
-  for (const command of item.chips) {
+  item.chips.forEach((command, index) => {
     const chip = h("button", { type: "button", text: command });
-    chip.setAttribute("aria-label", `${copy.insert}: ${command}`);
+    const suggested = !done && index === nowIndex;
+    if (suggested) chip.classList.add("is-next");
+    chip.setAttribute("aria-label", `${suggested ? `${copy.now}. ` : ""}${copy.insert}: ${command}`);
     chip.addEventListener("click", () => {
       input.value = command;
       input.focus();
+      document.getElementById("term-status").textContent = copy.pasted;
     });
     chips.append(chip);
-  }
+  });
 
-  document.getElementById("graph-title").textContent = copy.history;
+  document.getElementById("graph-title").textContent = `🗺️ ${copy.history}`;
+  setTip("tip-graph", copy.graphHelp, copy.tipGraph);
+  const legend = document.getElementById("branch-legend");
+  legend.replaceChildren();
+  for (const entry of [
+    [BRANCH_MAIN, copy.legendMain],
+    [BRANCH_FEATURE, copy.legendFeature],
+    [BRANCH_LOCAL, copy.legendLocal],
+    [BRANCH_ORIGIN, copy.legendOrigin],
+  ]) {
+    const li = h("li", { text: entry[1] });
+    const swatch = h("i", { className: "swatch", "aria-hidden": "true" });
+    swatch.style.background = entry[0];
+    li.prepend(swatch);
+    legend.append(li);
+  }
+  noteMotion(model, done);
   const split = document.getElementById("graph-split");
   split.replaceChildren();
-  renderGraph(split, model.localGraph, copy.local, copy.noCommits);
-  renderGraph(split, model.remoteGraph, model.remoteLabel || copy.remote, model.remoteLabel ? copy.noCommits : copy.noRemote);
+  renderGraph(split, model.localGraph, `💻 ${copy.local}`, copy.noCommits, freshLocal, false);
+  renderGraph(split, model.remoteGraph, `☁️ ${model.remoteLabel || copy.remote}`, model.remoteLabel ? copy.noCommits : copy.noRemote, freshRemote ? new Set(["*"]) : new Set(), freshRemote);
 
-  document.getElementById("zone-title").textContent = `${copy.work} · ${copy.index} · ${copy.repo}`;
+  const workSig = model.files.filter((file) => file.inWork).map((file) => `${file.name}:${file.status}`).join();
+  const indexSig = model.files.filter((file) => file.inIndex).map((file) => `${file.name}:${file.status}`).join();
+  const repoSig = model.files.filter((file) => file.inHead).map((file) => `${file.name}:${file.status}`).join();
+  document.getElementById("zone-title").textContent = `🧰 ${copy.work} · ${copy.index} · ${copy.repo}`;
+  setTip("tip-zones", copy.zoneHelp, copy.tipZones);
   document.getElementById("zone-help").textContent = copy.zoneHelp;
   const zones = document.getElementById("zones");
   zones.replaceChildren();
   zones.append(
-    zoneFiles(copy.work, (file) => file.inWork),
-    zoneFiles(copy.index, (file) => file.inIndex),
-    zoneFiles(copy.repo, (file) => file.inHead)
+    zoneFiles(copy.work, (file) => file.inWork, "work", "✏️", copy.tipWork, zoneMemory.work && zoneMemory.work !== workSig),
+    zoneFiles(copy.index, (file) => file.inIndex, "index", "📥", copy.tipIndex, zoneMemory.index && zoneMemory.index !== indexSig),
+    zoneFiles(copy.repo, (file) => file.inHead, "repo", "📦", copy.tipRepo, zoneMemory.repo && zoneMemory.repo !== repoSig)
   );
+  zoneMemory = { work: workSig, index: indexSig, repo: repoSig };
+  paintOnboard(copy);
 
   paintPullRequest(copy, model);
   paintFinale(copy);
@@ -542,6 +725,15 @@ function paintPullRequest(copy, model) {
   panel.append(actions);
 }
 
+function paintOnboard(copy) {
+  document.getElementById("onboard-kicker").textContent = copy.onboardKicker;
+  document.getElementById("onboard-title").textContent = copy.onboardTitle;
+  document.getElementById("onboard-go").textContent = copy.onboardGo;
+  const list = document.getElementById("onboard-steps");
+  list.replaceChildren();
+  for (const step of copy.onboardSteps) list.append(h("li", { text: step }));
+}
+
 function paintFinale(copy) {
   document.getElementById("finale-title").textContent = copy.finaleTitle;
   document.getElementById("finale-body").textContent = copy.finaleBody;
@@ -559,8 +751,17 @@ document.addEventListener("it-lang", (event) => {
   paint();
 });
 
+function onboardSeen() {
+  try {
+    return localStorage.getItem(ONBOARD_KEY) === "1";
+  } catch {
+    return true;
+  }
+}
+
 boot();
 paint();
 syncEditor(true);
 save();
 if (current === 7 && safeComplete() && !celebrated) els.finale.showModal();
+else if (!onboardSeen()) els.onboard.showModal();
