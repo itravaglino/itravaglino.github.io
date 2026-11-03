@@ -167,7 +167,7 @@ def og() -> None:
     rect(px, w, 1135, 0, 1136, h, ACCENT)
     blit_text(px, w, "IGNACIO", 96, 120, 5, ACCENT, tracking=3)
     blit_text(px, w, "TRAVAGLINO", 96, 250, 12, INK, tracking=2)
-    blit_text(px, w, "GENERAL DEVELOPER  PHYSICIST", 96, 420, 4, MUTE, tracking=2)
+    blit_text(px, w, "AI COACHING & PHYSICIST", 96, 420, 4, MUTE, tracking=2)
     blit_text(px, w, "CORDOBA  FAMAF  APPLIED AI", 96, 500, 3, DIM, tracking=2)
     write("og.png", w, h, px)
 

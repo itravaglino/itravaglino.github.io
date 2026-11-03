@@ -1,11 +1,12 @@
-/** Copy in ES (default) and EN. No invented facts. */
+/** Copy in EN (default) and ES. No invented facts. */
 
 export const translations = {
   es: {
     meta: {
-      title: "Ignacio Travaglino — Desarrollador general y físico",
+      title: "Ignacio Travaglino — Coaching en Inteligencia Artificial y físico",
       description:
-        "Ignacio Travaglino, desarrollador general y físico en Córdoba, Argentina. IA aplicada, sistemas autónomos y pronóstico de series temporales. FAMAF, UNC.",
+        "Ignacio Travaglino, coaching en inteligencia artificial y físico en Córdoba, Argentina. Acompaña a profesionales, del lado técnico al práctico, a entender y mejorar cómo usan la IA. IA aplicada, sistemas autónomos y pronóstico de series temporales. FAMAF, UNC.",
+      jobTitle: "Coaching en Inteligencia Artificial y físico",
     },
     skip: "Saltar al contenido",
     nav: {
@@ -18,17 +19,18 @@ export const translations = {
       langEs: "Español",
       langEn: "English",
       langGroup: "Idioma",
+      primary: "Principal",
     },
     hero: {
       kicker: "01  ·  Presentación",
       given: "Ignacio",
       name: "Travaglino",
-      title: "Desarrollador general y físico",
+      title: "Coaching en Inteligencia Artificial y físico",
       subtitle: "IA aplicada y sistemas autónomos",
       status: "Córdoba · FAMAF · construyendo en el borde",
       location: "Córdoba, Argentina",
       summary:
-        "Desarrollador general versátil y matemáticamente riguroso, estudiante de Física de 4.º año, con experiencia en sistemas autónomos, IA aplicada y pronóstico avanzado de series temporales. Altamente adaptable y de aprendizaje notoriamente rápido, impulsado por una pasión profunda por explorar nuevas tecnologías y comprender sistemas complejos. Experiencia traduciendo física teórica y ecuaciones diferenciales a arquitecturas de IA de grado productivo, desplegadas en el borde. Trayectoria construyendo pipelines de navegación autónoma (LiDAR + visión por computadora), agentes de datos a gran escala (RAG con modelos de pesos abiertos) y backends robustos frente a variables altamente inestables.",
+        "Coaching en inteligencia artificial para profesionales, del lado técnico al práctico: desde cómo funcionan los modelos, el RAG y los agentes hasta los flujos de trabajo, el prompting y la adopción en el día a día. Estudiante de Física de 4.º año en FAMAF, con experiencia en IA aplicada, sistemas autónomos y pronóstico de series temporales. Experiencia traduciendo física teórica y ecuaciones diferenciales a arquitecturas de IA de grado productivo, desplegadas en el borde, y construyendo pipelines de navegación autónoma (LiDAR y visión por computadora), agentes de datos a gran escala (RAG con modelos de pesos abiertos) y backends robustos frente a variables altamente inestables.",
       stowe:
         "Invierno 2022–23, Vermont: personal de temporada en Stowe Mountain Resort, programa Work & Travel. 294 km esquiados o en snowboard durante la temporada.",
     },
@@ -158,7 +160,7 @@ export const translations = {
     game: {
       docTitle: "Taller de Git y GitHub — Ignacio Travaglino",
       docDescription:
-        "Juego para aprender Git y GitHub: terminal simulada, commits, ramas, merge y pull requests. En español, con versión en inglés.",
+        "Juego para aprender Git y GitHub: terminal simulada, commits, ramas, merge y pull requests. En inglés de forma predeterminada, con versión en español.",
       kicker: "Juego  ·  Git",
       title: "Taller de Git y GitHub",
       lede: "Siete misiones, una terminal y un grafo. Los comandos son de verdad dentro de un Git pequeño que corre en el navegador.",
@@ -175,9 +177,10 @@ export const translations = {
   },
   en: {
     meta: {
-      title: "Ignacio Travaglino — General Developer & Physicist",
+      title: "Ignacio Travaglino — AI Coaching & Physicist",
       description:
-        "Ignacio Travaglino, general developer and physicist in Córdoba, Argentina. Applied AI, autonomous systems, and time-series forecasting. FAMAF, UNC.",
+        "Ignacio Travaglino, AI coaching and physicist in Córdoba, Argentina. Helps professionals, from the technical side to the practical side, understand and improve how they use AI. Applied AI, autonomous systems, and time-series forecasting. FAMAF, UNC.",
+      jobTitle: "AI Coaching & Physicist",
     },
     skip: "Skip to content",
     nav: {
@@ -190,17 +193,18 @@ export const translations = {
       langEs: "Español",
       langEn: "English",
       langGroup: "Language",
+      primary: "Primary",
     },
     hero: {
       kicker: "01  ·  Introduction",
       given: "Ignacio",
       name: "Travaglino",
-      title: "General Developer & Physicist",
+      title: "AI Coaching & Physicist",
       subtitle: "Applied AI & Autonomous Systems",
       status: "Based in Córdoba · FAMAF · building on the edge",
       location: "Córdoba, Argentina",
       summary:
-        "Versatile and mathematically rigorous General Developer and 4th-year Physics Student with experience in Autonomous Systems, Applied AI, and Advanced Time-Series Forecasting. Highly adaptable and a notoriously fast learner, driven by a deep passion for exploring new technologies and understanding complex systems. Experienced in translating theoretical physics and differential equations into production-grade, edge-deployed AI architectures. Proven track record building autonomous navigation pipelines (LiDAR + CV), large-scale data agents (RAG using open-weight models), and robust backend pipelines handling highly unstable variables.",
+        "AI coaching for professionals, from the technical side to the practical one: how models, RAG, and agents work, and how to improve hands-on workflows, prompting, and day-to-day adoption. 4th-year Physics student at FAMAF, with experience in applied AI, autonomous systems, and time-series forecasting. Experienced in translating theoretical physics and differential equations into production-grade, edge-deployed AI architectures, and in building autonomous navigation pipelines (LiDAR and computer vision), large-scale data agents (RAG using open-weight models), and robust backends for highly unstable variables.",
       stowe:
         "Winter 2022–23, Vermont: seasonal staff at Stowe Mountain Resort, Work & Travel program. 294 km skied and snowboarded during the season.",
     },
@@ -331,7 +335,7 @@ export const translations = {
     game: {
       docTitle: "Git & GitHub workshop — Ignacio Travaglino",
       docDescription:
-        "A game for learning Git and GitHub: simulated terminal, commits, branches, merge, and pull requests. Spanish by default, with an English version.",
+        "A game for learning Git and GitHub: simulated terminal, commits, branches, merge, and pull requests. English by default, with a Spanish version.",
       kicker: "Game  ·  Git",
       title: "Git & GitHub workshop",
       lede: "Seven missions, one terminal, and a graph. The commands are real inside a small Git that runs in the browser.",

@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Sitio personal de Ignacio Travaglino — físico y desarrollador general.",
+  "description": "Sitio personal de Ignacio Travaglino — coaching en inteligencia artificial y físico.",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 43147",
     "build": "python3 scripts/generate-icons.py && python3 scripts/vendor-static-assets.py && vite build",

@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html lang="es" data-page="github">
+<html lang="en" data-page="github">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Taller de Git y GitHub — Ignacio Travaglino</title>
+    <title>Git &amp; GitHub workshop — Ignacio Travaglino</title>
     <meta
       name="description"
-      content="Juego para aprender Git y GitHub: terminal simulada, commits, ramas, merge y pull requests. En español, con versión en inglés."
+      content="A game for learning Git and GitHub: simulated terminal, commits, branches, merge, and pull requests. English by default, with a Spanish version."
     />
     <meta name="author" content="Ignacio Travaglino" />
     <meta name="theme-color" content="#1b1440" />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="es_AR" />
-    <meta property="og:title" content="Taller de Git y GitHub — Ignacio Travaglino" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Git &amp; GitHub workshop — Ignacio Travaglino" />
     <meta
       property="og:description"
-      content="Juego para aprender Git y GitHub: terminal simulada, commits, ramas, merge y pull requests."
+      content="A game for learning Git and GitHub: simulated terminal, commits, branches, merge, and pull requests. English by default, with a Spanish version."
     />
     <meta property="og:image" content="/og.png" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -24,11 +24,20 @@
     <link rel="stylesheet" href="../src/styles.css" />
     <link rel="stylesheet" href="../src/github-game.css" />
     <script>
-      document.documentElement.classList.add("js");
+      (function () {
+        var lang = "en";
+        try {
+          var stored = localStorage.getItem("it-lang");
+          if (stored === "es" || stored === "en") lang = stored;
+        } catch (e) {}
+        document.documentElement.lang = lang;
+        document.documentElement.dataset.lang = lang;
+        document.documentElement.classList.add("js");
+      })();
     </script>
   </head>
   <body class="page-github">
-    <a class="skip-link" href="#contenido" data-i18n="skip">Saltar al contenido</a>
+    <a class="skip-link" href="#contenido" data-i18n="skip">Skip to content</a>
     <header class="site-header">
       <div class="wrap">
         <a class="mark" href="../">
@@ -36,19 +45,19 @@
           <span class="mark-name">Travaglino</span>
         </a>
         <div class="nav-cluster">
-          <nav aria-label="Principal">
+          <nav data-i18n-aria="nav.primary" aria-label="Primary">
             <ul class="nav-links">
-              <li><a href="../#trabajo" data-i18n="nav.work">Trabajo</a></li>
-              <li><a href="../#experiencia" data-i18n="nav.experience">Experiencia</a></li>
-              <li><a href="../#formacion" data-i18n="nav.education">Formación</a></li>
+              <li><a href="../#trabajo" data-i18n="nav.work">Work</a></li>
+              <li><a href="../#experiencia" data-i18n="nav.experience">Experience</a></li>
+              <li><a href="../#formacion" data-i18n="nav.education">Education</a></li>
               <li><a href="../cv/">CV</a></li>
               <li><a href="./" aria-current="page" data-i18n="nav.game">Git</a></li>
-              <li><a href="../#contacto" data-i18n="nav.contact">Contacto</a></li>
+              <li><a href="../#contacto" data-i18n="nav.contact">Contact</a></li>
             </ul>
           </nav>
-          <div class="lang-switch" role="group" data-i18n-aria="nav.langGroup" aria-label="Idioma">
-            <button type="button" data-lang-switch="es" aria-pressed="true" data-i18n-aria="nav.langEs">ES</button>
-            <button type="button" data-lang-switch="en" aria-pressed="false" data-i18n-aria="nav.langEn">EN</button>
+          <div class="lang-switch" role="group" data-i18n-aria="nav.langGroup" aria-label="Language">
+            <button type="button" data-lang-switch="es" aria-pressed="false" data-i18n-aria="nav.langEs">ES</button>
+            <button type="button" data-lang-switch="en" aria-pressed="true" data-i18n-aria="nav.langEn">EN</button>
           </div>
         </div>
       </div>
@@ -57,16 +66,13 @@
     <main id="contenido">
       <div class="wrap game-page">
         <header class="game-head">
-          <p class="kicker" data-i18n="game.kicker">Juego  ·  Git</p>
-          <h1 data-i18n="game.title">Taller de Git y GitHub</h1>
-          <p class="game-lede" data-i18n="game.lede">
-            Siete misiones, una terminal y un grafo. Los comandos son de verdad dentro de un Git pequeño que corre en el
-            navegador.
-          </p>
+          <p class="kicker" data-i18n="game.kicker">Game  ·  Git</p>
+          <h1 data-i18n="game.title">Git &amp; GitHub workshop</h1>
+          <p class="game-lede" data-i18n="game.lede">Seven missions, one terminal, and a graph. The commands are real inside a small Git that runs in the browser.</p>
         </header>
         <div id="game-root"></div>
         <noscript>
-          <p>Este taller necesita JavaScript. No carga nada desde otros sitios.</p>
+          <p>This workshop needs JavaScript. It does not load anything from other sites.</p>
         </noscript>
       </div>
     </main>
@@ -74,10 +80,7 @@
     <footer class="site-footer">
       <div class="wrap">
         <p data-i18n="footer.copy">© Ignacio Travaglino</p>
-        <p data-i18n="footer.colophon">
-          Sitio estático, sin cookies ni analítica. Tipografía: Fraunces e IBM Plex. Pensado para GitHub Pages y
-          Cloudflare Pages.
-        </p>
+        <p data-i18n="footer.colophon">Static site, no cookies, no analytics. Type: Fraunces and IBM Plex. Built for GitHub Pages and Cloudflare Pages.</p>
       </div>
     </footer>
     <script type="module" src="/src/github-game.js"></script>

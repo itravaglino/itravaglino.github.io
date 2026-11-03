@@ -1,7 +1,12 @@
 import { translations } from "./content.js";
 
 const STORAGE_KEY = "it-lang";
-const DEFAULT_LANG = "es";
+const DEFAULT_LANG = "en";
+
+export function resolveStoredLang(stored) {
+  if (stored === "en" || stored === "es") return stored;
+  return DEFAULT_LANG;
+}
 
 function lookup(obj, path) {
   return path.split(".").reduce((acc, key) => (acc == null ? acc : acc[key]), obj);
@@ -9,12 +14,10 @@ function lookup(obj, path) {
 
 export function getLang() {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored === "en" || stored === "es") return stored;
+    return resolveStoredLang(localStorage.getItem(STORAGE_KEY));
   } catch {
-    /* private mode */
+    return DEFAULT_LANG;
   }
-  return DEFAULT_LANG;
 }
 
 export function setLang(lang) {
@@ -49,6 +52,20 @@ export function applyLang(lang) {
 
   const ogLocale = document.querySelector('meta[property="og:locale"]');
   if (ogLocale) ogLocale.setAttribute("content", lang === "en" ? "en_US" : "es_AR");
+
+  const jobTitle = lookup(dict, "meta.jobTitle");
+  const ld = document.querySelector('script[type="application/ld+json"]');
+  if (ld && jobTitle) {
+    try {
+      const data = JSON.parse(ld.textContent);
+      if (data && typeof data === "object") {
+        data.jobTitle = jobTitle;
+        ld.textContent = JSON.stringify(data, null, 2);
+      }
+    } catch {
+      /* leave the static job title */
+    }
+  }
 
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const value = lookup(dict, el.dataset.i18n);

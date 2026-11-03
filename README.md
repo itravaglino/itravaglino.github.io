@@ -1,12 +1,12 @@
 # Ignacio Travaglino
 
-Sitio personal estático de [Ignacio Travaglino](https://github.com/itravaglino): desarrollador general y físico en Córdoba, Argentina. IA aplicada y sistemas autónomos.
+Sitio personal estático de [Ignacio Travaglino](https://github.com/itravaglino): coaching en inteligencia artificial y físico en Córdoba, Argentina. IA aplicada y sistemas autónomos.
 
-Static personal site for Ignacio Travaglino: general developer and physicist in Córdoba, Argentina. Applied AI and autonomous systems.
+Static personal site for Ignacio Travaglino: AI coaching and physicist in Córdoba, Argentina. Applied AI and autonomous systems.
 
-El sitio es bilingüe (ES por defecto, EN con un interruptor que persiste en `localStorage`). No hay backend, cookies ni analítica.
+El sitio es bilingüe (inglés en la primera visita; el interruptor ES/EN persiste en `localStorage`). No hay backend, cookies ni analítica.
 
-The site is bilingual (Spanish by default; English via a toggle persisted in `localStorage`). No backend, cookies, or analytics.
+The site is bilingual (English on a first visit; the ES/EN toggle is saved in `localStorage`). No backend, cookies, or analytics.
 
 ## Desarrollo local / Local development
 
