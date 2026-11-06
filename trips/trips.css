@@ -1,0 +1,67 @@
+.trips-lede { max-width: 42rem; color: var(--ink-dim); }
+.trips-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 1.5rem;
+  margin-top: 1.6rem;
+}
+.trips-panel { border-top: 1px solid var(--line); padding-top: 1rem; }
+.trips-panel h2 {
+  margin: 0 0 0.8rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.7rem;
+}
+.trips-choice, .trips-field { display: flex; gap: 0.7rem; margin: 0.55rem 0; color: var(--ink-dim); }
+.trips-field { flex-direction: column; gap: 0.3rem; }
+.trips-choice small { display: block; color: var(--ink-mute); }
+.trips-panel select, .trips-action {
+  font: inherit;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  padding: 0.55rem 0.8rem;
+}
+.trips-action {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+.trips-action.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.trips-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
+.trips-card {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: 0.8rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--line);
+}
+.trips-tag {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.trips-card h3 { margin: 0; font-size: 1.05rem; font-weight: 500; }
+.trips-card p { margin: 0.25rem 0 0; color: var(--ink-dim); }
+.trips-meta { color: var(--ink-mute); font-family: var(--mono); font-size: 0.75rem; }
+.trips-notice, .trips-banner {
+  margin-top: 1.2rem;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-raised);
+  padding: 0.9rem 1rem;
+}
+.trips-notice strong {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+@media (max-width: 800px) {
+  .trips-grid, .trips-card { grid-template-columns: 1fr; }
+}
