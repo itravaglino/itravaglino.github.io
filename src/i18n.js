@@ -36,11 +36,11 @@ export function applyLang(lang) {
   document.documentElement.dataset.lang = lang;
 
   const page = document.documentElement.dataset.page;
-  const titleKey = page === "cv" ? "cv.docTitle" : page === "github" ? "game.docTitle" : "meta.title";
+  const titleKey = page === "cv" ? "cv.docTitle" : page === "github" ? "game.docTitle" : page === "trips" ? "trips.docTitle" : "meta.title";
   const title = lookup(dict, titleKey);
   if (title) document.title = title;
 
-  const description = lookup(dict, page === "github" ? "game.docDescription" : "meta.description");
+  const description = lookup(dict, page === "github" ? "game.docDescription" : page === "trips" ? "trips.docDescription" : "meta.description");
   const descEl = document.querySelector('meta[name="description"]');
   if (descEl && description) descEl.setAttribute("content", description);
 
