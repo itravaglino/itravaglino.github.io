@@ -1,1 +1,51 @@
-PLACEHOLDER
+const MONTHS = {
+  enero: 1,
+  ene: 1,
+  january: 1,
+  jan: 1,
+  febrero: 2,
+  feb: 2,
+  february: 2,
+  marzo: 3,
+  mar: 3,
+  march: 3,
+  abril: 4,
+  abr: 4,
+  april: 4,
+  apr: 4,
+  mayo: 5,
+  may: 5,
+  junio: 6,
+  jun: 6,
+  june: 6,
+  julio: 7,
+  jul: 7,
+  july: 7,
+  agosto: 8,
+  ago: 8,
+  august: 8,
+  aug: 8,
+  septiembre: 9,
+  setiembre: 9,
+  sep: 9,
+  sept: 9,
+  september: 9,
+  octubre: 10,
+  oct: 10,
+  october: 10,
+  noviembre: 11,
+  nov: 11,
+  november: 11,
+  diciembre: 12,
+  dic: 12,
+  december: 12,
+  dec: 12,
+};
+
+const AIRLINES =
+  /\b(latam|aerol[ií]neas|jetsmart|flybondi|iberia|avianca|lufthansa|emirates|qatar|copa airlines|american airlines|united airlines|delta|air france|klm|volaris|british airways|gol linhas|sky airline)\b/i;
+
+const AIRLINE_CODES = new Set([
+  "LA", "AR", "WJ", "FO", "IB", "G3", "AV", "AA", "UA", "DL", "LH", "AF", "KL",
+  "CM", "H2", "Y4", "VB", "EK", "QR", "BA", "AM", "UX", "TP", "AZ", "LX", "JA",
+]);
