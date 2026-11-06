@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" data-page="trips">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Trips — Ignacio Travaglino</title>
+    <meta
+      name="description"
+      content="Flight, lodging, transport, and plan reservations read from Gmail. Each person chooses what to follow and how often."
+    />
+    <meta name="author" content="Ignacio Travaglino" />
+    <meta name="theme-color" content="#13110f" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../src/fonts.css" />
+    <link rel="stylesheet" href="../src/styles.css" />
+    <link rel="stylesheet" href="./trips.css" />
+    <script>
+      (function () {
+        var lang = "en";
+        try {
+          var stored = localStorage.getItem("it-lang");
+          if (stored === "es" || stored === "en") lang = stored;
+        } catch (e) {}
+        document.documentElement.lang = lang;
+        document.documentElement.dataset.lang = lang;
+        document.documentElement.classList.add("js");
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido" data-i18n="skip">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="mark" href="../">
+          <span class="mark-it">IT</span>
+          <span class="mark-name">Travaglino</span>
+        </a>
+        <div class="nav-cluster">
+          <nav data-i18n-aria="nav.primary" aria-label="Primary">
+            <ul class="nav-links">
+              <li><a href="../#trabajo" data-i18n="nav.work">Work</a></li>
+              <li><a href="../#experiencia" data-i18n="nav.experience">Experience</a></li>
+              <li><a href="../#formacion" data-i18n="nav.education">Education</a></li>
+              <li><a href="../cv/">CV</a></li>
+              <li><a href="../github/" data-i18n="nav.game">Git</a></li>
+              <li><a href="./" aria-current="page" data-i18n="nav.trips">Trips</a></li>
+              <li><a href="../#contacto" data-i18n="nav.contact">Contact</a></li>
+            </ul>
+          </nav>
+          <div class="lang-switch" role="group" data-i18n-aria="nav.langGroup" aria-label="Language">
+            <button type="button" data-lang-switch="es" aria-pressed="false" data-i18n-aria="nav.langEs">ES</button>
+            <button type="button" data-lang-switch="en" aria-pressed="true" data-i18n-aria="nav.langEn">EN</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main id="contenido" class="section" style="border-top: 0">
+      <div class="wrap" id="trips-root"></div>
+    </main>
+    <script type="module" src="../src/main.js"></script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
