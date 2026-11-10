@@ -1,19 +1,16 @@
 const THEME_KEY = "it-theme";
 
-function prefersDark() {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
-}
-
 function isDark() {
   const explicit = document.documentElement.dataset.theme;
-  if (explicit === "dark" || explicit === "light") return explicit === "dark";
-  return prefersDark();
+  if (explicit === "light") return false;
+  return true;
 }
 
 function syncThemeButton() {
   const button = document.querySelector("[data-theme-toggle]");
-  if (!button) return;
-  button.setAttribute("aria-pressed", isDark() ? "true" : "false");
+  if (button) button.setAttribute("aria-pressed", isDark() ? "true" : "false");
+  const meta = document.querySelector('meta[name="theme-color"]:not([media])');
+  if (meta) meta.setAttribute("content", isDark() ? "#07080c" : "#f3f5f8");
 }
 
 export function initTheme() {

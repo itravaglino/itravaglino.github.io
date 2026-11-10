@@ -21,6 +21,8 @@ export const translations = {
       langGroup: "Idioma",
       primary: "Principal",
       theme: "Cambiar tema de color",
+      coaching: "Coaching",
+      palette: "Ir a",
     },
     hero: {
       kicker: "01  ·  Presentación",
@@ -34,6 +36,24 @@ export const translations = {
         "Coaching en inteligencia artificial para profesionales, del lado técnico al práctico: desde cómo funcionan los modelos, el RAG y los agentes hasta los flujos de trabajo, el prompting y la adopción en el día a día. Estudiante de Física de 4.º año en FAMAF, con experiencia en IA aplicada, sistemas autónomos y pronóstico de series temporales. Experiencia traduciendo física teórica y ecuaciones diferenciales a arquitecturas de IA de grado productivo, desplegadas en el borde, y construyendo pipelines de navegación autónoma (LiDAR y visión por computadora), agentes de datos a gran escala (RAG con modelos de pesos abiertos) y backends robustos frente a variables altamente inestables.",
       stowe:
         "Invierno 2022–23, Vermont: personal de temporada en Stowe Mountain Resort, programa Work & Travel. 294 km esquiados o en snowboard durante la temporada.",
+    },
+    coaching: {
+      kicker: "Coaching en IA",
+      heading: "Del lado técnico al práctico",
+      intro: "Coaching para entender y mejorar cómo se usa la inteligencia artificial.",
+      s1: "Modelos, RAG y agentes",
+      s1b: "Cómo funcionan.",
+      s2: "Flujos de trabajo y prompting",
+      s2b: "La práctica, con las manos en el teclado.",
+      s3: "Adopción en el día a día",
+      s3b: "Que el uso se quede.",
+    },
+    facts: {
+      kicker: "Trayectoria",
+    },
+    palette: {
+      placeholder: "Secciones, CV, GitHub…",
+      empty: "Sin resultados",
     },
     work: {
       kicker: "02  ·  Trabajo",
@@ -156,7 +176,7 @@ export const translations = {
     footer: {
       copy: "© Ignacio Travaglino",
       colophon:
-        "Sitio estático, sin cookies ni analítica. Tipografía: Fraunces e IBM Plex. Pensado para GitHub Pages y Cloudflare Pages.",
+        "Sitio estático, sin cookies ni analítica. Tipografía: Inter e IBM Plex. Pensado para GitHub Pages y Cloudflare Pages.",
     },
     game: {
       docTitle: "Taller de Git y GitHub — Ignacio Travaglino",
@@ -196,6 +216,8 @@ export const translations = {
       langGroup: "Language",
       primary: "Primary",
       theme: "Switch color theme",
+      coaching: "Coaching",
+      palette: "Jump to",
     },
     hero: {
       kicker: "01  ·  Introduction",
@@ -209,6 +231,24 @@ export const translations = {
         "AI coaching for professionals, from the technical side to the practical one: how models, RAG, and agents work, and how to improve hands-on workflows, prompting, and day-to-day adoption. 4th-year Physics student at FAMAF, with experience in applied AI, autonomous systems, and time-series forecasting. Experienced in translating theoretical physics and differential equations into production-grade, edge-deployed AI architectures, and in building autonomous navigation pipelines (LiDAR and computer vision), large-scale data agents (RAG using open-weight models), and robust backends for highly unstable variables.",
       stowe:
         "Winter 2022–23, Vermont: seasonal staff at Stowe Mountain Resort, Work & Travel program. 294 km skied and snowboarded during the season.",
+    },
+    coaching: {
+      kicker: "AI Coaching",
+      heading: "From the technical side to the practical one",
+      intro: "Coaching to understand and improve how professionals use AI.",
+      s1: "Models, RAG, and agents",
+      s1b: "How they work.",
+      s2: "Workflows and prompting",
+      s2b: "Hands-on use.",
+      s3: "Day-to-day adoption",
+      s3b: "Making the practice stick.",
+    },
+    facts: {
+      kicker: "Background",
+    },
+    palette: {
+      placeholder: "Sections, CV, GitHub…",
+      empty: "No matches",
     },
     work: {
       kicker: "02  ·  Work",
@@ -332,7 +372,7 @@ export const translations = {
     footer: {
       copy: "© Ignacio Travaglino",
       colophon:
-        "Static site, no cookies, no analytics. Type: Fraunces and IBM Plex. Built for GitHub Pages and Cloudflare Pages.",
+        "Static site, no cookies, no analytics. Type: Inter and IBM Plex. Built for GitHub Pages and Cloudflare Pages.",
     },
     game: {
       docTitle: "Git & GitHub workshop — Ignacio Travaglino",

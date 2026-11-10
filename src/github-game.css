@@ -1,6 +1,7 @@
 /* Playful workshop. Loaded only by /github/, so the rest of the site stays as it is. */
 
 body.page-github {
+  --sans: "IBM Plex Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --bg: #1b1440;
   --bg-raised: #2a2158;
   --ink: #fff8ef;

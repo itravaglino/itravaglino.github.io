@@ -1,84 +1,48 @@
-/* Portfolio. The Git workshop overrides these tokens on body.page-github. */
+/* Dark-first portfolio. The Git workshop overrides tokens on body.page-github. */
 
 :root {
-  color-scheme: light;
-  --bg: #f4f3ef;
-  --bg-raised: #fffcf8;
-  --ink: #1a1916;
-  --ink-dim: #3a3833;
-  --ink-mute: #5c5852;
-  --line: rgba(26, 25, 22, 0.12);
-  --line-strong: rgba(26, 25, 22, 0.22);
-  --accent: #0c5c48;
-  --accent-hot: #094a3a;
-  --accent-dim: rgba(12, 92, 72, 0.1);
-  --accent-ink: #f4fffb;
-  --focus: #0c5c48;
-  --serif: "Fraunces Variable", Fraunces, "Iowan Old Style", Palatino, Georgia, serif;
-  --sans: "IBM Plex Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: dark;
+  --bg: #07080c;
+  --bg-raised: rgba(14, 18, 28, 0.72);
+  --ink: #f4f7fb;
+  --ink-dim: #c9d3df;
+  --ink-mute: #9aabbd;
+  --line: rgba(170, 205, 255, 0.16);
+  --line-strong: rgba(170, 205, 255, 0.32);
+  --accent: #8ef6ff;
+  --accent-hot: #c6fbff;
+  --accent-dim: rgba(142, 246, 255, 0.12);
+  --accent-ink: #04121c;
+  --focus: #c6fbff;
+  --serif: "Inter Variable", Inter, "Segoe UI", Helvetica, Arial, sans-serif;
+  --sans: "Inter Variable", Inter, "Segoe UI", Helvetica, Arial, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  --wrap: min(1080px, calc(100% - clamp(1.25rem, 4vw, 3rem) * 2));
+  --wrap: min(1120px, calc(100% - clamp(1.25rem, 4vw, 3rem) * 2));
   --header-h: 4rem;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --shadow: 0 1px 0 rgba(26, 25, 22, 0.04), 0 18px 40px rgba(26, 25, 22, 0.05);
-  --paper: #fffcf8;
-  --paper-ink: #1a1916;
-  --paper-mute: #5c5852;
-  --paper-line: #e4dfd6;
-  --paper-accent: #0c5c48;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --bg: #10110f;
-    --bg-raised: #181a17;
-    --ink: #f3f1eb;
-    --ink-dim: #c9c4b8;
-    --ink-mute: #a39e93;
-    --line: rgba(243, 241, 235, 0.12);
-    --line-strong: rgba(243, 241, 235, 0.22);
-    --accent: #7ee0c0;
-    --accent-hot: #b6f3df;
-    --accent-dim: rgba(126, 224, 192, 0.12);
-    --accent-ink: #06281c;
-    --focus: #b6f3df;
-    --shadow: 0 1px 0 rgba(255, 255, 255, 0.04), 0 18px 40px rgba(0, 0, 0, 0.28);
-  }
+  --shadow: 0 0 0 1px rgba(142, 246, 255, 0.05), 0 24px 70px rgba(0, 0, 0, 0.35);
+  --paper: #f7f8fb;
+  --paper-ink: #12141a;
+  --paper-mute: #4d5563;
+  --paper-line: #e2e6ee;
+  --paper-accent: #0b6f86;
 }
 
 :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #f4f3ef;
-  --bg-raised: #fffcf8;
-  --ink: #1a1916;
-  --ink-dim: #3a3833;
-  --ink-mute: #5c5852;
-  --line: rgba(26, 25, 22, 0.12);
-  --line-strong: rgba(26, 25, 22, 0.22);
-  --accent: #0c5c48;
-  --accent-hot: #094a3a;
-  --accent-dim: rgba(12, 92, 72, 0.1);
-  --accent-ink: #f4fffb;
-  --focus: #0c5c48;
-  --shadow: 0 1px 0 rgba(26, 25, 22, 0.04), 0 18px 40px rgba(26, 25, 22, 0.05);
-}
-
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --bg: #10110f;
-  --bg-raised: #181a17;
-  --ink: #f3f1eb;
-  --ink-dim: #c9c4b8;
-  --ink-mute: #a39e93;
-  --line: rgba(243, 241, 235, 0.12);
-  --line-strong: rgba(243, 241, 235, 0.22);
-  --accent: #7ee0c0;
-  --accent-hot: #b6f3df;
-  --accent-dim: rgba(126, 224, 192, 0.12);
-  --accent-ink: #06281c;
-  --focus: #b6f3df;
-  --shadow: 0 1px 0 rgba(255, 255, 255, 0.04), 0 18px 40px rgba(0, 0, 0, 0.28);
+  --bg: #f3f5f8;
+  --bg-raised: rgba(255, 255, 255, 0.82);
+  --ink: #12141a;
+  --ink-dim: #2d3440;
+  --ink-mute: #556070;
+  --line: rgba(18, 20, 26, 0.12);
+  --line-strong: rgba(18, 20, 26, 0.22);
+  --accent: #0b6f86;
+  --accent-hot: #08596c;
+  --accent-dim: rgba(11, 111, 134, 0.1);
+  --accent-ink: #f4fbff;
+  --focus: #0b6f86;
+  --shadow: 0 1px 0 rgba(18, 20, 26, 0.04), 0 18px 40px rgba(18, 20, 26, 0.06);
 }
 
 *,
@@ -313,6 +277,35 @@ a:hover {
   position: relative;
   padding: clamp(3.2rem, 8vw, 6.5rem) 0 clamp(2.5rem, 5vw, 4rem);
   overflow: hidden;
+}
+
+.page-home .hero {
+  min-height: min(920px, calc(100svh - 1rem));
+  display: flex;
+  align-items: flex-end;
+  padding-top: clamp(4.5rem, 10vw, 7rem);
+  background:
+    radial-gradient(900px 480px at 78% 12%, rgba(109, 139, 255, 0.38), transparent 62%),
+    radial-gradient(760px 520px at 6% 92%, rgba(122, 240, 255, 0.2), transparent 58%),
+    var(--bg);
+}
+
+.page-home .hero .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.hero-field[data-static="true"] {
+  display: none;
 }
 
 .hero-eq {
@@ -851,15 +844,28 @@ a:hover {
   min-height: 2.75rem;
   padding: 0.55rem 1rem;
   border-radius: 999px;
-  border: 1px solid var(--accent);
-  background: var(--accent);
-  color: var(--accent-ink);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ink);
   font-family: var(--sans);
   font-size: 0.92rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   text-decoration: none;
   cursor: pointer;
+  transition: transform 0.25s var(--ease), filter 0.2s var(--ease);
+}
+
+.btn:not(.btn-ghost) {
+  background: linear-gradient(115deg, #7af0ff 0%, #7aa2ff 100%);
+  color: #04121c;
+  border-color: transparent;
+}
+
+:root[data-theme="light"] .btn:not(.btn-ghost) {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
 }
 
 .btn:hover {
@@ -878,6 +884,203 @@ a:hover {
   background: var(--accent-dim);
   color: var(--ink);
   border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
+
+.page-home .bento {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0.9rem;
+  padding-bottom: clamp(3rem, 7vw, 5.5rem);
+}
+
+.page-home .bento > .section,
+.page-home .glass {
+  grid-column: 1 / -1;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  box-shadow: var(--shadow), 0 0 40px rgba(122, 240, 255, 0.04);
+  backdrop-filter: blur(18px);
+}
+
+.page-home #coaching {
+  grid-column: span 8;
+  padding: 1.45rem 1.4rem 1.55rem;
+}
+
+.page-home .bento-facts {
+  grid-column: span 4;
+  padding: 1.45rem 1.35rem 1.2rem;
+  align-self: stretch;
+}
+
+.page-home .bento-facts p:not(.kicker) {
+  margin: 0 0 0.85rem;
+  color: var(--ink-dim);
+}
+
+.page-home .bento > .section {
+  padding: 1.5rem 1.35rem 1.6rem;
+}
+
+.page-home .bento > .section > .wrap {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.page-home .case,
+.page-home .skill-group,
+.page-home .contact-item,
+.page-home .repo-list a {
+  background: color-mix(in srgb, var(--bg) 78%, #243044);
+}
+
+:root[data-theme="light"] .page-home .case,
+:root[data-theme="light"] .page-home .skill-group,
+:root[data-theme="light"] .page-home .contact-item,
+:root[data-theme="light"] .page-home .repo-list a {
+  background: #fff;
+}
+
+.steps {
+  list-style: none;
+  margin: 1.35rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.steps li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.9rem;
+  align-items: start;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--line);
+}
+
+.step-index {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.steps strong {
+  display: block;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.steps p {
+  margin: 0.2rem 0 0;
+  color: var(--ink-mute);
+}
+
+.palette-launch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2.25rem;
+  padding: 0.2rem 0.45rem 0.2rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: color-mix(in srgb, var(--bg-raised) 80%, transparent);
+  color: var(--ink-dim);
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.palette-launch kbd {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  padding: 0.18rem 0.4rem;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+dialog#palette {
+  width: min(560px, calc(100vw - 1.5rem));
+  margin: 12vh auto auto;
+  padding: 0.55rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 18px;
+  background: color-mix(in srgb, #0c1018 92%, #7aa2ff);
+  color: var(--ink);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+}
+
+:root[data-theme="light"] dialog#palette {
+  background: #f7f8fb;
+}
+
+dialog#palette::backdrop {
+  background: rgba(4, 6, 12, 0.66);
+}
+
+#palette-input {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 1.05rem;
+  padding: 0.75rem 0.7rem 0.55rem;
+}
+
+#palette-input:focus {
+  outline: none;
+}
+
+#palette-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.2rem;
+  max-height: min(52vh, 420px);
+  overflow: auto;
+}
+
+#palette-list a[hidden],
+#palette-list [hidden] {
+  display: none;
+}
+
+#palette-list a {
+  display: block;
+  padding: 0.62rem 0.7rem;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+#palette-list a.is-active,
+#palette-list a:hover {
+  background: var(--accent-dim);
+}
+
+#palette-empty {
+  margin: 0.2rem 0.75rem 0.7rem;
+  color: var(--ink-mute);
+}
+
+[data-magnetic] {
+  will-change: transform;
 }
 
 .page-cv {
@@ -1112,6 +1315,11 @@ html.js [data-reveal].is-in {
 }
 
 @media (max-width: 860px) {
+  .page-home #coaching,
+  .page-home .bento-facts {
+    grid-column: 1 / -1;
+  }
+
   .hero-lede,
   .job,
   .honors-list,
@@ -1134,7 +1342,7 @@ html.js [data-reveal].is-in {
   }
 
   .mark-name {
-    display: none;
+    font-size: 0.85rem;
   }
 
   .hero-eq {
@@ -1162,6 +1370,14 @@ html.js [data-reveal].is-in {
     font-size: clamp(3.3rem, 18vw, 4.6rem);
   }
 
+  .palette-launch span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+
   .repo-list a {
     min-width: 100%;
   }
@@ -1183,8 +1399,11 @@ html.js [data-reveal].is-in {
   .cv-toolbar,
   .skip-link,
   .hero-eq,
+  .hero-field,
+  dialog,
   .site-footer,
-  .theme-switch {
+  .theme-switch,
+  .palette-launch {
     display: none !important;
   }
 

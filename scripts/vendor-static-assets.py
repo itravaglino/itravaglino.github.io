@@ -13,6 +13,10 @@ FONTS_ROOT = ROOT / "fonts"
 
 FONT_FILES = [
     (
+        ROOT / "node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2",
+        "inter-latin-wght-normal.woff2",
+    ),
+    (
         ROOT / "node_modules/@fontsource-variable/fraunces/files/fraunces-latin-standard-normal.woff2",
         "fraunces-latin-standard-normal.woff2",
     ),
