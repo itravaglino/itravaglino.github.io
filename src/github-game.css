@@ -56,7 +56,11 @@ body.page-github .btn {
   background: #3a2d78;
   color: var(--ink);
   border-color: rgba(255, 248, 239, 0.28);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 600;
   letter-spacing: 0.06em;
+  text-transform: uppercase;
   min-height: 44px;
 }
 
@@ -76,6 +80,13 @@ body.page-github .btn-next {
 
 body.page-github .kicker {
   color: var(--stage);
+}
+
+body.page-github .kicker::after {
+  flex: 1;
+  width: auto;
+  background: var(--line-strong);
+  opacity: 1;
 }
 
 .game-page {

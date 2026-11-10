@@ -9,7 +9,8 @@
       content="Ignacio Travaglino, AI coaching and physicist in Córdoba, Argentina. Helps professionals, from the technical side to the practical side, understand and improve how they use AI. Applied AI, autonomous systems, and time-series forecasting. FAMAF, UNC."
     />
     <meta name="author" content="Ignacio Travaglino" />
-    <meta name="theme-color" content="#13110f" />
+    <meta name="theme-color" content="#f4f3ef" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#10110f" media="(prefers-color-scheme: dark)" />
     <meta name="robots" content="noindex" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -24,6 +25,10 @@
         } catch (e) {}
         document.documentElement.lang = lang;
         document.documentElement.dataset.lang = lang;
+        try {
+          var theme = localStorage.getItem("it-theme");
+          if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
+        } catch (e) {}
         document.documentElement.classList.add("js");
       })();
     </script>
@@ -50,6 +55,7 @@
             <button type="button" data-lang-switch="es" aria-pressed="false" data-i18n-aria="nav.langEs">ES</button>
             <button type="button" data-lang-switch="en" aria-pressed="true" data-i18n-aria="nav.langEn">EN</button>
           </div>
+          <button type="button" class="theme-switch" data-theme-toggle data-i18n-aria="nav.theme" aria-label="Switch color theme" aria-pressed="false"></button>
         </div>
       </div>
     </header>

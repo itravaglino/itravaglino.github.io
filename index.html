@@ -9,7 +9,8 @@
       content="Ignacio Travaglino, AI coaching and physicist in Córdoba, Argentina. Helps professionals, from the technical side to the practical side, understand and improve how they use AI. Applied AI, autonomous systems, and time-series forecasting. FAMAF, UNC."
     />
     <meta name="author" content="Ignacio Travaglino" />
-    <meta name="theme-color" content="#13110f" />
+    <meta name="theme-color" content="#f4f3ef" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#10110f" media="(prefers-color-scheme: dark)" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:title" content="Ignacio Travaglino — AI Coaching &amp; Physicist" />
@@ -39,6 +40,10 @@
         } catch (e) {}
         document.documentElement.lang = lang;
         document.documentElement.dataset.lang = lang;
+        try {
+          var theme = localStorage.getItem("it-theme");
+          if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
+        } catch (e) {}
         document.documentElement.classList.add("js");
       })();
     </script>
@@ -85,6 +90,7 @@
             <button type="button" data-lang-switch="es" aria-pressed="false" data-i18n-aria="nav.langEs">ES</button>
             <button type="button" data-lang-switch="en" aria-pressed="true" data-i18n-aria="nav.langEn">EN</button>
           </div>
+          <button type="button" class="theme-switch" data-theme-toggle data-i18n-aria="nav.theme" aria-label="Switch color theme" aria-pressed="false"></button>
         </div>
       </div>
     </header>
@@ -112,6 +118,12 @@
                 <span class="status-dot" aria-hidden="true"></span>
                 <span data-i18n="hero.status">Based in Córdoba · FAMAF · building on the edge</span>
               </p>
+              <div class="hero-actions">
+                <a class="btn" href="#contacto" data-i18n="nav.contact">Contact</a>
+                <a class="btn btn-ghost" href="./cv/">CV</a>
+                <a class="btn btn-ghost" href="https://github.com/itravaglino" rel="noopener noreferrer" data-i18n="contact.github">GitHub</a>
+                <a class="btn btn-ghost" href="https://www.linkedin.com/in/ignacio-travaglino-711824352" rel="noopener noreferrer" data-i18n="contact.linkedin">LinkedIn</a>
+              </div>
             </div>
             <div class="hero-copy">
               <p data-i18n="hero.summary">AI coaching for professionals, from the technical side to the practical one: how models, RAG, and agents work, and how to improve hands-on workflows, prompting, and day-to-day adoption. 4th-year Physics student at FAMAF, with experience in applied AI, autonomous systems, and time-series forecasting. Experienced in translating theoretical physics and differential equations into production-grade, edge-deployed AI architectures, and in building autonomous navigation pipelines (LiDAR and computer vision), large-scale data agents (RAG using open-weight models), and robust backends for highly unstable variables.</p>

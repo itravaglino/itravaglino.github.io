@@ -20,6 +20,7 @@ export const translations = {
       langEn: "English",
       langGroup: "Idioma",
       primary: "Principal",
+      theme: "Cambiar tema de color",
     },
     hero: {
       kicker: "01  ·  Presentación",
@@ -194,6 +195,7 @@ export const translations = {
       langEn: "English",
       langGroup: "Language",
       primary: "Primary",
+      theme: "Switch color theme",
     },
     hero: {
       kicker: "01  ·  Introduction",
