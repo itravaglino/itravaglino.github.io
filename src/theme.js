@@ -1,16 +1,14 @@
 const THEME_KEY = "it-theme";
 
 function isDark() {
-  const explicit = document.documentElement.dataset.theme;
-  if (explicit === "light") return false;
-  return true;
+  return document.documentElement.dataset.theme === "dark";
 }
 
 function syncThemeButton() {
   const button = document.querySelector("[data-theme-toggle]");
   if (button) button.setAttribute("aria-pressed", isDark() ? "true" : "false");
   const meta = document.querySelector('meta[name="theme-color"]:not([media])');
-  if (meta) meta.setAttribute("content", isDark() ? "#07080c" : "#f3f5f8");
+  if (meta) meta.setAttribute("content", isDark() ? "#141A22" : "#E8EDF2");
 }
 
 export function initTheme() {

@@ -13,8 +13,24 @@ FONTS_ROOT = ROOT / "fonts"
 
 FONT_FILES = [
     (
-        ROOT / "node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2",
-        "inter-latin-wght-normal.woff2",
+        ROOT / "node_modules/@fontsource/syne/files/syne-latin-700-normal.woff2",
+        "syne-latin-700-normal.woff2",
+    ),
+    (
+        ROOT / "node_modules/@fontsource/syne/files/syne-latin-800-normal.woff2",
+        "syne-latin-800-normal.woff2",
+    ),
+    (
+        ROOT / "node_modules/@fontsource/spectral/files/spectral-latin-400-normal.woff2",
+        "spectral-latin-400-normal.woff2",
+    ),
+    (
+        ROOT / "node_modules/@fontsource/spectral/files/spectral-latin-400-italic.woff2",
+        "spectral-latin-400-italic.woff2",
+    ),
+    (
+        ROOT / "node_modules/@fontsource/spectral/files/spectral-latin-600-normal.woff2",
+        "spectral-latin-600-normal.woff2",
     ),
     (
         ROOT / "node_modules/@fontsource-variable/fraunces/files/fraunces-latin-standard-normal.woff2",

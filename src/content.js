@@ -176,7 +176,7 @@ export const translations = {
     footer: {
       copy: "© Ignacio Travaglino",
       colophon:
-        "Sitio estático, sin cookies ni analítica. Tipografía: Inter e IBM Plex. Pensado para GitHub Pages y Cloudflare Pages.",
+        "Sitio estático, sin cookies ni analítica. Tipografía: Syne y Spectral. Pensado para GitHub Pages y Cloudflare Pages.",
     },
     game: {
       docTitle: "Taller de Git y GitHub — Ignacio Travaglino",
@@ -372,7 +372,7 @@ export const translations = {
     footer: {
       copy: "© Ignacio Travaglino",
       colophon:
-        "Static site, no cookies, no analytics. Type: Inter and IBM Plex. Built for GitHub Pages and Cloudflare Pages.",
+        "Static site, no cookies, no analytics. Type: Syne and Spectral. Built for GitHub Pages and Cloudflare Pages.",
     },
     game: {
       docTitle: "Git & GitHub workshop — Ignacio Travaglino",
