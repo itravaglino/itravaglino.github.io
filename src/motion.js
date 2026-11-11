@@ -7,13 +7,9 @@ gsap.registerPlugin(ScrollTrigger);
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 let heroTween;
-let trackTween;
 let waveTween;
 let lenis;
-
-function wideScreen() {
-  return window.matchMedia("(min-width: 900px)").matches;
-}
+const scrubTweens = [];
 
 function setupName(replay) {
   const h1 = document.getElementById("nombre");
@@ -63,17 +59,17 @@ function buildHeroScrub(chars) {
       trigger: ".hero",
       start: "top top",
       end: "+=70%",
-      scrub: 0.8,
+      scrub: 0.9,
       invalidateOnRefresh: true,
     },
   });
   tl.fromTo(
     "#nombre",
     { fontWeight: 800 },
-    { fontWeight: 500, duration: 1, ease: "power1.inOut", immediateRender: false },
+    { fontWeight: 500, duration: 1, ease: "none", immediateRender: false },
     0
   );
-  tl.to(chars, { scale: 0.84, duration: 1, ease: "power1.inOut" }, 0);
+  tl.to(chars, { scale: 0.84, duration: 1, ease: "none" }, 0);
   heroTween = tl;
   if (wave) {
     const length = wave.getTotalLength();
@@ -84,13 +80,13 @@ function buildHeroScrub(chars) {
       { strokeDashoffset: length * 0.72 },
       {
         strokeDashoffset: 0,
-        ease: "power1.inOut",
+        ease: "none",
         immediateRender: false,
         scrollTrigger: {
           trigger: ".wave-band",
           start: "top 88%",
           end: "bottom 55%",
-          scrub: 0.8,
+          scrub: 0.9,
           invalidateOnRefresh: true,
         },
       }
@@ -98,90 +94,93 @@ function buildHeroScrub(chars) {
   }
 }
 
-function workDistance(track) {
-  const travel = Math.max(track.scrollWidth - window.innerWidth, 0);
-  const panels = track.querySelectorAll(":scope > .panel").length || 1;
-  const cap = (panels / 1.5) * window.innerHeight;
-  return Math.min(travel, cap);
+function track(tween) {
+  scrubTweens.push(tween);
+  return tween;
 }
 
-function setupTrack() {
-  trackTween?.scrollTrigger?.kill();
-  trackTween?.kill();
-  trackTween = null;
-  const track = document.querySelector(".work-track");
-  const pin = document.querySelector(".work-pin");
-  if (!track || !pin || !wideScreen()) {
-    gsap.set(track, { clearProps: "transform" });
-    return;
-  }
-  trackTween = gsap.to(track, {
-    x: () => -(track.scrollWidth - window.innerWidth),
-    ease: "power1.out",
-    scrollTrigger: {
-      id: "work-track",
-      trigger: pin,
-      start: "top top",
-      end: () => "+=" + workDistance(track),
-      pin: true,
-      pinSpacing: true,
-      scrub: 0.85,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-    },
+function clearScrubs() {
+  scrubTweens.forEach((tween) => {
+    tween.scrollTrigger?.kill();
+    tween.kill();
   });
-  pin.querySelectorAll("a").forEach((link) => {
-    if (link.dataset.trackFocus) return;
-    link.dataset.trackFocus = "1";
-    link.addEventListener("focus", () => {
-      const st = ScrollTrigger.getById("work-track");
-      const panel = link.closest(".panel");
-      if (!panel || !st) return;
-      const panels = [...track.children];
-      const index = panels.indexOf(panel);
-      if (index < 0) return;
-      const y = st.start + ((st.end - st.start) * index) / Math.max(panels.length - 1, 1);
-      if (lenis) lenis.scrollTo(y, { immediate: true, force: true });
-      else window.scrollTo(0, y);
-    });
-  });
+  scrubTweens.length = 0;
 }
 
-function setupReveals() {
-  const masks = document.querySelectorAll(".mask-line");
-  const seen = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-in");
-        seen.unobserve(entry.target);
-      });
-    },
-    { threshold: 0.35 }
-  );
-  masks.forEach((el) => seen.observe(el));
+function setupScrubs() {
+  clearScrubs();
+  document.querySelectorAll(".mask-line").forEach((mask) => {
+    if (mask.closest(".hero")) return;
+    const heading = mask.querySelector("h2, .section-title");
+    if (!heading) return;
+    track(
+      gsap.fromTo(
+        heading,
+        { yPercent: 110 },
+        {
+          yPercent: 0,
+          ease: "none",
+          immediateRender: true,
+          scrollTrigger: {
+            trigger: mask,
+            start: "top 92%",
+            end: "top 58%",
+            scrub: 0.9,
+            invalidateOnRefresh: true,
+          },
+        }
+      )
+    );
+  });
 
-  const steps = [...document.querySelectorAll(".steps li")];
-  const stepWatch = new IntersectionObserver(
-    (entries) => {
-      if (!entries.some((entry) => entry.isIntersecting)) return;
-      steps.forEach((li, index) => {
-        li.style.setProperty("--i", String(index));
-        li.classList.add("is-in");
-      });
-      stepWatch.disconnect();
-    },
-    { threshold: 0.3 }
-  );
-  const list = document.querySelector(".steps");
-  if (list) stepWatch.observe(list);
+  document.querySelectorAll(".steps li").forEach((item) => {
+    track(
+      gsap.fromTo(
+        item,
+        { y: 28 },
+        {
+          y: 0,
+          ease: "none",
+          immediateRender: true,
+          scrollTrigger: {
+            trigger: item,
+            start: "top 96%",
+            end: "top 72%",
+            scrub: 0.9,
+            invalidateOnRefresh: true,
+          },
+        }
+      )
+    );
+  });
+
+  document.querySelectorAll(".panel-inner").forEach((inner) => {
+    track(
+      gsap.fromTo(
+        inner,
+        { y: 22 },
+        {
+          y: 0,
+          ease: "none",
+          immediateRender: true,
+          scrollTrigger: {
+            trigger: inner,
+            start: "top bottom",
+            end: "top 42%",
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        }
+      )
+    );
+  });
 }
 
 export function initMotion() {
   if (!document.body.classList.contains("page-home")) return;
   if (reduce) return;
 
-  document.body.classList.add("motion");
+  document.documentElement.classList.add("motion");
   const wave = document.querySelector(".wave-path");
   if (wave) {
     const length = wave.getTotalLength();
@@ -202,8 +201,7 @@ export function initMotion() {
   gsap.ticker.lagSmoothing(0);
 
   setupName(false);
-  setupReveals();
-  setupTrack();
+  setupScrubs();
 
   const refresh = () => ScrollTrigger.refresh();
   document.addEventListener("it-lang", () => setupName(true));
@@ -212,12 +210,4 @@ export function initMotion() {
     requestAnimationFrame(refresh);
   });
   window.addEventListener("load", refresh, { once: true });
-  let resizeFrame = 0;
-  window.addEventListener("resize", () => {
-    cancelAnimationFrame(resizeFrame);
-    resizeFrame = requestAnimationFrame(() => {
-      setupTrack();
-      refresh();
-    });
-  });
 }
