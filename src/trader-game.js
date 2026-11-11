@@ -352,9 +352,6 @@ function renderArcade() {
     const level = arcade.levels[arcade.level];
     const sim = arcade.current;
     host.append(el("p", { class: "window", text: arcade.phase === "reveal" ? `${level.symbol} · ${monthSpan(level)}` : a.windows[level.id] }));
-    host.append(el("div", { class: "chart-wrap race-chart" }, [
-      el("canvas", { id: "race-chart", role: "img", "aria-label": a.hintRace }),
-    ]));
     const nums = el("div", { class: "race-nums" });
     nums.append(el("p", {}, [el("span", { text: a.you }), el("strong", { id: "race-you", class: "race-num", text: formatPct(0) })]));
     nums.append(el("p", {}, [el("span", { text: a.hold }), el("strong", { id: "race-bench", text: formatPct(0) })]));
@@ -374,6 +371,11 @@ function renderArcade() {
         text: a.next,
         onClick: nextAfterReveal,
       }));
+    } else host.append(el("p", { class: "hint", text: a.hintRace }));
+    host.append(el("div", { class: "chart-wrap race-chart" }, [
+      el("canvas", { id: "race-chart", role: "img", "aria-label": a.hintRace }),
+    ]));
+    if (arcade.phase === "reveal") {
       requestAnimationFrame(() => {
         const canvas = document.getElementById("race-chart");
         if (canvas && sim) paintRace(canvas, sim.equity, sim.bench, sim.equity.length);
@@ -382,7 +384,7 @@ function renderArcade() {
         if (youNode) youNode.textContent = formatPct(sim.ret);
         if (benchNode) benchNode.textContent = formatPct(sim.benchRet);
       });
-    } else host.append(el("p", { class: "hint", text: a.hintRace }));
+    }
   } else {
     const bestIndex = arcade.results.reduce((best, value, index) => (value > arcade.results[best] ? index : best), 0);
     const bestLevel = arcade.levels[bestIndex];
