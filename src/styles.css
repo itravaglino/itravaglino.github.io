@@ -1477,45 +1477,6 @@ a:hover {
   transform: translateX(0.55rem);
 }
 
-.page-home .cursor {
-  display: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .page-home.has-cursor .cursor {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 120;
-    pointer-events: none;
-    transform: translate(-48px, -48px);
-  }
-
-  .page-home.has-cursor,
-  .page-home.has-cursor a,
-  .page-home.has-cursor button {
-    cursor: none;
-  }
-
-  .page-home .cursor span {
-    display: block;
-    width: 16px;
-    height: 16px;
-    margin: -8px 0 0 -8px;
-    border: 1.5px solid var(--mark);
-    border-radius: 999px;
-    box-shadow: 0 0 0 1px #f4f7fb;
-    background: transparent;
-    transition: transform 0.35s var(--ease), background 0.35s var(--ease);
-  }
-
-  .page-home .cursor.is-hot span {
-    transform: scale(3.1);
-    background: var(--mark);
-  }
-}
-
 @media (min-width: 900px) {
   .page-home .split {
     display: grid;

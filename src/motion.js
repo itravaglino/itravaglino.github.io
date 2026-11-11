@@ -5,7 +5,6 @@ import Lenis from "../vendor/lenis.mjs";
 gsap.registerPlugin(ScrollTrigger);
 
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const fine = window.matchMedia("(pointer: fine)").matches;
 
 let heroTween;
 let trackTween;
@@ -148,27 +147,6 @@ function setupTrack() {
   });
 }
 
-function setupCursor() {
-  if (!fine) return;
-  const cursor = document.querySelector(".cursor");
-  if (!cursor) return;
-  document.body.classList.add("has-cursor");
-  const xTo = gsap.quickTo(cursor, "x", { duration: 0.4, ease: "power3.out" });
-  const yTo = gsap.quickTo(cursor, "y", { duration: 0.4, ease: "power3.out" });
-  window.addEventListener(
-    "pointermove",
-    (event) => {
-      xTo(event.clientX);
-      yTo(event.clientY);
-    },
-    { passive: true }
-  );
-  document.querySelectorAll("a, button").forEach((el) => {
-    el.addEventListener("pointerenter", () => cursor.classList.add("is-hot"));
-    el.addEventListener("pointerleave", () => cursor.classList.remove("is-hot"));
-  });
-}
-
 function setupReveals() {
   const masks = document.querySelectorAll(".mask-line");
   const seen = new IntersectionObserver(
@@ -225,7 +203,6 @@ export function initMotion() {
 
   setupName(false);
   setupReveals();
-  setupCursor();
   setupTrack();
 
   const refresh = () => ScrollTrigger.refresh();
