@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" data-page="trader">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Market game — Ignacio Travaglino</title>
+    <meta
+      name="description"
+      content="A daily market game and a portfolio time machine built from real Yahoo Finance prices. Educational, not financial advice. English by default, with Spanish."
+    />
+    <meta name="author" content="Ignacio Travaglino" />
+    <meta name="theme-color" content="#E8EDF2" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Market game — Ignacio Travaglino" />
+    <meta
+      property="og:description"
+      content="A daily market game and a portfolio time machine built from real Yahoo Finance prices. Educational, not financial advice."
+    />
+    <meta property="og:image" content="/og.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="stylesheet" href="../src/fonts.css" />
+    <link rel="stylesheet" href="../src/styles.css" />
+    <link rel="stylesheet" href="../src/trader.css" />
+    <script>
+      (function () {
+        var lang = "en";
+        try {
+          var stored = localStorage.getItem("it-lang");
+          if (stored === "es" || stored === "en") lang = stored;
+        } catch (e) {}
+        document.documentElement.lang = lang;
+        document.documentElement.dataset.lang = lang;
+        try {
+          var theme = localStorage.getItem("it-theme");
+          if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
+        } catch (e) {}
+        document.documentElement.classList.add("js");
+      })();
+    </script>
+  </head>
+  <body class="page-trader">
+    <a class="skip-link" href="#contenido" data-i18n="skip">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="mark" href="../" data-i18n-aria="hero.name">
+          <span class="mark-it">IT</span>
+          <span class="mark-name">Travaglino</span>
+        </a>
+        <div class="nav-cluster">
+          <nav data-i18n-aria="nav.primary" aria-label="Primary">
+            <ul class="nav-links">
+              <li><a href="../#trabajo" data-i18n="nav.work">Work</a></li>
+              <li><a href="../#experiencia" data-i18n="nav.experience">Experience</a></li>
+              <li><a href="../cv/">CV</a></li>
+              <li><a href="../github/" data-i18n="nav.game">Git</a></li>
+              <li><a href="./" aria-current="page" data-i18n="nav.trader">Trader</a></li>
+              <li><a href="../#contacto" data-i18n="nav.contact">Contact</a></li>
+            </ul>
+          </nav>
+          <div class="lang-switch" role="group" data-i18n-aria="nav.langGroup" aria-label="Language">
+            <button type="button" data-lang-switch="es" aria-pressed="false" data-i18n-aria="nav.langEs">ES</button>
+            <button type="button" data-lang-switch="en" aria-pressed="true" data-i18n-aria="nav.langEn">EN</button>
+          </div>
+          <button type="button" class="theme-switch" data-theme-toggle data-i18n-aria="nav.theme" aria-label="Switch color theme" aria-pressed="false"></button>
+        </div>
+      </div>
+    </header>
+    <div class="trader-mast">
+      <div class="wrap">
+        <p class="kicker" data-i18n="trader.kicker">Game  ·  Markets</p>
+        <h1 data-i18n="trader.title">Daily Trade</h1>
+        <p class="lede" data-i18n="trader.lede">One real chart a day. The name stays hidden until you decide.</p>
+        <div class="rule" aria-hidden="true"></div>
+      </div>
+    </div>
+    <main id="contenido" class="trader-main">
+      <div class="wrap">
+        <div id="live" class="visually-hidden" aria-live="polite"></div>
+        <div id="trader-root"></div>
+        <dialog id="learn-dialog" aria-labelledby="learn-title"></dialog>
+        <noscript>
+          <p>This game needs JavaScript. Prices are loaded from this site, not from a market API in the browser.</p>
+        </noscript>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p data-i18n="footer.copy">© Ignacio Travaglino</p>
+        <p>
+          <a href="../github/" data-i18n="nav.game">Git</a>
+          ·
+          <a href="./" data-i18n="nav.trader">Trader</a>
+        </p>
+        <p class="fine" data-i18n="trader.source">Prices: Yahoo Finance split-adjusted daily closes (adjclose). Famous names only, so disappeared companies are missing.</p>
+      </div>
+    </footer>
+    <script type="module" src="/src/trader-game.js"></script>
+  </body>
+</html>

@@ -1,0 +1,282 @@
+.page-trader {
+  font-family: var(--text);
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.page-trader .trader-mast {
+  background: var(--plate);
+  color: var(--plate-ink);
+  padding: 2.2rem 0 1.6rem;
+}
+
+.page-trader .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.page-trader .kicker {
+  margin: 0;
+  font-style: italic;
+}
+
+.page-trader .trader-mast h1 {
+  margin: 0.2rem 0 0.4rem;
+  font-family: "Syne", var(--display);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 8vw, 4.6rem);
+  letter-spacing: -0.045em;
+  line-height: 0.9;
+}
+
+.page-trader .lede {
+  max-width: 38rem;
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.page-trader .rule {
+  width: 3.2rem;
+  height: 0.28rem;
+  margin: 0.85rem 0 0;
+  background: var(--mark);
+}
+
+.page-trader .trader-main {
+  padding: 1.2rem 0 3rem;
+}
+
+.page-trader .modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 1rem;
+}
+
+.page-trader .modes button,
+.page-trader .choice button,
+.page-trader .sizes button,
+.page-trader .alloc button,
+.page-trader .go,
+.page-trader .ghost {
+  font-family: "Syne", var(--display);
+  font-weight: 700;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  min-height: 2.6rem;
+  padding: 0.35rem 0.8rem;
+  cursor: pointer;
+}
+
+.page-trader .modes button[aria-pressed="true"],
+.page-trader .choice button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.page-trader .choice button[data-act="sell"][aria-pressed="true"] {
+  background: var(--mark);
+  border-color: var(--mark);
+  color: #fff;
+}
+
+.page-trader .panel {
+  border-top: 1px solid var(--line);
+  padding: 1rem 0 0.2rem;
+}
+
+.page-trader .chart-wrap,
+.page-trader .go {
+  scroll-margin-top: 5.5rem;
+}
+
+.page-trader .chart-wrap {
+  background: color-mix(in srgb, var(--bg) 88%, #fff);
+  border: 1px solid var(--line);
+  height: 240px;
+}
+
+.page-trader canvas,
+.page-trader svg.curve {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.page-trader .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+  margin: 0.8rem 0;
+}
+
+.page-trader .go {
+  background: var(--plate);
+  border-color: var(--plate);
+  color: var(--plate-ink);
+}
+
+.page-trader .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 1.4rem;
+  margin: 0.2rem 0 0.8rem;
+  font-family: "IBM Plex Mono", var(--mono);
+  font-size: 0.92rem;
+}
+
+.page-trader .meta strong {
+  font-family: "Syne", var(--display);
+  font-weight: 750;
+}
+
+.page-trader .pnl {
+  font-family: "IBM Plex Mono", var(--mono);
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
+  letter-spacing: -0.04em;
+  margin: 0.2rem 0;
+}
+
+.page-trader .pnl.up { color: var(--plate); }
+.page-trader .pnl.down { color: var(--mark); }
+
+.page-trader .lesson {
+  max-width: 42rem;
+  margin: 0.4rem 0 0.8rem;
+}
+
+.page-trader .lesson h2,
+.page-trader h2 {
+  font-family: "Syne", var(--display);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  font-size: 1.35rem;
+  margin: 0 0 0.35rem;
+}
+
+.page-trader .bars {
+  display: grid;
+  gap: 0.28rem;
+  margin: 0.4rem 0 1rem;
+}
+
+.page-trader .bar {
+  display: grid;
+  grid-template-columns: 6.4rem minmax(0, 1fr) 1.6rem;
+  gap: 0.45rem;
+  align-items: center;
+  font-family: "IBM Plex Mono", var(--mono);
+  font-size: 0.78rem;
+}
+
+.page-trader .bar span {
+  display: block;
+  height: 0.55rem;
+  background: var(--line);
+}
+
+.page-trader .bar i {
+  display: block;
+  height: 100%;
+  background: var(--plate);
+  transform-origin: left center;
+}
+
+.page-trader .note,
+.page-trader .fine {
+  color: var(--ink-mute);
+  font-size: 0.95rem;
+}
+
+.page-trader .alloc {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.6rem 0 1rem;
+}
+
+.page-trader .alloc div {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.page-trader .alloc output,
+.page-trader .figure {
+  font-family: "IBM Plex Mono", var(--mono);
+}
+
+.page-trader .report {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  margin: 0.6rem 0 1rem;
+}
+
+.page-trader .report article {
+  border-top: 3px solid var(--plate);
+  padding-top: 0.35rem;
+}
+
+.page-trader .report article:nth-child(2) { border-top-color: var(--mark); }
+
+.page-trader .report p {
+  margin: 0.15rem 0 0;
+  font-family: "IBM Plex Mono", var(--mono);
+  font-size: 1.25rem;
+}
+
+.page-trader .report button.tip {
+  font-family: "Syne", var(--display);
+  font-weight: 750;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+  cursor: help;
+}
+
+.page-trader dialog {
+  border: 1px solid var(--ink);
+  background: var(--bg);
+  color: var(--ink);
+  width: min(36rem, calc(100% - 1.5rem));
+  padding: 1rem 1rem 1.2rem;
+}
+
+.page-trader dialog::backdrop {
+  background: rgba(26, 35, 48, 0.45);
+}
+
+.page-trader .concept {
+  border-top: 1px solid var(--line);
+  padding: 0.55rem 0;
+}
+
+.page-trader .concept h3 {
+  margin: 0;
+  font-family: "Syne", var(--display);
+}
+
+.page-trader .locked { color: var(--ink-mute); }
+
+@media (min-width: 800px) {
+  .page-trader .chart-wrap { height: 360px; }
+  .page-trader .desk {
+    display: grid;
+    grid-template-columns: 1.4fr 0.8fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-trader .bar i { transform: none; }
+}

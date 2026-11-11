@@ -15,6 +15,7 @@ export const translations = {
       education: "Formación",
       cv: "CV",
       game: "Git",
+      trader: "Trader",
       contact: "Contacto",
       langEs: "Español",
       langEn: "English",
@@ -195,6 +196,16 @@ export const translations = {
       title: "Taller de Git y GitHub",
       lede: "Siete misiones, una terminal y un grafo. Los comandos son de verdad dentro de un Git pequeño que corre en el navegador.",
     },
+    trader: {
+      docTitle: "Juego de mercado — Ignacio Travaglino",
+      docDescription:
+        "Juego diario de mercado y máquina del tiempo de portafolio, con precios reales de Yahoo Finance. Educativo, no es asesoramiento. En inglés de forma predeterminada, con español.",
+      kicker: "Juego  ·  Mercados",
+      title: "Daily Trade",
+      lede: "Un gráfico real por día. El nombre sigue oculto hasta que decidís.",
+      source:
+        "Precios: cierres diarios ajustados por split de Yahoo Finance (adjclose). Solo nombres conocidos: faltan empresas que desaparecieron.",
+    },
     cv: {
       docTitle: "CV — Ignacio Travaglino",
       print: "Descargar / imprimir PDF",
@@ -219,6 +230,7 @@ export const translations = {
       education: "Education",
       cv: "CV",
       game: "Git",
+      trader: "Trader",
       contact: "Contact",
       langEs: "Español",
       langEn: "English",
@@ -399,6 +411,16 @@ export const translations = {
       kicker: "Game  ·  Git",
       title: "Git & GitHub workshop",
       lede: "Seven missions, one terminal, and a graph. The commands are real inside a small Git that runs in the browser.",
+    },
+    trader: {
+      docTitle: "Market game — Ignacio Travaglino",
+      docDescription:
+        "A daily market game and a portfolio time machine built from real Yahoo Finance prices. Educational, not financial advice. English by default, with Spanish.",
+      kicker: "Game  ·  Markets",
+      title: "Daily Trade",
+      lede: "One real chart a day. The name stays hidden until you decide.",
+      source:
+        "Prices: Yahoo Finance split-adjusted daily closes (adjclose). Famous names only, so disappeared companies are missing.",
     },
     cv: {
       docTitle: "CV — Ignacio Travaglino",
