@@ -201,8 +201,8 @@ export const translations = {
       docDescription:
         "Juego diario de mercado y máquina del tiempo de portafolio, con precios reales de Yahoo Finance. Educativo, no es asesoramiento. En inglés de forma predeterminada, con español.",
       kicker: "Juego  ·  Mercados",
-      title: "Daily Trade",
-      lede: "Cinco gráficos reales por día. El nombre sigue oculto hasta que decidís.",
+      title: "Apilá y corré",
+      lede: "Tocá cartas. Ganale al mercado.",
       source:
         "Precios: cierres diarios ajustados por split de Yahoo Finance (adjclose). Solo nombres conocidos: faltan empresas que desaparecieron.",
     },
@@ -417,8 +417,8 @@ export const translations = {
       docDescription:
         "A daily market game and a portfolio time machine built from real Yahoo Finance prices. Educational, not financial advice. English by default, with Spanish.",
       kicker: "Game  ·  Markets",
-      title: "Daily Trade",
-      lede: "Five real charts a day. The name stays hidden until you decide.",
+      title: "Stack & race",
+      lede: "Tap cards. Beat the market.",
       source:
         "Prices: Yahoo Finance split-adjusted daily closes (adjclose). Famous names only, so disappeared companies are missing.",
     },

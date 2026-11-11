@@ -365,7 +365,220 @@
   }
 }
 
+.page-trader .trader-mast {
+  padding: 1.05rem 0 0.85rem;
+}
+
+.page-trader .trader-mast h1 {
+  font-size: clamp(1.9rem, 6vw, 3.1rem);
+}
+
+.page-trader .arcade {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.page-trader .hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-trader .pips {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.page-trader .pips i {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 99px;
+  border: 2px solid var(--ink);
+  display: block;
+}
+
+.page-trader .pips i.on,
+.page-trader .pips i.now {
+  background: var(--plate);
+  border-color: var(--plate);
+}
+
+.page-trader .pips i.now {
+  transform: scale(1.35);
+}
+
+.page-trader .clock,
+.page-trader .window,
+.page-trader .race-num,
+.page-trader .race-nums strong {
+  font-family: "IBM Plex Mono", var(--mono);
+}
+
+.page-trader .window {
+  margin: 0;
+  font-family: "Syne", var(--display);
+  font-weight: 800;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  letter-spacing: -0.04em;
+}
+
+.page-trader .hint {
+  margin: 0;
+  font-style: italic;
+  font-size: 1.05rem;
+}
+
+.page-trader .play {
+  font-family: "Syne", var(--display);
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+  min-height: 3.7rem;
+  width: 100%;
+  border: 0;
+  background: var(--plate);
+  color: var(--plate-ink);
+  cursor: pointer;
+}
+
+.page-trader .row .play {
+  width: auto;
+  flex: 1;
+}
+
+.page-trader .stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  min-height: 2.4rem;
+}
+
+.page-trader .chip {
+  font-family: "Syne", var(--display);
+  font-weight: 750;
+  background: var(--ink);
+  color: var(--bg);
+  padding: 0.35rem 0.65rem;
+  animation: trader-rise 0.35s ease both;
+}
+
+.page-trader .chip.ghost {
+  background: transparent;
+  color: var(--ink-mute);
+  border: 1px dashed var(--line);
+}
+
+.page-trader .cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.page-trader .card {
+  text-align: left;
+  min-height: 4.4rem;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  padding: 0.55rem 0.7rem;
+  cursor: pointer;
+}
+
+.page-trader .card strong {
+  display: block;
+  font-family: "Syne", var(--display);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+}
+
+.page-trader .card small {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--ink-mute);
+  font-family: "IBM Plex Mono", var(--mono);
+  font-size: 0.75rem;
+}
+
+.page-trader .card[aria-pressed="true"] {
+  background: var(--plate);
+  border-color: var(--plate);
+  color: var(--plate-ink);
+}
+
+.page-trader .card[aria-pressed="true"] small {
+  color: inherit;
+}
+
+.page-trader .race-chart {
+  height: 190px;
+}
+
+.page-trader .race-nums {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.page-trader .race-nums p {
+  margin: 0;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.page-trader .race-nums span {
+  font-family: "Syne", var(--display);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.page-trader .race-num,
+.page-trader .end-score {
+  font-size: clamp(1.8rem, 7vw, 3rem);
+  letter-spacing: -0.05em;
+  margin: 0;
+}
+
+.page-trader .race-num.up,
+.page-trader .lesson.win { color: var(--plate); }
+
+.page-trader .race-num.down,
+.page-trader .lesson.lose { color: var(--mark); }
+
+.page-trader .flash-up { animation: trader-pop 0.4s ease; }
+.page-trader .flash-down { animation: trader-pop 0.4s ease; }
+
+.page-trader .quiet {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.page-trader .text-btn {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--ink-mute);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+  cursor: pointer;
+}
+
+@keyframes trader-pop {
+  from { transform: scale(0.96); }
+  to { transform: none; }
+}
+
+@media (min-width: 800px) {
+  .page-trader .cards { grid-template-columns: repeat(4, 1fr); }
+  .page-trader .race-chart { height: 230px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .page-trader .bar i { transform: none; }
   .page-trader .breakdown li { animation: none; }
+  .page-trader .chip,
+  .page-trader .pips i.now,
+  .page-trader .flash-up,
+  .page-trader .flash-down { animation: none; transform: none; }
 }
