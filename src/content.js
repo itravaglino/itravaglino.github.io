@@ -35,7 +35,7 @@ export const translations = {
       summary:
         "Coaching en inteligencia artificial para profesionales, del lado técnico al práctico: desde cómo funcionan los modelos, el RAG y los agentes hasta los flujos de trabajo, el prompting y la adopción en el día a día. Estudiante de Física de 4.º año en FAMAF, con experiencia en IA aplicada, sistemas autónomos y pronóstico de series temporales. Experiencia traduciendo física teórica y ecuaciones diferenciales a arquitecturas de IA de grado productivo, desplegadas en el borde, y construyendo pipelines de navegación autónoma (LiDAR y visión por computadora), agentes de datos a gran escala (RAG con modelos de pesos abiertos) y backends robustos frente a variables altamente inestables.",
       stowe:
-        "Invierno 2022–23, Vermont: personal de temporada en Stowe Mountain Resort, programa Work & Travel. 294 km esquiados o en snowboard durante la temporada.",
+        "Invierno 2022–23, Vermont: personal de temporada en Stowe Mountain Resort, programa Work & Travel.",
     },
     marquee: {
       a: "Modelos",
@@ -119,7 +119,7 @@ export const translations = {
       job2Place: "Stowe, Vermont, EE. UU.",
       job2Dates: "Diciembre 2022 – marzo 2023",
       job2Body:
-        "Programa Work & Travel. Intercambio internacional de alta exigencia. 294 km esquiados o en snowboard durante la temporada.",
+        "Programa Work & Travel. Intercambio internacional de alta exigencia.",
     },
     education: {
       kicker: "04  ·  Formación",
@@ -239,7 +239,7 @@ export const translations = {
       summary:
         "AI coaching for professionals, from the technical side to the practical one: how models, RAG, and agents work, and how to improve hands-on workflows, prompting, and day-to-day adoption. 4th-year Physics student at FAMAF, with experience in applied AI, autonomous systems, and time-series forecasting. Experienced in translating theoretical physics and differential equations into production-grade, edge-deployed AI architectures, and in building autonomous navigation pipelines (LiDAR and computer vision), large-scale data agents (RAG using open-weight models), and robust backends for highly unstable variables.",
       stowe:
-        "Winter 2022–23, Vermont: seasonal staff at Stowe Mountain Resort, Work & Travel program. 294 km skied and snowboarded during the season.",
+        "Winter 2022–23, Vermont: seasonal staff at Stowe Mountain Resort, Work & Travel program.",
     },
     marquee: {
       a: "Models",
@@ -324,7 +324,7 @@ export const translations = {
       job2Place: "Stowe, Vermont, USA",
       job2Dates: "December 2022 – March 2023",
       job2Body:
-        "Work & Travel program. High-demand international exchange. Logged 294 km skied/snowboarded during the season.",
+        "Work & Travel program. High-demand international exchange.",
     },
     education: {
       kicker: "04  ·  Education",
