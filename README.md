@@ -98,13 +98,17 @@ Stops are judged on the daily close. If the close gaps through the stop, the fil
 
 ### Tabla de posiciones / Leaderboard
 
-Si el puntaje entra en el top 10 de Hoy (sesión diaria) o Histórico (mejor portafolio), la página pide un nombre de hasta 20 caracteres. Sin `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` la lista queda en este navegador y lo dice.
+Si el puntaje entra en el top 10 de Hoy (sesión diaria) o Histórico (mejor portafolio), la página pide un nombre de hasta 20 caracteres.
 
-If a score would enter the top 10 for Today (daily session) or All-time (portfolio), the page asks for a name of up to 20 characters. Without `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` the list stays in this browser and says so.
+If a score would enter the top 10 for Today (daily session) or All-time (portfolio), the page asks for a name of up to 20 characters.
 
-Para la lista global, en el proyecto de Supabase ejecutá `supabase/migrations/001_leaderboard.sql`. La tabla `scores` permite leer a `anon` y no insertar directo. `submit_score` (SECURITY DEFINER) valida nombre, límites de puntaje, que el día sea hoy en Córdoba, un envío por modo por día por id de cliente, y que el puntaje entre al top 10. `top10` devuelve el ranking. En GitHub, definí los secrets `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` (la anon key pública). El workflow los inyecta en el build. En local, un archivo `.env` con esas dos variables alcanza; no lo subas.
+La URL y la clave publicable del proyecto están en `.env.production` y en `src/trader-supabase.js`. El build de Vite las incluye. El cliente llama `get_top10` y `submit_score` con el header `apikey`. Si esas funciones todavía no existen, muestra la lista de este navegador y lo dice.
 
-For a global list, run `supabase/migrations/001_leaderboard.sql` in the Supabase project. `scores` is readable by `anon` and has no direct insert. `submit_score` (SECURITY DEFINER) checks the name, score bounds, that the day is today in Córdoba, one submission per mode per day per client id, and that the score would make the top 10. `top10` returns the ranking. On GitHub, set secrets `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (the public anon key). The workflow injects them at build time. Locally, a `.env` file with those two variables is enough; do not commit it.
+The project URL and publishable key live in `.env.production` and `src/trader-supabase.js`. The Vite build embeds them. The client calls `get_top10` and `submit_score` with the `apikey` header. If those functions are not there yet, it shows this browser’s list and says so.
+
+Hay que aplicar `supabase/migrations/001_leaderboard.sql` en Supabase una vez. `anon` puede leer `scores` y no puede insertar, actualizar ni borrar. `submit_score` es `SECURITY DEFINER` con `search_path = public`: valida el nombre, los límites del puntaje, que el día sea hoy en Córdoba, un envío por modo por día por id de cliente, y que el puntaje entre al top 10. `get_top10(mode, day)` devuelve el ranking. Solo `anon` tiene `execute` en esas dos funciones.
+
+Apply `supabase/migrations/001_leaderboard.sql` in Supabase once. `anon` can read `scores` and cannot insert, update, or delete. `submit_score` is `SECURITY DEFINER` with `search_path = public`: it checks the name, the score bounds, that the day is today in Córdoba, one submission per mode per day per client id, and that the score would make the top 10. `get_top10(mode, day)` returns the ranking. Only `anon` can `execute` those two functions.
 
 ## Taller de Git / Git workshop
 

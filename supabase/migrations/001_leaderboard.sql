@@ -1,25 +1,18 @@
--- Leaderboard for /trader/.
--- Anonymous clients may read scores. They may not insert directly.
--- submit_score is the only insert path: it checks the name, the score bounds,
--- the Córdoba calendar day, one submission per mode per day per client id,
--- and that the score would enter the current top 10.
+-- /trader/ leaderboard. Safe to run more than once.
+-- anon may select scores. anon may not insert, update, or delete.
+-- Writes go through submit_score only.
+
+create extension if not exists pgcrypto;
 
 create table if not exists public.scores (
   id uuid primary key default gen_random_uuid(),
-  mode text not null check (mode in ('daily', 'portfolio')),
+  mode text not null,
   day date not null,
-  name text not null check (char_length(name) between 1 and 20),
+  name text not null,
   score integer not null,
   details jsonb not null default '{}'::jsonb,
-  created_at timestamptz not null default now(),
-  check (
-    (mode = 'daily' and score between -20000 and 30000)
-    or (mode = 'portfolio' and score between -100000 and 100000)
-  )
+  created_at timestamptz not null default now()
 );
-
-create index if not exists scores_rank_idx
-  on public.scores (mode, day, score desc, created_at asc);
 
 create table if not exists public.score_limits (
   mode text not null,
@@ -28,6 +21,28 @@ create table if not exists public.score_limits (
   primary key (mode, day, fingerprint)
 );
 
+do $$
+begin
+  if not exists (select 1 from pg_constraint where conname = 'scores_mode_chk') then
+    alter table public.scores
+      add constraint scores_mode_chk check (mode in ('daily', 'portfolio'));
+  end if;
+  if not exists (select 1 from pg_constraint where conname = 'scores_name_chk') then
+    alter table public.scores
+      add constraint scores_name_chk check (char_length(name) between 1 and 20);
+  end if;
+  if not exists (select 1 from pg_constraint where conname = 'scores_score_chk') then
+    alter table public.scores
+      add constraint scores_score_chk check (
+        (mode = 'daily' and score between -20000 and 30000)
+        or (mode = 'portfolio' and score between -100000 and 100000)
+      );
+  end if;
+end $$;
+
+create index if not exists scores_rank_idx
+  on public.scores (mode, day, score desc, created_at asc);
+
 alter table public.scores enable row level security;
 alter table public.score_limits enable row level security;
 
@@ -35,15 +50,18 @@ drop policy if exists scores_select_public on public.scores;
 create policy scores_select_public
   on public.scores
   for select
-  to anon, authenticated
+  to anon
   using (true);
 
-revoke all on public.scores from anon, authenticated;
-grant select on public.scores to anon, authenticated;
+revoke all on table public.scores from public, anon, authenticated;
+grant select on table public.scores to anon;
 
-revoke all on public.score_limits from anon, authenticated;
+revoke all on table public.score_limits from public, anon, authenticated;
 
-create or replace function public.top10(p_mode text, p_day date)
+drop function if exists public.top10(text, date);
+drop function if exists public.get_top10(text, date);
+
+create function public.get_top10(mode text, day date)
 returns table(name text, score integer, created_at timestamptz)
 language sql
 stable
@@ -52,8 +70,8 @@ set search_path = public
 as $$
   select s.name, s.score, s.created_at
   from public.scores s
-  where s.mode = p_mode
-    and (p_mode <> 'daily' or s.day = p_day)
+  where s.mode = get_top10.mode
+    and (get_top10.mode <> 'daily' or s.day = get_top10.day)
   order by s.score desc, s.created_at asc
   limit 10;
 $$;
@@ -121,7 +139,7 @@ begin
   select count(*) into v_count
   from public.scores
   where mode = p_mode
-    and (p_mode <> 'daily' or day = v_today);
+    and (p_mode <> 'daily' or scores.day = v_today);
 
   select s.score into v_tenth
   from public.scores s
@@ -137,7 +155,7 @@ begin
 
   perform 1
   from public.score_limits
-  where mode = p_mode and day = v_today and fingerprint = p_fingerprint;
+  where mode = p_mode and score_limits.day = v_today and fingerprint = p_fingerprint;
   if found then
     return jsonb_build_object('ok', false, 'error', 'rate');
   end if;
@@ -152,7 +170,7 @@ begin
 end;
 $$;
 
-revoke all on function public.top10(text, date) from public;
-revoke all on function public.submit_score(text, date, text, integer, jsonb, text) from public;
-grant execute on function public.top10(text, date) to anon, authenticated;
-grant execute on function public.submit_score(text, date, text, integer, jsonb, text) to anon, authenticated;
+revoke all on function public.get_top10(text, date) from public, anon, authenticated;
+revoke all on function public.submit_score(text, date, text, integer, jsonb, text) from public, anon, authenticated;
+grant execute on function public.get_top10(text, date) to anon;
+grant execute on function public.submit_score(text, date, text, integer, jsonb, text) to anon;

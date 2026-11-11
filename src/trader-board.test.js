@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { qualify, sanitizeName, scoreInBounds } from "./trader-board.js";
+import { boardEnv, qualify, rpcUnavailable, sanitizeName, scoreInBounds } from "./trader-board.js";
 
 test("names are trimmed, short, and lightly filtered", () => {
   assert.deepEqual(sanitizeName("  Ada Lovelace  "), { ok: true, name: "Ada Lovelace" });
@@ -20,4 +20,17 @@ test("a score enters the top 10 only when it beats the tenth", () => {
   assert.equal(scoreInBounds("daily", 30001), false);
   assert.equal(scoreInBounds("portfolio", -100000), true);
   assert.equal(scoreInBounds("nope", 1), false);
+});
+
+test("the public Supabase project is configured", () => {
+  const env = boardEnv();
+  assert.equal(env.url, "https://uuyoxmmbhqlajcemlmlu.supabase.co");
+  assert.equal(env.key.startsWith("sb_publishable_"), true);
+  assert.equal(env.remote, true);
+});
+
+test("a missing leaderboard RPC is treated as not ready", () => {
+  assert.equal(rpcUnavailable(404, { code: "PGRST202", message: "Could not find the function public.get_top10" }), true);
+  assert.equal(rpcUnavailable(404, {}), true);
+  assert.equal(rpcUnavailable(500, { message: "database error" }), false);
 });

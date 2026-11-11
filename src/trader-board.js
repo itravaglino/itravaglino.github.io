@@ -1,6 +1,7 @@
 /** Leaderboard client. Remote Supabase when the public env vars exist; otherwise this browser. */
 
 import { SCORE } from "./trader-score.js";
+import { SUPABASE_KEY, SUPABASE_URL } from "./trader-supabase.js";
 
 const LOCAL_KEY = "it-trader-board";
 const CLIENT_KEY = "it-trader-client";
@@ -8,9 +9,17 @@ const CLIENT_KEY = "it-trader-client";
 const BLOCKED = ["fuck", "shit", "bitch", "asshole", "nigger", "faggot", "cunt", "puta", "mierda", "cabron", "cabrón"];
 
 export function boardEnv() {
-  const url = (import.meta.env?.VITE_SUPABASE_URL || "").trim().replace(/\/$/, "");
-  const key = (import.meta.env?.VITE_SUPABASE_ANON_KEY || "").trim();
+  const fromEnvUrl = import.meta.env?.VITE_SUPABASE_URL;
+  const fromEnvKey = import.meta.env?.VITE_SUPABASE_ANON_KEY;
+  const url = (fromEnvUrl || SUPABASE_URL).trim().replace(/\/$/, "");
+  const key = (fromEnvKey || SUPABASE_KEY).trim();
   return { url, key, remote: Boolean(url && key) };
+}
+
+export function rpcUnavailable(status, payload) {
+  const code = String(payload?.code || "");
+  const message = `${payload?.message || ""} ${payload?.hint || ""} ${payload?.error || ""}`;
+  return status === 404 || code === "PGRST202" || /could not find the function/i.test(message) || /schema cache/i.test(message);
 }
 
 export function sanitizeName(raw) {
@@ -106,7 +115,12 @@ async function rpc(env, fn, body) {
     body: JSON.stringify(body),
   });
   const payload = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(payload.message || payload.error || String(response.status));
+  if (!response.ok) {
+    const error = new Error(payload.message || payload.error || String(response.status));
+    error.status = response.status;
+    error.payload = payload;
+    throw error;
+  }
   return payload;
 }
 
@@ -114,9 +128,12 @@ export async function fetchTop(mode, day) {
   const env = boardEnv();
   if (!env.remote) return { source: "local", rows: localTop(mode, day) };
   try {
-    const rows = await rpc(env, "top10", { p_mode: mode, p_day: mode === "daily" ? day : null });
+    const rows = await rpc(env, "get_top10", { mode, day: mode === "daily" ? day : null });
     return { source: "remote", rows: Array.isArray(rows) ? rows : [] };
-  } catch {
+  } catch (error) {
+    if (rpcUnavailable(error.status, error.payload)) {
+      return { source: "local", rows: localTop(mode, day), pending: true };
+    }
     return { source: "local", rows: localTop(mode, day), failed: true };
   }
 }
@@ -136,7 +153,11 @@ export async function submitScore({ mode, day, name, score, details }) {
       p_details: details || {},
       p_fingerprint: clientFingerprint(),
     });
-  } catch {
+  } catch (error) {
+    if (rpcUnavailable(error.status, error.payload)) {
+      const saved = localSubmit({ mode, day, name: cleaned.name, score });
+      return saved.ok ? { ...saved, pending: true } : saved;
+    }
     return { ok: false, error: "network" };
   }
 }

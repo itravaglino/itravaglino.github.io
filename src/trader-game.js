@@ -756,7 +756,11 @@ async function maybeEnterBoard(boardMode, score, details) {
   if (!name) return;
   const result = await submitScore({ mode: boardMode, day, name, score, details });
   const live = document.getElementById("live");
-  if (live) live.textContent = result?.ok ? text().saved : text().notSaved;
+  if (live) {
+    if (result?.ok && result.pending) live.textContent = text().savedLocal;
+    else if (result?.ok) live.textContent = text().saved;
+    else live.textContent = text().notSaved;
+  }
   await loadBoard();
   render();
 }
@@ -765,7 +769,8 @@ async function loadBoard() {
   const board = await fetchTop(boardTab, today());
   boardRows = board.rows || [];
   const t = text();
-  if (!boardEnv().remote) boardNote = t.localNote;
+  if (board.pending) boardNote = t.pendingRpc;
+  else if (!boardEnv().remote) boardNote = t.localNote;
   else if (board.failed) boardNote = t.remoteFail;
   else boardNote = "";
 }
