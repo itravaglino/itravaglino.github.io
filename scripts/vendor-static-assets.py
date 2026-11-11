@@ -13,6 +13,10 @@ FONTS_ROOT = ROOT / "fonts"
 
 FONT_FILES = [
     (
+        ROOT / "node_modules/@fontsource-variable/syne/files/syne-latin-wght-normal.woff2",
+        "syne-latin-wght-normal.woff2",
+    ),
+    (
         ROOT / "node_modules/@fontsource/syne/files/syne-latin-700-normal.woff2",
         "syne-latin-700-normal.woff2",
     ),

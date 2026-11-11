@@ -67,6 +67,7 @@
     </script>
   </head>
   <body class="page-home">
+    <div class="cursor" aria-hidden="true"><span></span></div>
     <a class="skip-link" href="#contenido" data-i18n="skip">Skip to content</a>
     <header class="site-header">
       <div class="wrap">
@@ -103,7 +104,9 @@
           <div class="hero-rule" aria-hidden="true"></div>
           <div class="hero-grid">
             <div class="hero-titles">
-              <h2 data-i18n="hero.title">AI Coaching &amp; Physicist</h2>
+              <div class="mask-line">
+                <h2 data-i18n="hero.title">AI Coaching &amp; Physicist</h2>
+              </div>
               <p class="hero-sub" data-i18n="hero.subtitle">Applied AI &amp; Autonomous Systems</p>
               <p class="status" data-i18n="hero.status">Based in Córdoba · FAMAF · building on the edge</p>
               <div class="hero-actions">
@@ -121,10 +124,44 @@
         </div>
       </section>
 
+      <div class="wave-band" aria-hidden="true">
+        <svg class="wave" viewBox="0 0 1200 180" preserveAspectRatio="none">
+          <path
+            class="wave-path"
+            d="M0 96 C 48 96, 36 28, 104 32 C 168 36, 156 156, 232 150 C 308 144, 292 22, 372 28 C 452 34, 436 164, 524 152 C 608 140, 588 18, 676 32 C 764 46, 748 158, 836 146 C 924 134, 908 24, 996 38 C 1084 52, 1064 150, 1144 132 C 1184 122, 1192 78, 1200 74"
+          />
+        </svg>
+      </div>
+
+      <div class="marquee">
+        <div class="marquee-track">
+          <p>
+            <span data-i18n="marquee.a">Models</span>
+            <span data-i18n="marquee.b">RAG</span>
+            <span data-i18n="marquee.c">Agents</span>
+            <span data-i18n="marquee.d">Prompting</span>
+            <span data-i18n="marquee.e">Workflows</span>
+            <span data-i18n="marquee.f">Forecasting</span>
+            <span data-i18n="marquee.g">Autonomous systems</span>
+          </p>
+          <p aria-hidden="true">
+            <span data-i18n="marquee.a">Models</span>
+            <span data-i18n="marquee.b">RAG</span>
+            <span data-i18n="marquee.c">Agents</span>
+            <span data-i18n="marquee.d">Prompting</span>
+            <span data-i18n="marquee.e">Workflows</span>
+            <span data-i18n="marquee.f">Forecasting</span>
+            <span data-i18n="marquee.g">Autonomous systems</span>
+          </p>
+        </div>
+      </div>
+
       <section id="coaching" class="section" aria-labelledby="coaching-titulo">
         <div class="wrap">
           <div>
-            <h2 id="coaching-titulo" class="section-title" data-i18n="coaching.heading">From the technical side to the practical one</h2>
+            <div class="mask-line">
+              <h2 id="coaching-titulo" class="section-title" data-i18n="coaching.heading">From the technical side to the practical one</h2>
+            </div>
             <p data-i18n="coaching.intro">Coaching to understand and improve how professionals use AI.</p>
           </div>
           <ol class="steps">
@@ -149,46 +186,49 @@
           </ol>
         </div>
       </section>
-      <section id="trabajo" class="section" aria-labelledby="trabajo-titulo">
-        <div class="wrap">
-          <p class="kicker" data-i18n="work.kicker">02  ·  Work</p>
-          <h2 id="trabajo-titulo" class="section-title" data-i18n="work.heading">Selected work</h2>
-          <div class="cases">
-            <article class="case" data-reveal>
+      <section id="trabajo" class="work-pin" aria-labelledby="trabajo-titulo">
+        <div class="work-track">
+          <article class="panel panel--paper">
+            <div class="panel-inner">
+              <div class="mask-line">
+                <h2 id="trabajo-titulo" class="section-title" data-i18n="work.heading">Selected work</h2>
+              </div>
+            </div>
+          </article>
+          <article class="panel panel--cobalt case">
+            <div class="panel-inner">
               <span class="case-index" data-i18n="work.p1Index">01</span>
-              <div>
-                <h3 data-i18n="work.p1Title">Autonomous Robotics &amp; Edge Navigation System</h3>
-                <p class="case-meta" data-i18n="work.p1Meta">LiDAR · computer vision · Jetson Orin NX · Raspberry Pi 5 · pioneer3at</p>
-                <p data-i18n="work.p1Body">Designed a complete autonomous navigation and decision-making system using LiDAR + computer vision. Optimized the pipeline for constrained edge hardware (Jetson Orin NX, Raspberry Pi 5). Validated in virtual robotic simulation (pioneer3at).</p>
-              </div>
-            </article>
-            <article class="case" data-reveal>
+              <h3 data-i18n="work.p1Title">Autonomous Robotics &amp; Edge Navigation System</h3>
+              <p class="case-meta" data-i18n="work.p1Meta">LiDAR · computer vision · Jetson Orin NX · Raspberry Pi 5 · pioneer3at</p>
+              <p data-i18n="work.p1Body">Designed a complete autonomous navigation and decision-making system using LiDAR + computer vision. Optimized the pipeline for constrained edge hardware (Jetson Orin NX, Raspberry Pi 5). Validated in virtual robotic simulation (pioneer3at).</p>
+            </div>
+          </article>
+          <article class="panel panel--ink case">
+            <div class="panel-inner">
               <span class="case-index" data-i18n="work.p2Index">02</span>
-              <div>
-                <h3 data-i18n="work.p2Title">Local RAG Data Agent &amp; LLM Deployment</h3>
-                <p class="case-meta" data-i18n="work.p2Meta">RAG · local embeddings · Gemma · Qwen · LiteRT-LM</p>
-                <p data-i18n="work.p2Body">Privacy-focused QA assistant with RAG, local embeddings, and vector databases. Orchestrated open-weight models (Gemma, Qwen, LiteRT-LM) to query internal docs with no external API dependency.</p>
-              </div>
-            </article>
-            <article class="case" data-reveal>
+              <h3 data-i18n="work.p2Title">Local RAG Data Agent &amp; LLM Deployment</h3>
+              <p class="case-meta" data-i18n="work.p2Meta">RAG · local embeddings · Gemma · Qwen · LiteRT-LM</p>
+              <p data-i18n="work.p2Body">Privacy-focused QA assistant with RAG, local embeddings, and vector databases. Orchestrated open-weight models (Gemma, Qwen, LiteRT-LM) to query internal docs with no external API dependency.</p>
+            </div>
+          </article>
+          <article class="panel panel--paper case">
+            <div class="panel-inner">
               <span class="case-index" data-i18n="work.p3Index">03</span>
-              <div>
-                <h3 data-i18n="work.p3Title">Quantitative Algorithmic Trading Engines</h3>
-                <p class="case-meta" data-i18n="work.p3Meta">Python · IMC Prosperity 4 · statistical physics</p>
-                <p data-i18n="work.p3Body">Python automation to sync real-time parameters with market data APIs. Predictive models and trading algorithms for IMC Prosperity 4, using statistical physics and stochastic data handling.</p>
-              </div>
-            </article>
-            <article class="case" data-reveal>
+              <h3 data-i18n="work.p3Title">Quantitative Algorithmic Trading Engines</h3>
+              <p class="case-meta" data-i18n="work.p3Meta">Python · IMC Prosperity 4 · statistical physics</p>
+              <p data-i18n="work.p3Body">Python automation to sync real-time parameters with market data APIs. Predictive models and trading algorithms for IMC Prosperity 4, using statistical physics and stochastic data handling.</p>
+            </div>
+          </article>
+          <article class="panel panel--red case">
+            <div class="panel-inner">
               <span class="case-index" data-i18n="work.p4Index">04</span>
-              <div>
-                <h3 data-i18n="work.p4Title">Home Lab &amp; Server Administration</h3>
-                <p class="case-meta" data-i18n="work.p4Meta">Linux · Raspberry Pi 5 · SFTP / WinSCP</p>
-                <p data-i18n="work.p4Body">24/7 Linux server on Raspberry Pi 5. OS-level optimizations (dynamic RAM allocation), security, remote file management via SFTP/WinSCP.</p>
-              </div>
-            </article>
-          </div>
-
-          <div class="github-row" data-reveal>
+              <h3 data-i18n="work.p4Title">Home Lab &amp; Server Administration</h3>
+              <p class="case-meta" data-i18n="work.p4Meta">Linux · Raspberry Pi 5 · SFTP / WinSCP</p>
+              <p data-i18n="work.p4Body">24/7 Linux server on Raspberry Pi 5. OS-level optimizations (dynamic RAM allocation), security, remote file management via SFTP/WinSCP.</p>
+            </div>
+          </article>
+          <article class="panel panel--ink">
+            <div class="panel-inner github-row">
             <p class="game-promo">
               <a href="./github/">
                 <strong data-i18n="work.gameTitle">Git &amp; GitHub workshop</strong>
@@ -226,14 +266,17 @@
                 </a>
               </li>
             </ul>
-          </div>
+            </div>
+          </article>
         </div>
       </section>
 
       <section id="experiencia" class="section" aria-labelledby="experiencia-titulo">
-        <div class="wrap">
+        <div class="wrap split">
           <p class="kicker" data-i18n="experience.kicker">03  ·  Experience</p>
-          <h2 id="experiencia-titulo" class="section-title" data-i18n="experience.heading">Experience</h2>
+          <div class="mask-line">
+            <h2 id="experiencia-titulo" class="section-title" data-i18n="experience.heading">Experience</h2>
+          </div>
           <div class="timeline">
             <article class="job" data-reveal>
               <div>
@@ -272,10 +315,12 @@
         </div>
       </section>
 
-      <section id="formacion" class="section" aria-labelledby="formacion-titulo">
+      <section id="formacion" class="section band--ink" aria-labelledby="formacion-titulo">
         <div class="wrap">
           <p class="kicker" data-i18n="education.kicker">04  ·  Education</p>
-          <h2 id="formacion-titulo" class="section-title" data-i18n="education.heading">Education, events &amp; competitions</h2>
+          <div class="mask-line">
+            <h2 id="formacion-titulo" class="section-title" data-i18n="education.heading">Education, events &amp; competitions</h2>
+          </div>
           <div class="edu-study" data-reveal>
             <div>
               <h3 data-i18n="education.eduLabel">Studies</h3>
@@ -344,7 +389,9 @@
       <section id="capacidades" class="section" aria-labelledby="capacidades-titulo">
         <div class="wrap">
           <p class="kicker" data-i18n="skills.kicker">05  ·  Skills</p>
-          <h2 id="capacidades-titulo" class="section-title" data-i18n="skills.heading">Skills</h2>
+          <div class="mask-line">
+            <h2 id="capacidades-titulo" class="section-title" data-i18n="skills.heading">Skills</h2>
+          </div>
           <div class="skills-grid">
             <article class="skill-group" data-reveal>
               <h3 data-i18n="skills.g1">Languages &amp; core</h3>
@@ -370,10 +417,12 @@
         </div>
       </section>
 
-      <section id="contacto" class="section" aria-labelledby="contacto-titulo">
+      <section id="contacto" class="section band--cobalt" aria-labelledby="contacto-titulo">
         <div class="wrap">
           <p class="kicker" data-i18n="contact.kicker">06  ·  Contact</p>
-          <h2 id="contacto-titulo" class="section-title" data-i18n="contact.heading">Contact</h2>
+          <div class="mask-line">
+            <h2 id="contacto-titulo" class="section-title" data-i18n="contact.heading">Contact</h2>
+          </div>
           <p data-i18n="contact.intro">Córdoba, Argentina.</p>
           <div class="contact-grid">
             <a class="contact-item" href="mailto:ignaciotravaglino@gmail.com">

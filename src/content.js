@@ -37,6 +37,15 @@ export const translations = {
       stowe:
         "Invierno 2022–23, Vermont: personal de temporada en Stowe Mountain Resort, programa Work & Travel. 294 km esquiados o en snowboard durante la temporada.",
     },
+    marquee: {
+      a: "Modelos",
+      b: "RAG",
+      c: "Agentes",
+      d: "Prompting",
+      e: "Flujos de trabajo",
+      f: "Pronóstico",
+      g: "Sistemas autónomos",
+    },
     coaching: {
       kicker: "Coaching en IA",
       heading: "Del lado técnico al práctico",
@@ -231,6 +240,15 @@ export const translations = {
         "AI coaching for professionals, from the technical side to the practical one: how models, RAG, and agents work, and how to improve hands-on workflows, prompting, and day-to-day adoption. 4th-year Physics student at FAMAF, with experience in applied AI, autonomous systems, and time-series forecasting. Experienced in translating theoretical physics and differential equations into production-grade, edge-deployed AI architectures, and in building autonomous navigation pipelines (LiDAR and computer vision), large-scale data agents (RAG using open-weight models), and robust backends for highly unstable variables.",
       stowe:
         "Winter 2022–23, Vermont: seasonal staff at Stowe Mountain Resort, Work & Travel program. 294 km skied and snowboarded during the season.",
+    },
+    marquee: {
+      a: "Models",
+      b: "RAG",
+      c: "Agents",
+      d: "Prompting",
+      e: "Workflows",
+      f: "Forecasting",
+      g: "Autonomous systems",
     },
     coaching: {
       kicker: "AI Coaching",
