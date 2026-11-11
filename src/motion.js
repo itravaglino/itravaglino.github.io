@@ -19,6 +19,9 @@ function wideScreen() {
 function setupName(replay) {
   const h1 = document.getElementById("nombre");
   if (!h1 || reduce) return;
+  heroTween?.scrollTrigger?.kill();
+  heroTween?.kill();
+  heroTween = null;
   const word = h1.textContent.replace(/\s+/g, "");
   h1.setAttribute("aria-label", word);
   h1.replaceChildren();
@@ -43,7 +46,10 @@ function setupName(replay) {
       duration: replay ? 0.7 : 1.15,
       ease: "expo.out",
       stagger: 0.042,
-      onComplete: () => buildHeroScrub(chars),
+      onComplete: () => {
+        buildHeroScrub(chars);
+        ScrollTrigger.refresh();
+      },
     }
   );
 }
@@ -52,22 +58,23 @@ function buildHeroScrub(chars) {
   heroTween?.scrollTrigger?.kill();
   heroTween?.kill();
   const wave = document.querySelector(".wave-path");
-  const pin = wideScreen();
   const tl = gsap.timeline({
     scrollTrigger: {
       id: "hero-scrub",
       trigger: ".hero",
       start: "top top",
-      end: pin ? "+=75%" : "bottom top",
-      pin,
-      scrub: true,
-      anticipatePin: 1,
+      end: "+=70%",
+      scrub: 0.8,
       invalidateOnRefresh: true,
     },
   });
-  tl.fromTo("#nombre", { fontWeight: 800 }, { fontWeight: 500, ease: "none", immediateRender: false }, 0);
-  tl.to(chars, { scale: 0.84, ease: "none", stagger: 0.008 }, 0);
-  if (pin) tl.to(".hero-copy", { y: 52, ease: "none" }, 0);
+  tl.fromTo(
+    "#nombre",
+    { fontWeight: 800 },
+    { fontWeight: 500, duration: 1, ease: "power1.inOut", immediateRender: false },
+    0
+  );
+  tl.to(chars, { scale: 0.84, duration: 1, ease: "power1.inOut" }, 0);
   heroTween = tl;
   if (wave) {
     const length = wave.getTotalLength();
@@ -78,17 +85,25 @@ function buildHeroScrub(chars) {
       { strokeDashoffset: length * 0.72 },
       {
         strokeDashoffset: 0,
-        ease: "none",
+        ease: "power1.inOut",
         immediateRender: false,
         scrollTrigger: {
           trigger: ".wave-band",
-          start: "top 90%",
-          end: "bottom 40%",
-          scrub: true,
+          start: "top 88%",
+          end: "bottom 55%",
+          scrub: 0.8,
+          invalidateOnRefresh: true,
         },
       }
     );
   }
+}
+
+function workDistance(track) {
+  const travel = Math.max(track.scrollWidth - window.innerWidth, 0);
+  const panels = track.querySelectorAll(":scope > .panel").length || 1;
+  const cap = (panels / 1.5) * window.innerHeight;
+  return Math.min(travel, cap);
 }
 
 function setupTrack() {
@@ -103,23 +118,24 @@ function setupTrack() {
   }
   trackTween = gsap.to(track, {
     x: () => -(track.scrollWidth - window.innerWidth),
-    ease: "none",
+    ease: "power1.out",
     scrollTrigger: {
       id: "work-track",
       trigger: pin,
       start: "top top",
-      end: () => "+=" + Math.max(track.scrollWidth - window.innerWidth, 0),
+      end: () => "+=" + workDistance(track),
       pin: true,
-      scrub: 0.65,
+      pinSpacing: true,
+      scrub: 0.85,
       anticipatePin: 1,
       invalidateOnRefresh: true,
     },
   });
-  const st = trackTween.scrollTrigger;
   pin.querySelectorAll("a").forEach((link) => {
     if (link.dataset.trackFocus) return;
     link.dataset.trackFocus = "1";
     link.addEventListener("focus", () => {
+      const st = ScrollTrigger.getById("work-track");
       const panel = link.closest(".panel");
       if (!panel || !st) return;
       const panels = [...track.children];
@@ -195,7 +211,8 @@ export function initMotion() {
     wave.style.strokeDashoffset = String(length * 0.72);
   }
   lenis = new Lenis({
-    duration: wideScreen() ? 1.05 : 0.75,
+    lerp: 0.1,
+    wheelMultiplier: 1,
     smoothWheel: true,
     anchors: true,
     autoRaf: false,
@@ -211,10 +228,19 @@ export function initMotion() {
   setupCursor();
   setupTrack();
 
-  document.addEventListener("it-lang", () => {
-    setupName(true);
-    ScrollTrigger.refresh();
+  const refresh = () => ScrollTrigger.refresh();
+  document.addEventListener("it-lang", () => setupName(true));
+  document.fonts?.ready?.then(() => {
+    refresh();
+    requestAnimationFrame(refresh);
   });
-
-  document.fonts?.ready?.then(() => ScrollTrigger.refresh());
+  window.addEventListener("load", refresh, { once: true });
+  let resizeFrame = 0;
+  window.addEventListener("resize", () => {
+    cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(() => {
+      setupTrack();
+      refresh();
+    });
+  });
 }
