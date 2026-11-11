@@ -78,6 +78,34 @@ Copy it to `public/CNAME` with a single line — your domain — then point DNS 
 
 `/cv/` is a designed résumé. **Download / Print PDF** calls `window.print()`. Print CSS targets A4 and Letter. There is no attached scan; use the browser’s Save as PDF.
 
+## Juego de mercado / Market game
+
+`/trader/` es un juego educativo con precios diarios reales de Yahoo Finance (cierre ajustado, archivo `data/market.json`). No es asesoramiento financiero. El idioma usa la misma clave `it-lang`.
+
+`/trader/` is an educational game on real Yahoo Finance daily prices (split-adjusted close, file `data/market.json`). It is not financial advice. Language uses the same `it-lang` key.
+
+**Daily Trade.** Cinco gráficos por día, la misma semilla para todos (fecha en `America/Argentina/Cordoba`). En cada uno: comprar, vender en corto o quedarse afuera, tamaño ×1–×3, stop y objetivo opcionales, y cuatro pasos de cinco sesiones para mantener, sumar, reducir o cerrar. SMA 20/50 y RSI 14 se pueden prender. El volumen no está en el archivo. Cada pista resta puntos y solo describe el tramo visible.
+
+**Daily Trade.** Five charts a day, the same seed for everyone (the date in `America/Argentina/Cordoba`). On each: buy, short, or stay out, size ×1–×3, optional stop and target, then four steps of five sessions to hold, add, reduce, or close. SMA 20/50 and RSI 14 can be turned on. Volume is not in the file. Each hint costs points and only describes the visible stretch.
+
+**Puntaje.** Resultado ajustado por riesgo = tamaño × retorno ejecutado / (1 + peor cierre en contra) × 1000. Dirección +150 si es positivo. Disciplina +80 si un stop cierra la operación, si no +40 si el stop se mantuvo; sin stop y un cierre en contra peor que 8%, −40. Tiempo +50 si la primera decisión tarda 20 segundos o menos. Pista −120. Si el subtotal es positivo, × (1 + 0.05 × gráficos ganados antes en la sesión, tope 5). El día es la suma. El panel «Cómo se puntúa» repite esta fórmula. El portafolio es `1000 × (retorno propio − S&P 500) / (1 + volatilidad) − 500 × |peor caída|`, más 30 al rebalancear con un desvío ≥ 10 puntos y −10 si el desvío es < 5.
+
+**Score.** Risk-adjusted result = size × filled return / (1 + worst close against you) × 1000. Direction +150 if that is positive. Discipline +80 if a stop closes the trade, otherwise +40 if a stop was set and held; with no stop and a close worse than 8% against you, −40. Time +50 if the first decision takes 20 seconds or less. Hint −120. A positive subtotal is multiplied by (1 + 0.05 × prior winning charts this session, cap 5). The day is the sum. The “How scoring works” panel states this formula. Portfolio score is `1000 × (your return − S&P 500) / (1 + volatility) − 500 × |worst drawdown|`, plus 30 for rebalancing a drift of at least 10 points and −10 when the drift is under 5.
+
+Los stops se evalúan en el cierre diario. Si el cierre salta el stop, la ejecución es al precio del stop y el hueco igual entra en la excursión adversa. Stop y objetivo en el mismo cierre: gana el stop.
+
+Stops are judged on the daily close. If the close gaps through the stop, the fill is the stop price and the gap still counts as adverse. A stop and a target on the same close: the stop fills.
+
+### Tabla de posiciones / Leaderboard
+
+Si el puntaje entra en el top 10 de Hoy (sesión diaria) o Histórico (mejor portafolio), la página pide un nombre de hasta 20 caracteres. Sin `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` la lista queda en este navegador y lo dice.
+
+If a score would enter the top 10 for Today (daily session) or All-time (portfolio), the page asks for a name of up to 20 characters. Without `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` the list stays in this browser and says so.
+
+Para la lista global, en el proyecto de Supabase ejecutá `supabase/migrations/001_leaderboard.sql`. La tabla `scores` permite leer a `anon` y no insertar directo. `submit_score` (SECURITY DEFINER) valida nombre, límites de puntaje, que el día sea hoy en Córdoba, un envío por modo por día por id de cliente, y que el puntaje entre al top 10. `top10` devuelve el ranking. En GitHub, definí los secrets `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` (la anon key pública). El workflow los inyecta en el build. En local, un archivo `.env` con esas dos variables alcanza; no lo subas.
+
+For a global list, run `supabase/migrations/001_leaderboard.sql` in the Supabase project. `scores` is readable by `anon` and has no direct insert. `submit_score` (SECURITY DEFINER) checks the name, score bounds, that the day is today in Córdoba, one submission per mode per day per client id, and that the score would make the top 10. `top10` returns the ranking. On GitHub, set secrets `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (the public anon key). The workflow injects them at build time. Locally, a `.env` file with those two variables is enough; do not commit it.
+
 ## Taller de Git / Git workshop
 
 `/github/` es un juego para aprender Git y GitHub: terminal simulada, grafo de commits y siete misiones (repositorio, commit, historia, ramas, merge con conflicto, remoto y pull request). El progreso queda en `localStorage` (`it-git-game`), aparte del idioma (`it-lang`).

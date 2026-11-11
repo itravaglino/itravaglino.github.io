@@ -83,9 +83,11 @@ export function puzzleSlice(entry, start) {
   const entryAt = start + LOOKBACK - 1;
   const exitAt = entryAt + HORIZON;
   if (exitAt >= closes.length) throw new Error("window past end");
+  const warmStart = Math.max(0, start - 60);
   return {
     name,
     kind,
+    warmup: closes.slice(warmStart, start),
     prior: closes.slice(start, entryAt + 1),
     forward: closes.slice(entryAt, exitAt + 1),
     priorStart: dates[start],

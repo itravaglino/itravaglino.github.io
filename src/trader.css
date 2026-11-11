@@ -265,6 +265,94 @@
   font-family: "Syne", var(--display);
 }
 
+.page-trader .range,
+.page-trader .check {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0.35rem 0;
+  font-family: "IBM Plex Mono", var(--mono);
+  font-size: 0.86rem;
+}
+
+.page-trader .range {
+  max-width: 28rem;
+}
+
+.page-trader .range input[type="range"] {
+  flex: 1;
+  accent-color: var(--mark);
+}
+
+.page-trader .breakdown {
+  list-style: none;
+  margin: 0.2rem 0 0.8rem;
+  padding: 0;
+}
+
+.page-trader .breakdown li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid var(--line);
+  padding: 0.4rem 0;
+  font-family: "IBM Plex Mono", var(--mono);
+  animation: trader-rise 0.45s ease both;
+}
+
+.page-trader .breakdown li strong {
+  font-family: "IBM Plex Mono", var(--mono);
+}
+
+.page-trader .board {
+  margin-top: 1.4rem;
+  border-top: 3px solid var(--plate);
+  padding-top: 0.6rem;
+}
+
+.page-trader .board-list {
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.page-trader .board-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid var(--line);
+  padding: 0.35rem 0;
+  font-family: "Syne", var(--display);
+  font-weight: 700;
+}
+
+.page-trader .board-list strong {
+  font-family: "IBM Plex Mono", var(--mono);
+  font-weight: 500;
+}
+
+.page-trader dialog label {
+  display: block;
+  margin: 0.6rem 0 0.25rem;
+  font-family: "Syne", var(--display);
+  font-weight: 700;
+}
+
+.page-trader dialog input[type="text"],
+.page-trader dialog input:not([type="checkbox"]):not([type="range"]) {
+  width: 100%;
+  font: inherit;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--ink);
+  background: var(--bg);
+  color: var(--ink);
+}
+
+@keyframes trader-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
 .page-trader .locked { color: var(--ink-mute); }
 
 @media (min-width: 800px) {
@@ -279,4 +367,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .page-trader .bar i { transform: none; }
+  .page-trader .breakdown li { animation: none; }
 }

@@ -1,9 +1,9 @@
 import { initI18n, getLang } from "./i18n.js";
 import { initTheme } from "./theme.js";
 import { copy, fill, formatMoney, formatPct } from "./trader-copy.js";
+import { fetchTop, qualify, sanitizeName, submitScore, boardEnv } from "./trader-board.js";
 import {
   CONCEPTS,
-  HORIZON,
   START_CASH,
   applyMonth,
   annualizedVolMonthly,
@@ -11,20 +11,32 @@ import {
   classifyLesson,
   conceptsUnlocked,
   cordobaDate,
-  histogram,
   lastCloseByMonth,
   maxDrawdown,
   monthlyReturns,
   nextMonth,
-  pickPuzzle,
   pickStartMonth,
   previousDate,
   puzzleSlice,
-  shareCells,
   sharpe,
-  tradePnl,
   unpackSeries,
 } from "./trader-metrics.js";
+import {
+  applyRiskChoice,
+  driftedWeights,
+  eventForMonth,
+  freshPosition,
+  maxDrift,
+  portfolioScore,
+  rankBand,
+  rsi,
+  scoreRound,
+  sessionPicks,
+  sessionScore,
+  sma,
+  stepPosition,
+  visibleHint,
+} from "./trader-score.js";
 
 const STORE = "it-trader";
 const ASSETS = ["SPY", "QQQ", "GLD", "TLT", "KO", "MSFT"];
@@ -35,7 +47,7 @@ const TIMELINE = [
   { id: "rebound", from: "2020-04", to: "2020-08" },
   { id: "rates", from: "2022-01", to: "2022-10" },
 ];
-const BARS = ["< −20", "−20 – −10", "−10 – −3", "−3 – 3", "3 – 10", "10 – 20", "> 20"];
+const SCORE_BARS = ["< 0", "0–199", "200–499", "500–999", "≥ 1000"];
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const root = document.getElementById("trader-root");
@@ -45,12 +57,13 @@ let lang = getLang();
 let pack = null;
 let loadError = "";
 let mode = "daily";
-let choice = "buy";
-let size = 1;
-let reveal = 0;
 let busy = false;
 let practiceKey = "";
+let session = null;
 let run = null;
+let boardTab = "daily";
+let boardRows = [];
+let boardNote = "";
 const months = {};
 
 initI18n();
@@ -81,44 +94,6 @@ function today() {
   return cordobaDate();
 }
 
-function dailyKey() {
-  return `daily:${today()}`;
-}
-
-function currentPuzzle() {
-  if (!pack) return null;
-  if (mode === "practice") {
-    if (!practiceKey) practiceKey = `practice:${today()}:1`;
-    const pick = pickPuzzle(pack.symbols, practiceKey);
-    const slice = puzzleSlice(pack.symbols[pick.symbol], pick.start);
-    slice.symbol = pick.symbol;
-    return slice;
-  }
-  const pick = pickPuzzle(pack.symbols, dailyKey());
-  const slice = puzzleSlice(pack.symbols[pick.symbol], pick.start);
-  slice.symbol = pick.symbol;
-  return slice;
-}
-
-function todayResult() {
-  const state = loadState();
-  return (state.results || []).find((row) => row.date === today()) || null;
-}
-
-function recordDaily(pnl, action, playedSize) {
-  const state = loadState();
-  const date = today();
-  state.results = state.results || [];
-  if (state.results.some((row) => row.date === date)) return state;
-  const prev = previousDate(date);
-  state.streak = state.lastPlayed === prev ? (state.streak || 0) + 1 : 1;
-  state.lastPlayed = date;
-  state.results.push({ date, pnl, action, size: playedSize });
-  if (!state.learnStart) state.learnStart = date;
-  saveState(state);
-  return state;
-}
-
 function ensureLearn() {
   const state = loadState();
   if (!state.learnStart) {
@@ -128,7 +103,7 @@ function ensureLearn() {
   return state;
 }
 
-function paintChart(canvas, prior, forward, progress) {
+function paintChart(canvas, slice, shown, extras = {}) {
   const width = canvas.clientWidth || 320;
   const height = canvas.clientHeight || 240;
   const ratio = Math.min(window.devicePixelRatio || 1, 2);
@@ -142,43 +117,54 @@ function paintChart(canvas, prior, forward, progress) {
   const mark = styles.getPropertyValue("--mark").trim() || "#d6402e";
   const line = styles.getPropertyValue("--line").trim() || "#c5d0dc";
   const bg = styles.getPropertyValue("--bg").trim() || "#e8edf2";
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, width, height);
-  const shown = Math.max(1, Math.round((forward.length - 1) * progress));
-  const future = progress > 0 ? forward.slice(0, shown + 1) : [forward[0]];
-  const values = prior.slice(0, -1).concat(future);
-  let min = Math.min(...values);
-  let max = Math.max(...values);
+  const count = Math.max(0, Math.min(20, Math.round(shown)));
+  const values = slice.prior.concat(slice.forward.slice(1, 1 + count));
+  const levels = (extras.levels || []).map((item) => item.price).filter((price) => price > 0);
+  let min = Math.min(...values, ...levels);
+  let max = Math.max(...values, ...levels);
   if (min === max) {
     min -= 1;
     max += 1;
   }
-  const pad = 16;
+  const pad = 18;
   const xAt = (index) => pad + ((width - pad * 2) * index) / Math.max(values.length - 1, 1);
   const yAt = (value) => pad + ((max - value) / (max - min)) * (height - pad * 2);
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, width, height);
   ctx.strokeStyle = line;
   ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.moveTo(pad, yAt(forward[0]));
-  ctx.lineTo(width - pad, yAt(forward[0]));
+  ctx.moveTo(pad, yAt(slice.forward[0]));
+  ctx.lineTo(width - pad, yAt(slice.forward[0]));
   ctx.stroke();
-  const split = prior.length - 1;
-  ctx.lineWidth = 2.25;
-  ctx.strokeStyle = ink;
-  ctx.beginPath();
-  for (let i = 0; i <= split && i < values.length; i += 1) {
-    const x = xAt(i);
-    const y = yAt(values[i]);
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
-  }
-  ctx.stroke();
-  if (progress > 0 && values.length > split) {
-    ctx.strokeStyle = plate;
+  const split = slice.prior.length - 1;
+  const strokeLine = (series, color, widthPx) => {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = widthPx;
     ctx.beginPath();
-    ctx.moveTo(xAt(split), yAt(values[split]));
-    for (let i = split + 1; i < values.length; i += 1) ctx.lineTo(xAt(i), yAt(values[i]));
+    let moved = false;
+    series.forEach((value, index) => {
+      if (value == null) return;
+      const x = xAt(index);
+      const y = yAt(value);
+      if (!moved) {
+        ctx.moveTo(x, y);
+        moved = true;
+      } else ctx.lineTo(x, y);
+    });
+    if (moved) ctx.stroke();
+  };
+  strokeLine(values.map((value, index) => (index <= split ? value : null)), ink, 2.25);
+  if (count > 0) strokeLine(values.map((value, index) => (index >= split ? value : null)), plate, 2.25);
+  for (const overlay of extras.overlays || []) strokeLine(overlay.values, overlay.color, 1.4);
+  for (const level of extras.levels || []) {
+    ctx.strokeStyle = level.color;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(pad, yAt(level.price));
+    ctx.lineTo(width - pad, yAt(level.price));
     ctx.stroke();
+    ctx.setLineDash([]);
   }
   ctx.strokeStyle = mark;
   ctx.lineWidth = 1.5;
@@ -248,6 +234,7 @@ function el(tag, props = {}, children = []) {
     if (key === "class") node.className = value;
     else if (key === "text") node.textContent = value;
     else if (key === "disabled") node.disabled = Boolean(value);
+    else if (key === "checked") node.checked = Boolean(value);
     else if (key.startsWith("on") && typeof value === "function") node.addEventListener(key.slice(2).toLowerCase(), value);
     else node.setAttribute(key, value);
   }
@@ -258,6 +245,18 @@ function el(tag, props = {}, children = []) {
   return node;
 }
 
+function scoreBuckets(values) {
+  const counts = [0, 0, 0, 0, 0];
+  for (const value of values) {
+    if (value < 0) counts[0] += 1;
+    else if (value < 200) counts[1] += 1;
+    else if (value < 500) counts[2] += 1;
+    else if (value < 1000) counts[3] += 1;
+    else counts[4] += 1;
+  }
+  return counts;
+}
+
 function renderBars(values) {
   const t = text();
   const box = el("div", { class: "bars" });
@@ -265,140 +264,541 @@ function renderBars(values) {
     box.append(el("p", { class: "note", text: t.emptyStats }));
     return box;
   }
-  const counts = histogram(values);
+  const counts = scoreBuckets(values);
   const max = Math.max(...counts, 1);
   counts.forEach((count, index) => {
     const fillBar = el("i");
     fillBar.style.width = `${(count / max) * 100}%`;
-    box.append(el("div", { class: "bar" }, [BARS[index], el("span", {}, [fillBar]), String(count)]));
+    box.append(el("div", { class: "bar" }, [SCORE_BARS[index], el("span", {}, [fillBar]), String(count)]));
   });
   return box;
 }
 
+function activeSlice() {
+  const pick = session.picks[session.round];
+  const slice = puzzleSlice(pack.symbols[pick.symbol], pick.start);
+  slice.symbol = pick.symbol;
+  return slice;
+}
+
+function blankSession(key, kind) {
+  return {
+    kind,
+    key,
+    date: today(),
+    picks: sessionPicks(pack.symbols, key),
+    round: 0,
+    shown: 0,
+    phase: "entry",
+    position: freshPosition(),
+    size: 1,
+    action: "buy",
+    stopOn: false,
+    stopPct: 8,
+    takeOn: false,
+    takePct: 12,
+    hints: 0,
+    hint: null,
+    startedAt: Date.now(),
+    bankedSec: 0,
+    winStreak: 0,
+    scores: [],
+    breakdown: null,
+    total: 0,
+    done: false,
+    indicators: { sma20: false, sma50: false, rsi: false },
+  };
+}
+
+function persistSession() {
+  if (!session || session.kind !== "daily") return;
+  const state = loadState();
+  state.dailySession = session;
+  saveState(state);
+}
+
+function ensureSession() {
+  if (!pack) return null;
+  if (mode === "practice") {
+    if (!session || session.kind !== "practice" || session.key !== practiceKey) {
+      if (!practiceKey) practiceKey = `practice:${today()}:1`;
+      session = blankSession(practiceKey, "practice");
+    }
+    return session;
+  }
+  const saved = loadState().dailySession;
+  if (saved?.date === today() && saved.done) {
+    session = saved;
+    return session;
+  }
+  if (session?.kind === "daily" && session.date === today()) return session;
+  if (saved?.date === today() && saved.picks) {
+    session = saved;
+    return session;
+  }
+  session = blankSession(`daily:${today()}`, "daily");
+  persistSession();
+  return session;
+}
+
+function decisionFrom(action) {
+  return {
+    action,
+    size: session.size,
+    stopPct: session.stopOn ? session.stopPct / 100 : 0,
+    takePct: session.takeOn ? session.takePct / 100 : 0,
+  };
+}
+
+function levelPrices(slice) {
+  const anchor = session.position.entry || slice.forward[Math.min(session.shown, 20)];
+  const side = session.position.side || (session.action === "sell" ? -1 : session.action === "buy" ? 1 : 0);
+  if (!side || !anchor) return [];
+  const levels = [];
+  if (session.stopOn) levels.push({ price: anchor * (1 - side * (session.stopPct / 100)), color: "#d6402e" });
+  if (session.takeOn) levels.push({ price: anchor * (1 + side * (session.takePct / 100)), color: "#1e4d8c" });
+  return levels;
+}
+
+function overlayValues(slice, period) {
+  const count = Math.max(0, Math.min(20, Math.round(session.shown)));
+  const all = slice.warmup.concat(slice.prior, slice.forward.slice(1, 1 + count));
+  const avg = sma(all, period);
+  return avg.slice(all.length - (slice.prior.length + count));
+}
+
+function redrawChart() {
+  const canvas = document.getElementById("trade-chart");
+  if (!canvas || !session) return;
+  const slice = activeSlice();
+  const overlays = [];
+  if (session.indicators.sma20) overlays.push({ values: overlayValues(slice, 20), color: "#8a5a2a" });
+  if (session.indicators.sma50) overlays.push({ values: overlayValues(slice, 50), color: "#3d6b4f" });
+  paintChart(canvas, slice, session.shown, { overlays, levels: levelPrices(slice) });
+  const rsiNode = document.getElementById("rsi-readout");
+  if (rsiNode) {
+    if (!session.indicators.rsi) rsiNode.textContent = "";
+    else {
+      const count = Math.max(0, Math.min(20, Math.round(session.shown)));
+      const all = slice.warmup.concat(slice.prior, slice.forward.slice(1, 1 + count));
+      const values = rsi(all, 14);
+      const last = [...values].reverse().find((value) => value != null);
+      rsiNode.textContent = last == null ? "" : `RSI ${last.toFixed(0)}`;
+    }
+  }
+}
+
+function finishRound() {
+  const scored = scoreRound({
+    pnl: session.position.pnl,
+    mae: session.position.mae,
+    stopSet: session.position.stopSet,
+    stoppedOut: session.position.stoppedOut,
+    hints: session.hints,
+    elapsedSec: session.bankedSec,
+    winStreak: session.winStreak,
+  });
+  session.breakdown = scored;
+  session.scores.push(scored.total);
+  session.winStreak = scored.total > 0 ? session.winStreak + 1 : 0;
+  session.phase = "breakdown";
+}
+
+function advance(action) {
+  if (busy || !session) return;
+  const slice = activeSlice();
+  const start = Math.round(session.shown);
+  const end = Math.min(20, start + 5);
+  const bars = slice.forward.slice(start + 1, end + 1);
+  if (session.phase === "entry") session.bankedSec = (Date.now() - session.startedAt) / 1000;
+  const stepped = stepPosition(session.position, slice.forward[start], bars, decisionFrom(action));
+  session.position = stepped.state;
+  session.lastReason = stepped.reason;
+  const land = () => {
+    session.shown = end;
+    if (end >= 20) finishRound();
+    else {
+      session.phase = "step";
+      session.action = session.position.side !== 0 ? "hold" : "flat";
+    }
+    busy = false;
+    persistSession();
+    render();
+  };
+  if (reduceMotion) {
+    land();
+    return;
+  }
+  busy = true;
+  const started = performance.now();
+  const tick = (now) => {
+    const raw = Math.min(1, (now - started) / 720);
+    session.shown = start + (end - start) * (raw * raw * (3 - 2 * raw));
+    redrawChart();
+    if (raw < 1) requestAnimationFrame(tick);
+    else land();
+  };
+  requestAnimationFrame(tick);
+}
+
+function nextChart() {
+  if (session.round < 4) {
+    session.round += 1;
+    session.shown = 0;
+    session.position = freshPosition();
+    session.hints = 0;
+    session.hint = null;
+    session.phase = "entry";
+    session.startedAt = Date.now();
+    session.bankedSec = 0;
+    session.breakdown = null;
+    session.action = "buy";
+    persistSession();
+    render();
+    return;
+  }
+  session.total = sessionScore(session.scores);
+  session.done = true;
+  session.phase = "done";
+  if (session.kind === "daily") {
+    const state = loadState();
+    const date = today();
+    if (state.lastPlayed !== date) {
+      state.streak = state.lastPlayed === previousDate(date) ? (state.streak || 0) + 1 : 1;
+      state.lastPlayed = date;
+      state.results = state.results || [];
+      state.results.push({ date, score: session.total, pnl: session.total / 1000 });
+    }
+    if (!state.learnStart) state.learnStart = date;
+    state.dailySession = session;
+    saveState(state);
+    maybeEnterBoard("daily", session.total, { rounds: session.scores });
+  }
+  render();
+}
+
+function useHint() {
+  if (!session || session.hints || session.phase === "done" || session.phase === "breakdown") return;
+  const slice = activeSlice();
+  const hint = visibleHint(slice.prior);
+  session.hints = 1;
+  session.hint = hint;
+  persistSession();
+  render();
+}
+
+function toggleIndicator(key) {
+  session.indicators[key] = !session.indicators[key];
+  persistSession();
+  render();
+}
+
+function rangeControl(label, value, onInput) {
+  const output = el("output", { text: `${value}%` });
+  const input = el("input", { type: "range", min: "2", max: "30", step: "1", value: String(value), "aria-label": label });
+  input.addEventListener("input", () => {
+    output.textContent = `${input.value}%`;
+    onInput(Number(input.value));
+  });
+  return el("label", { class: "range" }, [label, input, output]);
+}
+
 function renderDaily() {
   const t = text();
-  const slice = currentPuzzle();
-  const saved = mode === "daily" ? todayResult() : null;
   const state = loadState();
-  const done = Boolean(saved) || (mode === "practice" && reveal >= 1);
-  const show = done ? 1 : reveal;
-  const pnl = saved ? saved.pnl : done ? tradePnl(choice, slice.entry, slice.exit, size) : null;
+  ensureSession();
+  const slice = activeSlice();
   const wrap = el("div", { class: "desk" });
   const left = el("div");
-  const canvas = el("canvas", { id: "trade-chart", role: "img", "aria-label": done ? `${slice.symbol} ${slice.decisionDate}` : t.hidden });
+  const canvas = el("canvas", {
+    id: "trade-chart",
+    role: "img",
+    "aria-label": session.phase === "done" || session.phase === "breakdown" ? `${slice.symbol}` : t.hidden,
+  });
   left.append(el("div", { class: "chart-wrap" }, [canvas]));
   const meta = el("div", { class: "meta" });
+  meta.append(el("span", {}, [el("strong", { text: t.round }), ` ${session.round + 1}/5`]));
+  meta.append(el("span", {}, [el("strong", { text: t.step }), ` ${Math.min(4, Math.round(session.shown / 5))}/4`]));
   meta.append(el("span", {}, [el("strong", { text: t.streak }), ` ${state.streak || 0}`]));
-  meta.append(el("span", { text: mode === "practice" ? t.practiceNote : `${HORIZON} sessions` }));
   left.append(meta);
-  if (!done) {
+  if (session.hint) {
+    left.append(el("p", { class: "lesson", text: fill(t.hints[session.hint.id], { ret: formatPct(session.hint.ret), vol: formatPct(session.hint.vol) }) }));
+  }
+  const tools = el("div", { class: "row", role: "group", "aria-label": t.indicators });
+  for (const key of ["sma20", "sma50", "rsi"]) {
+    tools.append(el("button", {
+      type: "button",
+      "aria-pressed": session.indicators[key] ? "true" : "false",
+      text: t[key],
+      onClick: () => toggleIndicator(key),
+    }));
+  }
+  tools.append(el("button", { type: "button", disabled: true, title: t.volumeOff, text: "Vol" }));
+  tools.append(el("span", { id: "rsi-readout", class: "figure" }));
+  left.append(tools);
+
+  if (session.phase === "entry" || session.phase === "step") {
+    const open = session.position.side !== 0;
+    const actions = open ? ["hold", "add", "reduce", "close"] : ["buy", "sell", "flat"];
+    const labels = { hold: t.holdPos, add: t.add, reduce: t.reduce, close: t.closePos, buy: t.buy, sell: t.sell, flat: t.flat };
     const choices = el("div", { class: "row choice", role: "group", "aria-label": t.decide });
-    for (const action of ["buy", "sell", "hold"]) {
+    for (const action of actions) {
       choices.append(el("button", {
         type: "button",
         "data-act": action,
-        "aria-pressed": choice === action ? "true" : "false",
-        text: t[action],
+        "aria-pressed": session.action === action ? "true" : "false",
+        text: labels[action],
         onClick: () => {
-          choice = action;
+          session.action = action;
           render();
         },
       }));
     }
-    left.append(el("p", { text: t.decide }));
     left.append(choices);
-    const sizes = el("div", { class: "row sizes", role: "group", "aria-label": t.size });
-    for (const value of [1, 2, 3]) {
-      sizes.append(el("button", {
-        type: "button",
-        "aria-pressed": size === value ? "true" : "false",
-        text: `×${value}`,
-        onClick: () => {
-          size = value;
+    if (!open) {
+      const sizes = el("div", { class: "row sizes", role: "group", "aria-label": t.size });
+      for (const value of [1, 2, 3]) {
+        sizes.append(el("button", {
+          type: "button",
+          "aria-pressed": session.size === value ? "true" : "false",
+          text: `×${value}`,
+          onClick: () => {
+            session.size = value;
+            render();
+          },
+        }));
+      }
+      left.append(sizes);
+    }
+    const checks = el("div", { class: "row" });
+    checks.append(el("label", { class: "check" }, [
+      el("input", {
+        type: "checkbox",
+        checked: session.stopOn,
+        onChange: (event) => {
+          session.stopOn = event.target.checked;
           render();
         },
+      }),
+      t.stop,
+    ]));
+    checks.append(el("label", { class: "check" }, [
+      el("input", {
+        type: "checkbox",
+        checked: session.takeOn,
+        onChange: (event) => {
+          session.takeOn = event.target.checked;
+          render();
+        },
+      }),
+      t.target,
+    ]));
+    left.append(checks);
+    if (session.stopOn) {
+      left.append(rangeControl(t.stop, session.stopPct, (value) => {
+        session.stopPct = value;
+        const out = document.querySelector(".range output");
+        if (out) out.textContent = `${value}%`;
+        redrawChart();
       }));
     }
-    left.append(el("p", { class: "fine", text: t.sizeHint }));
-    left.append(sizes);
+    if (session.takeOn) {
+      left.append(rangeControl(t.target, session.takePct, (value) => {
+        session.takePct = value;
+        redrawChart();
+      }));
+    }
+    left.append(el("p", { class: "fine", text: t.levels }));
+    const row = el("div", { class: "row" });
+    row.append(el("button", {
+      type: "button",
+      class: "go",
+      text: session.phase === "entry" ? t.reveal : t.nextFive,
+      onClick: () => advance(open ? session.action : session.action),
+    }));
+    row.append(el("button", { type: "button", class: "ghost", disabled: session.hints > 0, text: t.hint, onClick: useHint }));
+    row.append(el("button", { type: "button", class: "ghost", text: t.scoring, onClick: openScoring }));
+    left.append(row);
+  } else if (session.phase === "breakdown") {
+    left.append(renderBreakdown(session.breakdown));
+    const told = lessonText(slice);
+    left.append(el("p", { class: "meta" }, [
+      el("span", {}, [el("strong", { text: t.ticker }), ` ${slice.symbol}`]),
+      el("span", {}, [slice.name]),
+      el("span", {}, [`${slice.decisionDate} → ${slice.exitDate}`]),
+    ]));
+    left.append(el("p", { class: "lesson", text: told.body }));
+    if (told.extra) left.append(el("p", { class: "lesson", text: told.extra }));
     left.append(el("button", {
       type: "button",
       class: "go",
-      text: t.reveal,
-      onClick: () => commitTrade(slice),
+      text: session.round < 4 ? t.nextRound : t.finishSession,
+      onClick: nextChart,
     }));
   } else {
-    const tone = pnl > 0.0005 ? "up" : pnl < -0.0005 ? "down" : "";
-    const told = lessonText(slice);
-    left.append(el("p", { class: `pnl ${tone}`, text: formatPct(pnl) }));
-    left.append(el("p", { class: "meta" }, [
-      el("span", {}, [el("strong", { text: t.ticker }), ` ${slice.symbol}`]),
-      el("span", {}, [el("strong", { text: slice.name })]),
-      el("span", {}, [`${slice.decisionDate} → ${slice.exitDate}`]),
-    ]));
-    const card = el("div", { class: "lesson" }, [el("h2", { text: t.lesson }), el("p", { text: told.body })]);
-    if (told.extra) card.append(el("p", { text: told.extra }));
-    left.append(card);
-    const actions = el("div", { class: "row" });
-    actions.append(el("button", { type: "button", class: "ghost", text: t.share, onClick: () => share(slice, pnl, saved?.size || size) }));
-    if (mode === "practice") {
-      actions.append(el("button", {
+    left.append(el("p", { class: "pnl", text: String(session.total) }));
+    left.append(el("p", { class: "fine", text: t.sessionTotal }));
+    left.append(el("p", { class: "meta", text: session.scores.map((score, index) => `${index + 1}: ${score}`).join("   ") }));
+    const row = el("div", { class: "row" });
+    row.append(el("button", { type: "button", class: "ghost", text: t.share, onClick: shareSession }));
+    if (session.kind === "practice") {
+      row.append(el("button", {
         type: "button",
         class: "go",
         text: t.again,
         onClick: () => {
           practiceKey = `practice:${today()}:${Date.now()}`;
-          reveal = 0;
+          session = null;
           render();
         },
       }));
     }
-    left.append(actions);
-    const live = document.getElementById("live");
-    if (live) live.textContent = `${t.pnl} ${formatPct(pnl)} ${slice.symbol}`;
+    left.append(row);
   }
-  const side = el("div", {}, [el("h2", { text: t.stats }), renderBars((state.results || []).map((row) => row.pnl))]);
+  const side = el("div", {}, [
+    el("h2", { text: t.stats }),
+    renderBars((state.results || []).map((row) => row.score ?? Math.round((row.pnl || 0) * 1000))),
+  ]);
   wrap.append(left, side);
   root.append(wrap);
-  requestAnimationFrame(() => paintChart(canvas, slice.prior, slice.forward, show));
+  requestAnimationFrame(redrawChart);
 }
 
-function commitTrade(slice) {
-  if (busy) return;
-  busy = true;
-  const finish = () => {
-    reveal = mode === "practice" ? 1 : 0;
-    if (mode === "daily") recordDaily(tradePnl(choice, slice.entry, slice.exit, size), choice, size);
-    busy = false;
-    render();
-  };
-  if (reduceMotion) {
-    finish();
-    return;
-  }
-  const canvas = document.getElementById("trade-chart");
-  const started = performance.now();
-  const tick = (now) => {
-    const raw = Math.min(1, (now - started) / 1100);
-    const eased = raw * raw * (3 - 2 * raw);
-    if (canvas) paintChart(canvas, slice.prior, slice.forward, eased);
-    if (raw < 1) requestAnimationFrame(tick);
-    else finish();
-  };
-  requestAnimationFrame(tick);
+function renderBreakdown(scored) {
+  const t = text();
+  const rows = [
+    ["pnl", scored.pnlPoints],
+    ["direction", scored.directionBonus],
+    ["discipline", scored.discipline],
+    ["time", scored.timeBonus],
+    ["hint", -scored.hintPenalty],
+    ["streak", scored.multiplier],
+    ["total", scored.total],
+  ];
+  const list = el("ol", { class: "breakdown" });
+  rows.forEach((row, index) => {
+    const value = row[0] === "streak" ? `×${row[1].toFixed(2)}` : String(row[1]);
+    const item = el("li", {}, [el("span", { text: t.parts[row[0]] }), el("strong", { text: value })]);
+    if (!reduceMotion) item.style.animationDelay = `${index * 70}ms`;
+    list.append(item);
+  });
+  return el("div", {}, [el("h2", { text: t.breakdown }), list]);
 }
 
-async function share(slice, pnl, playedSize) {
-  const cells = shareCells(slice.forward).map((cell) => (cell === "up" ? "🟩" : cell === "down" ? "🟥" : "⬜")).join("");
-  const message = `Daily Trade ${today()}\n${cells}\n${formatPct(pnl)} · ×${playedSize}\ntravaglino.me/trader/`;
-  try {
-    await navigator.clipboard.writeText(message);
+function shareSession() {
+  const lines = (session.scores || []).map((score) => (score > 0 ? "🟩" : score < 0 ? "🟥" : "⬜")).join("");
+  const message = `Daily Trade ${today()}\n${lines}\n${session.total}\ntravaglino.me/trader/`;
+  navigator.clipboard?.writeText(message).then(() => {
     const live = document.getElementById("live");
     if (live) live.textContent = text().copied;
-  } catch {
-    /* clipboard blocked */
-  }
+  }).catch(() => {});
 }
+
+function openScoring() {
+  const t = text();
+  const dialog = document.getElementById("score-dialog");
+  dialog.replaceChildren(
+    el("h2", { id: "score-title", text: t.scoring }),
+    el("p", { text: t.scoringBody }),
+    el("button", { type: "button", class: "go", text: t.close, onClick: () => dialog.close() })
+  );
+  if (!dialog.open) dialog.showModal();
+}
+
+function askName() {
+  const t = text();
+  const dialog = document.getElementById("name-dialog");
+  return new Promise((resolve) => {
+    const input = el("input", { id: "board-name", maxlength: "20", autocomplete: "nickname", "aria-describedby": "name-help" });
+    const error = el("p", { class: "fine", id: "name-error" });
+    dialog.replaceChildren(
+      el("h2", { id: "name-title", text: t.nameTitle }),
+      el("label", { for: "board-name", text: t.nameLabel }),
+      input,
+      el("p", { class: "fine", id: "name-help", text: t.nameHelp }),
+      error,
+      el("div", { class: "row" }, [
+        el("button", {
+          type: "button",
+          class: "go",
+          text: t.submit,
+          onClick: () => {
+            const cleaned = sanitizeName(input.value);
+            if (!cleaned.ok) {
+              error.textContent = t.nameError;
+              return;
+            }
+            dialog.close();
+            resolve(cleaned.name);
+          },
+        }),
+        el("button", {
+          type: "button",
+          class: "ghost",
+          text: t.skip,
+          onClick: () => {
+            dialog.close();
+            resolve("");
+          },
+        }),
+      ])
+    );
+    dialog.showModal();
+    input.focus();
+  });
+}
+
+async function maybeEnterBoard(boardMode, score, details) {
+  const day = today();
+  const board = await fetchTop(boardMode, day);
+  if (!qualify(score, board.rows || [])) return;
+  const name = await askName();
+  if (!name) return;
+  const result = await submitScore({ mode: boardMode, day, name, score, details });
+  const live = document.getElementById("live");
+  if (live) live.textContent = result?.ok ? text().saved : text().notSaved;
+  await loadBoard();
+  render();
+}
+
+async function loadBoard() {
+  const board = await fetchTop(boardTab, today());
+  boardRows = board.rows || [];
+  const t = text();
+  if (!boardEnv().remote) boardNote = t.localNote;
+  else if (board.failed) boardNote = t.remoteFail;
+  else boardNote = "";
+}
+
+function renderBoard() {
+  const t = text();
+  const box = el("section", { class: "board" });
+  box.append(el("h2", { text: t.board }));
+  const tabs = el("div", { class: "row", role: "group", "aria-label": t.board });
+  for (const id of ["daily", "portfolio"]) {
+    tabs.append(el("button", {
+      type: "button",
+      "aria-pressed": boardTab === id ? "true" : "false",
+      text: id === "daily" ? t.todayBoard : t.allTime,
+      onClick: () => {
+        boardTab = id;
+        loadBoard().then(render);
+      },
+    }));
+  }
+  box.append(tabs);
+  if (boardNote) box.append(el("p", { class: "fine", text: boardNote }));
+  if (!boardRows.length) box.append(el("p", { class: "note", text: t.emptyBoard }));
+  else {
+    const list = el("ol", { class: "board-list" });
+    boardRows.forEach((row) => {
+      list.append(el("li", {}, [el("span", { text: row.name }), el("strong", { text: String(row.score) })]));
+    });
+    box.append(list);
+  }
+  root.append(box);
+}
+
 
 function assetReady(symbol, month) {
   const map = months[symbol];
@@ -420,8 +820,14 @@ function freshRun() {
     values: [START_CASH],
     bench: [START_CASH],
     weights: { SPY: 40, QQQ: 0, GLD: 0, TLT: 0, KO: 0, MSFT: 0 },
+    actual: { SPY: 0.4, QQQ: 0, GLD: 0, TLT: 0, KO: 0, MSFT: 0, CASH: 0.6 },
+    rebalanceEvents: [],
+    doRebalance: false,
+    riskChoice: "hold",
     seen: [],
     done: false,
+    score: null,
+    band: null,
   };
   const state = loadState();
   state.portfolio = run;
@@ -441,29 +847,66 @@ function normalizeWeights() {
   }
 }
 
-function stepRun() {
-  normalizeWeights();
+function targetFractions() {
   const fractions = { CASH: 0 };
   let used = 0;
-  const returns = {};
   for (const symbol of ASSETS) {
-    const weight = (run.weights[symbol] || 0) / 100;
+    const weight = assetReady(symbol, run.month) ? (run.weights[symbol] || 0) / 100 : 0;
     fractions[symbol] = weight;
     used += weight;
-    if (weight > 0) returns[symbol] = months[symbol].get(nextMonth(run.month)) / months[symbol].get(run.month) - 1;
   }
-  fractions.CASH = 1 - used;
-  const benchRet = months["^GSPC"].get(nextMonth(run.month)) / months["^GSPC"].get(run.month) - 1;
-  const arrived = nextMonth(run.month);
-  run.values.push(applyMonth(run.values.at(-1), fractions, returns));
+  fractions.CASH = Math.max(0, 1 - used);
+  const scale = used > 1 ? 1 / used : 1;
+  if (used > 1) {
+    for (const symbol of ASSETS) fractions[symbol] *= scale;
+    fractions.CASH = 0;
+  }
+  return fractions;
+}
+
+function stepRun() {
+  normalizeWeights();
+  const targets = targetFractions();
+  const actual = run.actual || { ...targets };
+  const drift = maxDrift(actual, targets);
+  run.rebalanceEvents.push({ drift, didRebalance: Boolean(run.doRebalance) });
+  let mix = run.doRebalance ? { ...targets } : { ...actual };
+  const upcoming = nextMonth(run.month);
+  if (eventForMonth(upcoming)) mix = applyRiskChoice(mix, run.riskChoice || "hold");
+  const returns = {};
+  for (const symbol of ASSETS) {
+    if (mix[symbol] > 0) returns[symbol] = months[symbol].get(upcoming) / months[symbol].get(run.month) - 1;
+  }
+  const benchRet = months["^GSPC"].get(upcoming) / months["^GSPC"].get(run.month) - 1;
+  run.values.push(applyMonth(run.values.at(-1), mix, returns));
   run.bench.push(run.bench.at(-1) * (1 + benchRet));
-  run.month = arrived;
-  const note = timelineNote(arrived);
+  run.actual = driftedWeights(mix, returns);
+  run.month = upcoming;
+  run.doRebalance = false;
+  run.riskChoice = "hold";
+  const note = timelineNote(upcoming);
   if (note && !run.seen.includes(note.id)) run.seen.push(note.id);
-  if (!assetReady("^GSPC", run.month) || !assetReady("SPY", run.month)) run.done = true;
+  if (!assetReady("^GSPC", run.month) || !assetReady("SPY", run.month)) finishRun();
   const state = loadState();
   state.portfolio = run;
   saveState(state);
+}
+
+function finishRun() {
+  const returns = monthlyReturns(run.values);
+  const excess = run.values.at(-1) / START_CASH - run.bench.at(-1) / START_CASH;
+  run.score = portfolioScore({
+    excessReturn: excess,
+    vol: annualizedVolMonthly(returns) || 0,
+    maxDrawdown: maxDrawdown(run.values),
+    rebalanceEvents: run.rebalanceEvents,
+  });
+  run.band = rankBand(run.score);
+  run.done = true;
+  const state = loadState();
+  state.portfolio = run;
+  saveState(state);
+  maybeEnterBoard("portfolio", run.score, { months: run.values.length - 1, start: run.values.length ? run.month : "" });
 }
 
 function reportCard() {
@@ -501,6 +944,43 @@ function renderPortfolio() {
   ]));
   const note = timelineNote(run.month);
   if (note) host.append(el("p", { class: "lesson" }, [el("strong", { text: t.event }), " ", t.timeline[note.id]]));
+  const upcomingEvent = eventForMonth(nextMonth(run.month));
+  if (!run.done && upcomingEvent) {
+    host.append(el("p", { class: "lesson" }, [el("strong", { text: t.prompt }), " ", t.monthEvents[upcomingEvent.id]]));
+    const risk = el("div", { class: "row choice", role: "group", "aria-label": t.prompt });
+    for (const choice of ["cut", "hold", "add"]) {
+      const label = choice === "cut" ? t.cut : choice === "add" ? t.addRisk : t.holdRisk;
+      const value = choice === "hold" ? "hold" : choice;
+      risk.append(el("button", {
+        type: "button",
+        "aria-pressed": (run.riskChoice || "hold") === value ? "true" : "false",
+        text: label,
+        onClick: () => {
+          run.riskChoice = value;
+          render();
+        },
+      }));
+    }
+    host.append(risk);
+  } else if (!run.done) host.append(el("p", { class: "fine", text: t.noEvent }));
+  if (!run.done && run.actual) {
+    const targets = targetFractions();
+    const drift = maxDrift(run.actual, targets);
+    host.append(el("p", { class: "meta" }, [el("strong", { text: t.drift }), ` ${formatPct(drift)}`]));
+    host.append(el("label", { class: "check" }, [
+      el("input", {
+        type: "checkbox",
+        checked: Boolean(run.doRebalance),
+        onChange: (event) => {
+          run.doRebalance = event.target.checked;
+          const state = loadState();
+          state.portfolio = run;
+          saveState(state);
+        },
+      }),
+      t.rebalance,
+    ]));
+  }
   if (!run.done) {
     host.append(el("h2", { text: t.weights }));
     const alloc = el("div", { class: "alloc" });
@@ -532,12 +1012,17 @@ function renderPortfolio() {
     host.append(alloc);
     const row = el("div", { class: "row" });
     row.append(el("button", { type: "button", class: "go", text: t.next, onClick: () => { stepRun(); render(); } }));
-    if (run.values.length > 2) row.append(el("button", { type: "button", class: "ghost", text: t.finish, onClick: () => { run.done = true; render(); } }));
+    if (run.values.length > 2) row.append(el("button", { type: "button", class: "ghost", text: t.finish, onClick: () => { finishRun(); render(); } }));
     row.append(el("button", { type: "button", class: "ghost", text: t.newRun, onClick: () => { run = null; freshRun(); render(); } }));
     host.append(row);
   } else {
     host.append(el("h2", { text: t.report }));
     host.append(reportCard());
+    if (run.score != null) {
+      host.append(el("p", { class: "pnl", text: String(run.score) }));
+      const bandKey = run.band === "close" ? "closeRank" : run.band;
+      host.append(el("p", { class: "lesson", text: `${t.rank}: ${t[bandKey] || run.band}` }));
+    }
     host.append(el("button", { type: "button", class: "go", text: t.newRun, onClick: () => { run = null; freshRun(); render(); } }));
   }
   root.append(host);
@@ -593,7 +1078,7 @@ function render() {
       text: t[id],
       onClick: () => {
         mode = id;
-        if (id !== "practice") reveal = todayResult() ? 1 : 0;
+        if (id === "practice") session = null;
         render();
       },
     }));
@@ -610,6 +1095,7 @@ function render() {
   }
   if (mode === "portfolio") renderPortfolio();
   else renderDaily();
+  renderBoard();
   root.append(el("p", { class: "fine", text: t.disclaimer }));
   root.append(el("p", { class: "fine", text: `${t.source} ${pack.fetched}.` }));
 }
@@ -617,15 +1103,16 @@ function render() {
 document.addEventListener("keydown", (event) => {
   if (event.metaKey || event.ctrlKey || event.altKey) return;
   if (event.target.closest("input, textarea, dialog")) return;
+  if (!session || mode === "portfolio") return;
+  if (session.phase !== "entry" && session.phase !== "step") return;
   const key = event.key.toLowerCase();
-  if (mode === "portfolio") return;
-  if (key === "b") choice = "buy";
-  else if (key === "s") choice = "sell";
-  else if (key === "h") choice = "hold";
+  const open = session.position.side !== 0;
+  if (!open && key === "b") session.action = "buy";
+  else if (!open && key === "s") session.action = "sell";
+  else if (!open && key === "h") session.action = "flat";
+  else if (open && key === "h") session.action = "hold";
   else return;
-  if (!todayResult() || mode === "practice") {
-    if (reveal < 1) render();
-  }
+  render();
 });
 
 document.addEventListener("it-lang", (event) => {
@@ -648,7 +1135,7 @@ fetch("/data/market.json")
       const series = unpackSeries(doc.symbols[symbol]);
       months[symbol] = lastCloseByMonth(series.dates, series.closes);
     }
-    render();
+    loadBoard().then(render);
   })
   .catch((error) => {
     loadError = `${text().loadError} (${error.message})`;
