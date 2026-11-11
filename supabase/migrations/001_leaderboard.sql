@@ -123,7 +123,7 @@ begin
   if char_length(v_name) < 1 or char_length(v_name) > 20 then
     return jsonb_build_object('ok', false, 'error', 'name');
   end if;
-  if v_name !~ '^[[:alnum:]][[:alnum:] ._'’-]{0,19}$' then
+  if v_name !~ '^[[:alnum:]][[:alnum:] ._''’-]{0,19}$' then
     return jsonb_build_object('ok', false, 'error', 'name');
   end if;
   foreach v_word in array v_blocked loop
